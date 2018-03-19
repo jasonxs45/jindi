@@ -25,13 +25,12 @@
 .layui-m-layermain {
   display: table;
   font-family: Helvetica, arial, sans-serif;
-  pointer-events: none
-}
-
-.layui-m-layermain .layui-m-layersection {
-  display: table-cell;
-  vertical-align: middle;
-  text-align: center
+  pointer-events: none;
+  .layui-m-layersection {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center
+  }
 }
 
 .layui-m-layerchild {
@@ -44,71 +43,36 @@
   box-shadow: 0 0 8px rgba(0, 0, 0, .1);
   pointer-events: auto;
   -webkit-overflow-scrolling: touch;
-  -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
-  -webkit-animation-duration: .2s;
   animation-duration: .2s
-}
-
-@-webkit-keyframes layui-m-anim-scale {
-  0% {
-    opacity: 0;
-    -webkit-transform: scale(.5);
-    transform: scale(.5)
-  }
-  100% {
-    opacity: 1;
-    -webkit-transform: scale(1);
-    transform: scale(1)
-  }
 }
 
 @keyframes layui-m-anim-scale {
   0% {
     opacity: 0;
-    -webkit-transform: scale(.5);
     transform: scale(.5)
   }
   100% {
     opacity: 1;
-    -webkit-transform: scale(1);
     transform: scale(1)
   }
 }
 
 .layui-m-anim-scale {
   animation-name: layui-m-anim-scale;
-  -webkit-animation-name: layui-m-anim-scale
 }
-
-@-webkit-keyframes layui-m-anim-up {
-  0% {
-    opacity: 0;
-    -webkit-transform: translateY(800px);
-    transform: translateY(800px)
-  }
-  100% {
-    opacity: 1;
-    -webkit-transform: translateY(0);
-    transform: translateY(0)
-  }
-}
-
 @keyframes layui-m-anim-up {
   0% {
     opacity: 0;
-    -webkit-transform: translateY(800px);
     transform: translateY(800px)
   }
   100% {
     opacity: 1;
-    -webkit-transform: translateY(0);
     transform: translateY(0)
   }
 }
 
 .layui-m-anim-up {
-  -webkit-animation-name: layui-m-anim-up;
   animation-name: layui-m-anim-up
 }
 
@@ -172,9 +136,7 @@
   display: inline-block;
   background-color: #fff;
   border-radius: 100%;
-  -webkit-animation: layui-m-anim-loading 1.4s infinite ease-in-out;
   animation: layui-m-anim-loading 1.4s infinite ease-in-out;
-  -webkit-animation-fill-mode: both;
   animation-fill-mode: both
 }
 
@@ -188,36 +150,21 @@
   margin-top: 20px
 }
 
-@-webkit-keyframes layui-m-anim-loading {
-  0%, 100%, 80% {
-    transform: scale(0);
-    -webkit-transform: scale(0)
-  }
-  40% {
-    transform: scale(1);
-    -webkit-transform: scale(1)
-  }
-}
-
 @keyframes layui-m-anim-loading {
   0%, 100%, 80% {
     transform: scale(0);
-    -webkit-transform: scale(0)
   }
   40% {
     transform: scale(1);
-    -webkit-transform: scale(1)
   }
 }
 
 .layui-m-layer2 .layui-m-layercont i:first-child {
   margin-left: 0;
-  -webkit-animation-delay: -.32s;
   animation-delay: -.32s
 }
 
 .layui-m-layer2 .layui-m-layercont i.layui-m-layerload {
-  -webkit-animation-delay: -.16s;
   animation-delay: -.16s
 }
 
@@ -240,9 +187,7 @@
 
 .layui-m-layerbtn span {
   display: block;
-  -moz-box-flex: 1;
-  box-flex: 1;
-  -webkit-box-flex: 1;
+  flex:1;
   font-size: 14px;
   cursor: pointer
 }
@@ -283,13 +228,11 @@
   height: 1px;
   background-color: #999;
   transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
   border-radius: 3px
 }
 
 .layui-m-layerend::after {
   transform: rotate(-45deg);
-  -webkit-transform: rotate(-45deg)
 }
 
 body .layui-m-layer .layui-m-layer-footer {

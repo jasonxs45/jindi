@@ -39,7 +39,7 @@ let Layer = function (options) {
   var that = this
   that.config = ready.extend(options)
   that.view()
-};
+}
 
 Layer.prototype.view = function () {
   let that = this
@@ -124,8 +124,8 @@ Layer.prototype.action = function (config, elem) {
   }
 
   // 确认取消
-  let btn = function () {
-    let type = this.getAttribute('type')
+  let btn = function (event) {
+    let type = event.currentTarget.getAttribute('type')
     if (parseInt(type) === 0) {
       config.no && config.no()
       layer.close(that.index)
