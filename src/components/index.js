@@ -5,6 +5,7 @@ import {Flexbox, FlexboxItem} from './flexbox'
 import Split from './split'
 import Statisctitle from './title'
 import Activitycard from './activitycard'
+import Avatar from './avatar'
 ((w) => {
   w.$toast = msg => {
     return layer.open({
@@ -48,5 +49,6 @@ export {
   FlexboxItem,
   Split,
   Statisctitle,
-  Activitycard
+  Activitycard,
+  Avatar
 }

@@ -1,6 +1,17 @@
 <template>
   <div class="index">
     <div class="swiper">
+      <swiper :options="swiperOption" ref="mySwiper" @slideChange="swipeChangeHandler">
+        <!-- slides -->
+        <swiper-slide
+          v-for="(item, index) in banners"
+          :key="'banner-'+index"
+        >
+          <img :src="item.src" alt="" />
+        </swiper-slide>
+        <!-- Optional controls -->
+        <div class="swiper-pagination"  slot="pagination"></div>
+      </swiper>
     </div>
     <flexbox
       class="entries"
@@ -11,12 +22,12 @@
         v-for="(item, index) in entries"
         :key="'entery'+index">
         <div class="entry">
-          <icon :name="item.icon"></icon>
+          <Icon :name="item.icon"/>
           <p class="name">{{item.name}}</p>
         </div>
       </flexbox-item>
     </flexbox>
-    <split></split>
+    <Split />
     <flexbox class="notice-board">
       <flexbox-item class="head">
         <img src="/static/images/notice-board.png" alt="" />
@@ -36,19 +47,21 @@
         </flexbox>
       </flexbox-item>
     </flexbox>
-    <split></split>
+    <Split />
     <div class="activity-board">
       <statisctitle text="社区活动">
         <div slot="more">
-          <span class="text">更多</span><icon name="arrow-right1"></icon>
+          <span class="text">更多</span><Icon name="arrow-right1"/>
         </div>
       </statisctitle>
       <activitycard
-        src="/static/images/active1.png"
-        title="武汉金地樱花季免费送武大门票"
-        date="2018/03/23"
-        read-num="13"
-        :state="1"
+        v-for="(item, index) in activityList"
+        :key="'activity-'+index"
+        :src="item.src"
+        :title="item.title"
+        :date="item.date"
+        :read-num="item.readNum"
+        :state="item.state"
       ></activitycard>
     </div>
   </div>
@@ -61,7 +74,19 @@
     Split,
     Statisctitle,
     Activitycard
-} from 'components'
+  } from 'components'
+  import 'swiper/dist/css/swiper.css'
+  import { swiper, swiperSlide } from 'vue-awesome-swiper'
+  let fetchedBanners = [
+    {
+      src: '/static/images/banner1.png',
+      link:''
+    },
+    {
+      src: '/static/images/banner2.png',
+      link:''
+    }
+  ]
   export default {
     name: 'Home',
     components: {
@@ -70,10 +95,20 @@
       FlexboxItem,
       Split,
       Statisctitle,
-      Activitycard
+      Activitycard,
+      swiper,
+      swiperSlide
     },
     data () {
       return {
+        banners: [],
+        swiperOption: {
+          pagination: {
+            el: '.swiper-pagination'
+          },
+          freeModeMomentumBounce: false,
+          effect: 'slide'
+        },
         entries: [
           {
             name: '购房进度',
@@ -110,7 +145,40 @@
             newsid: 1
           }
         ],
-        activityList: []
+        activityList: [
+          {
+            src: '/static/images/active1.png',
+            title: '武汉金地樱花季免费送武大门票',
+            date: '2018/03/23',
+            readNum: '13',
+            state: 0,
+            link: ''
+          },
+          {
+            src: '/static/images/active2.png',
+            title: '武汉金地樱花季免费送武大门票',
+            date: '2018/03/23',
+            readNum: '13',
+            state: 1,
+            link: ''
+          }
+        ]
+      }
+    },
+    computed: {
+      swiper () {
+        return this.$refs.mySwiper.swiper
+      }
+    },
+    created () {
+
+    },
+    mounted () {
+      this.banners = this.banners.concat(fetchedBanners)
+    },
+    methods: {
+      swipeChangeHandler () {
+        console.log(this.swiper.activeIndex)
       }
     }
   }
@@ -122,6 +190,10 @@
   width:100%;
   height:p2r(300);
   background: #fff;
+  .swiper-container{
+    width:100%;
+    height:100%;
+  }
 }
 .entries{
   background: #fff;
@@ -191,7 +263,6 @@
       .iconfont{
         font-size: p2r(24);
         margin-left: p2r(10);
-        margin-right: p2r(-10);
       }
     }
   }

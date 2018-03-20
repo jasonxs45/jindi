@@ -1,10 +1,10 @@
 <template>
   <div class="title">
-    <div class="title-content">
-      {{text}}
-    </div>
     <div class="more" v-if="$slots.more">
       <slot name="more"></slot>
+    </div>
+    <div class="title-content">
+      {{text}}
     </div>
   </div>
 </template>
@@ -42,18 +42,22 @@ export default {
       font-size: p2r(28);
       color:$text-color;
       padding-right: p2r(10);
-      width:calc(100% - 2.3rem);
+      width:calc(100% - .3rem);
       line-height: p2r(30);
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
     }
     .more{
+      float: right;
       width: 2rem;
       line-height: p2r(28);
       color: $thr-color;
       font-size: p2r(24);
       text-align: right;
+      & + .title-content{
+        width:calc(100% - 2.3rem);
+      }
     }
   }
 </style>

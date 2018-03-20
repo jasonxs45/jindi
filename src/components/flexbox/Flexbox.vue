@@ -13,13 +13,15 @@ let flexMap = {
     wrap: 'flexbox-wrap'
   },
   justify: {
-    center: 'flexbox-content-center'
+    center: 'flexbox-content-center',
+    justify: 'flexbox-content-justify'
   },
   align: {
     center: 'flexbox-align-center'
   }
 }
 export default {
+  name: 'Flexbox',
   props: {
     direction: {
       type: String,
@@ -67,6 +69,12 @@ export default {
   @import '~common/scss/mixins.scss';
   .flexbox{
     display: flex;
+    &.flexbox-content-center{
+      justify-content: center;
+    }
+    &.flexbox-content-justify{
+      justify-content:space-between;
+    }
     &.flexbox-align-center{
       align-items: center;
     }
