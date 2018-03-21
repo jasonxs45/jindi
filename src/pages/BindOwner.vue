@@ -1,39 +1,86 @@
 <template>
   <div class="bind-owner">
     <div class="bind-owner-wrapper">
-      <h3 class="title">筛选用户结果</h3>
-      <div class="houses">
-        <flexbox
-          v-for="(item, index) in houseInfo"
-          :key="'house-info-'+index"
-          class="house-bar"
-        >
-          <flexbox-item class="house-name">
-            {{item.houseName}}
-          </flexbox-item>
-          <flexbox-item class="owner-name">
-            {{item.ownerName}}
-          </flexbox-item>
-        </flexbox>
-      </div>
-      <p class="title">输入身份证后四位进行验证</p>
-      <div class="idnum-controller">
-        <div
-          v-for="n in 4"
-          :key="'input-'+n"
-          class="idnum-cell"
-        >
-          <input
-            :type="n === 4?'text':'tel'"
-            :data-index="n-1"
-            maxlength="1"
-            class="input"
-            v-model="checkNums[n-1]"
-            @input="inputHandler"
-            @change="changeHandler"
-          />
-          <div class="text">{{checkNums[n-1][0]}}</div>
+      <div class="part1">
+        <div  class="step1" v-if="step===1">
+          <div class="roundbar">
+            <input
+              type="text"
+              readonly
+              class="name"
+              :class="showOptions?'half':''"
+              placeholder="请选择您所在的项目"
+              @click="toggleSelect"
+              v-model="selectedItem"
+            />
+            <Icon class="icon" name="caret-down"/>
+            <div
+              v-show="showOptions"
+              class="options-wrapper"
+            >
+              <p
+                v-for="(item, index) in items"
+                :key="'item-'+index"
+                class="option"
+                :data-val="item"
+                @click="selectHandler"
+              >
+              {{item}}
+              </p>
+            </div>
+          </div>
+          <div class="roundbar">
+            <input type="text" class="name" placeholder="请输入您的真实姓名" v-model="ownerName">
+          </div>
         </div>
+        <div class="step2" v-if="step===2">
+          <h3 class="title">筛选用户结果</h3>
+          <div class="houses">
+            <label
+              v-for="(item, index) in houseInfo"
+              :key="'house-info-'+index"
+              class="house-bar"
+            >
+              <input
+                class="radio"
+                type="radio"
+                name="house"
+                @change="radioHandler"
+                ref="radio"
+              />
+              <flexbox>
+                <flexbox-item class="house-name">
+                  {{item.houseName}}
+                </flexbox-item>
+                <flexbox-item class="owner-name">
+                  {{item.ownerName}}
+                </flexbox-item>
+              </flexbox>
+            </label>
+          </div>
+          <p class="title">输入身份证后四位进行验证</p>
+          <div class="idnum-controller">
+            <div class="cells">
+              <span
+                v-for="n in 4"
+                :key="'input-'+n"
+                class="idnum-cell"
+              >{{checkStr.split('')[n-1]}}</span>
+            </div>
+            <input
+              type="text"
+              maxlength="4"
+              class="input"
+              v-model="checkStr"
+              @input="inputHandler"
+              @change="changeHandler"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="part2">
+        <Btn v-if="step===1" type="primary" size="lar" text="下一步" @click="goStep2"/>
+        <Btn v-if="step===2" type="primary" size="lar" text="确认绑定"/>
       </div>
     </div>
   </div>
@@ -41,8 +88,18 @@
 <script>
 import {
   Flexbox,
-  FlexboxItem
+  FlexboxItem,
+  Btn,
+  Icon
 } from 'components'
+let items = [
+  '金地天悦一期',
+  '金地天悦二期',
+  '金地天悦三期',
+  '金地天悦四期',
+  '金地天悦五期',
+  '金地天悦六期'
+]
 let houses = [
   {
     houseName: '金地天悦二期E栋三单元505',
@@ -69,12 +126,19 @@ export default {
   name: 'BindOwner',
   components: {
     Flexbox,
-    FlexboxItem
+    FlexboxItem,
+    Btn,
+    Icon
   },
   data () {
     return {
-      checkNums:['', '', '', ''],
-      checkStr:'',
+      step: 1,
+      checkNums: ['', '', '', ''],
+      checkStr: '',
+      showOptions: false,
+      items,
+      selectedItem:'',
+      ownerName:'',
       houses
     }
   },
@@ -84,15 +148,38 @@ export default {
     }
   },
   methods: {
-    inputHandler (e) {
-      // let index = e.currentTarget.dataset.index
-      // let arr = e.currentTarget.value.split('')
-      // for (let i = 0; i < arr.length; i++) {
-      //   this.checkNums[i] = arr[i]
-      // }
-      // this.checkNums[index] = e.currentTarget.value.split('')[index]
+    inputHandler (e) {},
+    changeHandler (e) {},
+    radioHandler (e) {
+      console.log(this.$refs.radio)
     },
-    changeHandler (e) {
+    toggleSelect () {
+      this.showOptions = !this.showOptions
+    },
+    selectHandler (e) {
+      this.selectedItem = e.currentTarget.dataset.val
+      this.toggleSelect()
+    },
+    goStep2 () {
+      if (!this.selectedItem) {
+        window.$alert({
+          content: '项目不能为空'
+        })
+        return
+      }
+      if (!this.ownerName) {
+        window.$alert({
+          content: '姓名不能为空'
+        })
+        return
+      }
+      if (!this.ownerName.match(/^[\u4e00-\u9fa5]{2,6}$/i)) {
+        window.$alert({
+          content: '请填写正确格式的姓名'
+        })
+        return
+      }
+      this.step = 2
     }
   }
 }
@@ -100,85 +187,180 @@ export default {
 <style lang="scss" scoped>
 @import "~common/scss/variables.scss";
 @import "~common/scss/mixins.scss";
- .bind-owner{
-   width:100vw;
-   height:100vh;
-   background:url('/static/images/bg.png') center/cover no-repeat;
-   padding: p2r(30);
-   .bind-owner-wrapper{
-     width:100%;
-     border-radius: 4px;
-     box-shadow: 0 5px 10px 0 rgba(0,0,0,.2);
-     padding-top: p2r(40);
-     padding-bottom: p2r(40);
-     background: #fff;
-     .title{
-       font-size: p2r(28);
-       color:$primary-color;
-       text-align: center;
-     }
-     .houses{
-       width:p2r(594);
-       height:p2r(412);
-       margin:p2r(40) auto;
-       overflow: auto;
-       -webkit-overflow-scrolling: touch;
-       .house-bar{
-         padding:0 p2r(40);
-         color:#eda697;
-         background: lighten($primary-color, 38%);
-         height:p2r(88);
-         line-height:p2r(88);
-         border-radius: 4px;
-         margin-top: p2r(20);
-         &:first-child{
-           margin-top: 0;
-         }
-         .owner-name{
-           flex:0 0 p2r(110);
-           font-size: p2r(24);
-           text-align: right;
-         }
-       }
-     }
-     .idnum-controller{
-       width:p2r(594);
-       margin:p2r(40) auto;
-       text-align: center;
-       font-size: 0;
-       .idnum-cell{
-         position: relative;
-         display: inline-block;
-         vertical-align: top;
-         width:p2r(100);
-         height:p2r(100);
-         background: lighten($primary-color, 38%);
-         margin:0 p2r(15);
-         border-radius: 4px;
-         border:1px solid lighten($primary-color, 20%);
-         .input{
-           position: absolute;
-           display: block;
-           width:100%;
-           height: 100%;
-           top:0;
-           left:0;
-           opacity: 0;
-           font-size: p2r(28);
+.bind-owner {
+  width: 100vw;
+  height: 100vh;
+  background: url("/static/images/bg.png") center/cover no-repeat;
+  padding: p2r(30);
+  .bind-owner-wrapper {
+    width: 100%;
+    height: 90%;
+    border-radius: 4px;
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+    padding-top: p2r(40);
+    padding-bottom: p2r(40);
+    background: #fff;
+    .part1 {
+      height: p2r(800);
+      .title {
+        font-size: p2r(28);
+        color: $primary-color;
+        text-align: center;
+      }
+      .houses {
+        width: p2r(594);
+        height: p2r(412);
+        margin: p2r(40) auto;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        .house-bar {
+          display: block;
+          margin-top: p2r(20);
+          &:first-child {
+            margin-top: 0;
+          }
+          .radio {
+            display: block;
+            width: 0;
+            height: 0;
+            &:checked + .flexbox {
+              color: #fff;
+              background: $primary-color;
+            }
+          }
+          .flexbox {
+            height: p2r(88);
+            line-height: p2r(88);
+            border-radius: 4px;
+            padding: 0 p2r(40);
+            color: #eda697;
+            background: lighten($primary-color, 38%);
+            transition: color, background 0.2s;
+            .owner-name {
+              flex: 0 0 p2r(110);
+              font-size: p2r(24);
+              text-align: right;
+            }
+          }
+        }
+      }
+      .idnum-controller {
+        width: p2r(490);
+        margin: p2r(40) auto;
+        text-align: center;
+        font-size: 0;
+        position: relative;
+        .cells {
+          .idnum-cell {
+            position: relative;
+            display: inline-block;
+            vertical-align: top;
+            width: p2r(100);
+            height: p2r(100);
+            background: lighten($primary-color, 38%);
+            margin: 0 p2r(15);
+            border-radius: 4px;
+            border: 1px solid lighten($primary-color, 20%);
+            font-size: p2r(28);
+            line-height: p2r(100);
+            text-align: center;
+            color: $text-color;
+            &:first-child {
+              margin-left: 0;
+            }
+            &:last-child {
+              margin-right: 0;
+            }
+          }
+        }
+        .input {
+          position: absolute;
+          display: block;
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          opacity: 0;
+          font-size: p2r(28);
           -webkit-appearance: none;
-           outline: none;
-           z-index:1;
-         }
-         .text{
-           width:100%;
-           height: 100%;
-           font-size: p2r(28);
-           line-height: p2r(100);
-           text-align: center;
-           color: $text-color;
-         }
-       }
-     }
-   }
- }
+          outline: none;
+          z-index: 1;
+        }
+      }
+      .step1{
+        padding-top: p2r(50);
+        .roundbar{
+          width:p2r(600);
+          height: p2r(100);
+          margin: p2r(40) auto;
+          position: relative;
+          .icon{
+            position: absolute;
+            top:50%;
+            margin-top: p2r(-10);
+            right:p2r(60);
+            color:$primary-color;
+            font-size: p2r(20);
+            transform: rotate(90deg);
+            transition: transform .2s;
+            vertical-align: middle;
+          }
+          .name{
+            display: block;
+            width:100%;
+            height: 100%;
+            padding:0 p2r(30);
+            font-size: p2r(30);
+            border-radius: 25px;
+            -webkit-appearance: none;
+            background: lighten($primary-color, 38%);
+            border:1px solid lighten($primary-color, 18%);
+            outline: none;
+            color:$text-color;
+            &::-webkit-input-placeholder{
+              color:lighten($primary-color, 20%);
+              font-weight: 200;
+            }
+            &.half{
+              border-bottom-right-radius: 0;
+              border-bottom-left-radius: 0;
+              border-bottom: none;
+              & + .icon{
+                transform: rotate(0deg)
+              }
+            }
+          }
+          .options-wrapper{
+            position: absolute;
+            z-index:99;
+            top:100%;
+            left:0;
+            width:100%;
+            min-height: p2r(300);
+            max-height:p2r(500);
+            padding-bottom:p2r(10);
+            background: lighten($primary-color, 38%);
+            border:1px solid lighten($primary-color, 18%);
+            border-top:none;
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+            .option{
+              font-size: p2r(24);
+              padding:p2r(30) 0;
+              margin:0 p2r(30);
+              color:$thr-color;
+              @include _1px(lighten($primary-color, 30%));
+            }
+          }
+        }
+      }
+
+    }
+    .part2 {
+      padding-top: p2r(40);
+    }
+  }
+}
 </style>

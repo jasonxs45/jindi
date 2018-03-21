@@ -6,6 +6,7 @@ import Split from './split'
 import Statisctitle from './title'
 import Activitycard from './activitycard'
 import Avatar from './avatar'
+import Btn from './btn'
 ((w) => {
   w.$toast = msg => {
     return layer.open({
@@ -50,5 +51,6 @@ export {
   Split,
   Statisctitle,
   Activitycard,
-  Avatar
+  Avatar,
+  Btn
 }
