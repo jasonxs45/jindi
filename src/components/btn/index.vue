@@ -1,5 +1,10 @@
 <template>
-  <div :class="classes" @click="clickHandler">{{text}}</div>
+  <button
+    :class="classes"
+    :disabled="disabled"
+    @click="clickHandler">
+    {{text}}
+  </button>
 </template>
 <script>
 export default {
@@ -16,11 +21,14 @@ export default {
     text: {
       type: String,
       required: true
+    },
+    disabled: {
+      type: [String, Boolean, Number]
     }
   },
   data () {
     return {
-      classes: ['btn', this.type, this.size]
+      classes: ['btn', this.type, this.size, this.disabled ? 'disabled' : '']
     }
   },
   methods: {
@@ -34,11 +42,18 @@ export default {
 @import "~common/scss/variables.scss";
 @import "~common/scss/mixins.scss";
 .btn{
+  -webkit-appearance: none;
   border-radius: 25px;
   text-align: center;
   width:p2r(500);
   display: inline-block;
   padding:p2r(30) 0;
+  line-height: 1;
+  outline: none;
+  &.disabled{
+    background:$thr-color !important;
+    color:$btn-disable-color !important;
+  }
   &.base{
     background:#fff;
     color:$primary-color;

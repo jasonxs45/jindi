@@ -60,6 +60,9 @@ export default {
   overflow: hidden;
   box-shadow: $box-shadow;
   margin-top: p2r(30);
+  &:first-child{
+    margin-top:0;
+  }
   .img-wrapper{
     width:100%;
     // height:p2r(240);

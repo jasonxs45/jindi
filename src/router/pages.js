@@ -3,6 +3,9 @@ const Usercenter = r => require.ensure([], () => r(require('pages/Usercenter')),
 const TradeProgress = r => require.ensure([], () => r(require('pages/TradeProgress')), 'TradeProgress')
 const Bind = r => require.ensure([], () => r(require('pages/Bind')), 'Bind')
 const BindOwner = r => require.ensure([], () => r(require('pages/BindOwner')), 'BindOwner')
+const ActivityList = r => require.ensure([], () => r(require('pages/ActivityList')), 'ActivityList')
+const ActivityDetail = r => require.ensure([], () => r(require('pages/ActivityDetail')), 'ActivityDetail')
+const RepairUser = r => require.ensure([], () => r(require('pages/RepairUser')), 'RepairUser')
 export default [
   {
     path: '/',
@@ -28,5 +31,20 @@ export default [
     path: '/bindowner',
     name: 'bindowner',
     component: BindOwner
+  },
+  {
+    path: '/activitylist',
+    name: 'activitylist',
+    component: ActivityList
+  },
+  {
+    path: '/activitydetail',
+    name: 'activitydetail',
+    component: ActivityDetail
+  },
+  {
+    path: '/repairuser',
+    name: 'repairuser',
+    component: RepairUser
   }
 ]

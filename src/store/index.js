@@ -7,7 +7,6 @@ import getters from './getters'
 // 同步
 import mutations from './mutations'
 import modules from './modules'
-console.log(modules)
 Vue.use(Vuex)
 
 let state = {
