@@ -1,6 +1,8 @@
 <template>
   <div class="repair-user">
     <userinfo @tagClick="submitOrder" tagText="我要报修"></userinfo>
+    <x-select :options="options" placeholder="ceshi" @change="changeHandler"></x-select>
+    <x-input placeholder="123" initValue="cece"></x-input>
   </div>
 </template>
 <script>
@@ -13,8 +15,7 @@ export default {
     Userinfo
   },
   data () {
-    return {
-    }
+    return {}
   },
   computed: {
     userInfo () {

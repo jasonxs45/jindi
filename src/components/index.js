@@ -8,6 +8,8 @@ import Activitycard from './activitycard'
 import Avatar from './avatar'
 import Btn from './btn'
 import Userinfo from './userinfo'
+import XSelect from './select'
+import XInput from './input'
 ((w) => {
   w.$toast = msg => {
     return layer.open({
@@ -54,5 +56,7 @@ export {
   Activitycard,
   Avatar,
   Btn,
-  Userinfo
+  Userinfo,
+  XSelect,
+  XInput
 }

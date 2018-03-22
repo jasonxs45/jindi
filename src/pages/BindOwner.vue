@@ -3,35 +3,17 @@
     <div class="bind-owner-wrapper">
       <div class="part1">
         <div  class="step1" v-if="step===1">
-          <div class="roundbar">
-            <input
-              type="text"
-              readonly
-              class="name"
-              :class="showOptions?'half':''"
-              placeholder="请选择您所在的项目"
-              @click="toggleSelect"
-              v-model="selectedItem"
-            />
-            <Icon class="icon" name="caret-down"/>
-            <div
-              v-show="showOptions"
-              class="options-wrapper"
-            >
-              <p
-                v-for="(item, index) in items"
-                :key="'item-'+index"
-                class="option"
-                :data-val="item"
-                @click="selectHandler"
-              >
-              {{item}}
-              </p>
-            </div>
-          </div>
-          <div class="roundbar">
-            <input type="text" class="name" placeholder="请输入您的真实姓名" v-model="ownerName">
-          </div>
+          <XSelect
+            placeholder="请选择您所在的项目"
+            :options="items"
+            class="roundbar"
+            @on-change="changeHandler"
+          />
+          <XInput
+            placeholder="请输入您的真实姓名"
+            class="roundbar"
+            @on-input="inputHandler"
+          />
         </div>
         <div class="step2" v-if="step===2">
           <h3 class="title">筛选用户结果</h3>
@@ -90,7 +72,9 @@ import {
   Flexbox,
   FlexboxItem,
   Btn,
-  Icon
+  Icon,
+  XSelect,
+  XInput
 } from 'components'
 let items = [
   '金地天悦一期',
@@ -128,14 +112,15 @@ export default {
     Flexbox,
     FlexboxItem,
     Btn,
-    Icon
+    Icon,
+    XSelect,
+    XInput
   },
   data () {
     return {
       step: 1,
       checkNums: ['', '', '', ''],
       checkStr: '',
-      showOptions: false,
       items,
       selectedItem:'',
       ownerName:'',
@@ -148,17 +133,14 @@ export default {
     }
   },
   methods: {
-    inputHandler (e) {},
-    changeHandler (e) {},
+    inputHandler (val) {
+      this.ownerName = val
+    },
+    changeHandler (val) {
+      this.selectedItem = val
+    },
     radioHandler (e) {
       console.log(this.$refs.radio)
-    },
-    toggleSelect () {
-      this.showOptions = !this.showOptions
-    },
-    selectHandler (e) {
-      this.selectedItem = e.currentTarget.dataset.val
-      this.toggleSelect()
     },
     goStep2 () {
       if (!this.selectedItem) {
@@ -290,70 +272,11 @@ export default {
       .step1{
         padding-top: p2r(50);
         .roundbar{
+          display: block;
           width:p2r(600);
           height: p2r(100);
           margin: p2r(40) auto;
           position: relative;
-          .icon{
-            position: absolute;
-            top:50%;
-            margin-top: p2r(-10);
-            right:p2r(60);
-            color:$primary-color;
-            font-size: p2r(20);
-            transform: rotate(90deg);
-            transition: transform .2s;
-            vertical-align: middle;
-          }
-          .name{
-            display: block;
-            width:100%;
-            height: 100%;
-            padding:0 p2r(30);
-            font-size: p2r(30);
-            border-radius: 25px;
-            -webkit-appearance: none;
-            background: lighten($primary-color, 38%);
-            border:1px solid lighten($primary-color, 18%);
-            outline: none;
-            color:$text-color;
-            &::-webkit-input-placeholder{
-              color:lighten($primary-color, 20%);
-              font-weight: 200;
-            }
-            &.half{
-              border-bottom-right-radius: 0;
-              border-bottom-left-radius: 0;
-              border-bottom: none;
-              & + .icon{
-                transform: rotate(0deg)
-              }
-            }
-          }
-          .options-wrapper{
-            position: absolute;
-            z-index:99;
-            top:100%;
-            left:0;
-            width:100%;
-            min-height: p2r(300);
-            max-height:p2r(500);
-            padding-bottom:p2r(10);
-            background: lighten($primary-color, 38%);
-            border:1px solid lighten($primary-color, 18%);
-            border-top:none;
-            border-bottom-left-radius: 25px;
-            border-bottom-right-radius: 25px;
-            overflow: auto;
-            -webkit-overflow-scrolling: touch;
-            .option{
-              font-size: p2r(24);
-              padding:p2r(30) 0;
-              margin:0 p2r(30);
-              color:$thr-color;
-              @include _1px(lighten($primary-color, 30%));
-            }
-          }
         }
       }
 
