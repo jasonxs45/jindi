@@ -96,7 +96,7 @@ export default {
     font-size: p2r(24);
     color:#fff;
     opacity: .6;
-    margin-top: p2r(36);
+    margin-top: p2r(30);
     margin-left: p2r(40);
   }
   .tag-area{

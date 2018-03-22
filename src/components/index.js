@@ -10,6 +10,9 @@ import Btn from './btn'
 import Userinfo from './userinfo'
 import XSelect from './select'
 import XInput from './input'
+import {Tabnav, TabnavItem} from './tabnav'
+import Repaircard from './repaircard'
+import Star from './star'
 ((w) => {
   w.$toast = msg => {
     return layer.open({
@@ -58,5 +61,9 @@ export {
   Btn,
   Userinfo,
   XSelect,
-  XInput
+  XInput,
+  Tabnav,
+  TabnavItem,
+  Repaircard,
+  Star
 }

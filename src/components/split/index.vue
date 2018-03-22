@@ -1,9 +1,20 @@
 <template>
-  <div class="split"></div>
+  <div :class="classes"></div>
 </template>
 <script>
 export default {
-  name: 'Split'
+  name: 'Split',
+  props: {
+    type: {
+      type: String,
+      default: ''
+    }
+  },
+  computed: {
+    classes () {
+      return ['split', this.type === 'line' ? 'line' : '']
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -13,5 +24,9 @@ export default {
    width:100%;
    height:p2r(10);
    background: $background-color;
+   &.line{
+     height: 1px;
+     transform: scaleY(.5);
+   }
  }
 </style>

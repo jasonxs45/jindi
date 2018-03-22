@@ -1,3 +1,12 @@
+@mixin bgimg($url) {
+  @media screen and (-webkit-min-device-pixel-ratio: 2) and (-webkit-max-device-pixel-ratio: 2) {
+      background-image: url($url + "@2x.png");
+  }
+
+  @media screen and (-webkit-min-device-pixel-ratio: 3) and (-webkit-max-device-pixel-ratio: 3) {
+      background-image: url($url + "@3x.png");
+  }
+}
 @mixin disabled{
   &[disabled]{
     opacity:0.5;
