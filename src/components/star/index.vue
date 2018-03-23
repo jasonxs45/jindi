@@ -1,9 +1,14 @@
 <template>
-<div class="star" :class="starType">
+<div
+  class="star"
+  :class="starType"
+  @click.stop="clickHandler"
+>
   <span
     v-for="(itemClass,index) in itemClasses"
     :key="'star-'+index"
     :class="itemClass"
+    :data-index="index"
     class="star-item"
   >
   </span>
@@ -22,20 +27,31 @@ export default {
       default: 48
     },
     score: {
-      type: Number,
-      default: 0,
-      required: true
+      type: [Number, String],
+      default: 0
+    },
+    readOnly: {
+      type: [Boolean, String],
+      default: false
+    }
+  },
+  data () {
+    return {
+      rateScore: 0
     }
   },
   computed: {
+    myScore () {
+      return this.readOnly ? this.score : this.rateScore
+    },
     starType () {
       return 'star-' + this.size
     },
     itemClasses () {
       let result = []
-      let score = Math.floor(this.score * 2) / 2
-      let hasDecimal = score % 1 !== 0
-      let integer = Math.floor(score)
+      let score = Math.floor(this.myScore * 2) / 2
+      let hasDecimal = isNaN(score) ? 0 : score % 1 !== 0
+      let integer = isNaN(score) ? 0 : Math.floor(score)
       for (let i = 0; i < integer; i++) {
         result.push(CLS_ON)
       }
@@ -46,6 +62,19 @@ export default {
         result.push(CLS_OFF)
       }
       return result
+    }
+  },
+  methods: {
+    clickHandler (e) {
+      if (this.readOnly) return
+      let starW = e.target.getBoundingClientRect().width
+      let innerLeft = e.target.getBoundingClientRect().left
+      let downX = e.clientX
+      let score = Number(e.target.dataset.index) + Math.floor((downX - innerLeft) / starW * 2) / 2 + 0.5
+      if (!isNaN(score)) {
+        this.rateScore = score
+        this.$emit('on-rate', this.rateScore)
+      }
     }
   }
 }

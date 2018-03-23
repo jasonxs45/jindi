@@ -50,7 +50,7 @@ for (let i = 0; i < 5; i++) {
       '/static/images/active1.png',
       '/static/images/active2.png'
     ],
-    rate: 3.8
+    rate: (Math.random() * 5).toFixed(1)
   }
   orders.push(obj)
 }

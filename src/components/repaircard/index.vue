@@ -63,7 +63,7 @@
       </flexbox-item>
     </flexbox>
     <Btn
-      v-if="order.state>1&&order.state<3&&!order.rate"
+      v-if="order.state>1&&order.state<3&&order.rate<0"
      class="go-evaluate"
      type="primary"
      text="我要评价"
@@ -74,7 +74,12 @@
       class="evaluation"
     >
       <p class="text">本次维修评分</p>
-      <Star :score="order.rate" :size="24"/>
+      <Star
+        :score="order.rate"
+        :size="24"
+        readOnly
+        @on-rate="showRate"
+      />
     </div>
   </div>
 </template>
@@ -110,6 +115,9 @@ export default {
   methods: {
     previewImg (src) {
       console.log(src)
+    },
+    showRate (val) {
+      console.log('score is ' + val)
     }
   }
 }
