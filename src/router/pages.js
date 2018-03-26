@@ -6,10 +6,11 @@ const BindOwner = r => require.ensure([], () => r(require('pages/BindOwner')), '
 const ActivityList = r => require.ensure([], () => r(require('pages/ActivityList')), 'ActivityList')
 const ActivityDetail = r => require.ensure([], () => r(require('pages/ActivityDetail')), 'ActivityDetail')
 const RepairUser = r => require.ensure([], () => r(require('pages/RepairUser')), 'RepairUser')
-const RepairUserUntreated = r => require.ensure([], () => r(require('pages/repair/Untreated')), 'RepairUserUntreated')
-const RepairUserTreated = r => require.ensure([], () => r(require('pages/repair/Treated')), 'RepairUserTreated')
-const RepairUserFinished = r => require.ensure([], () => r(require('pages/repair/Finished')), 'RepairUserFinished')
-const RepairUserFailed = r => require.ensure([], () => r(require('pages/repair/Failed')), 'RepairUserFailed')
+const RepairUserUntreated = r => require.ensure([], () => r(require('pages/repairuser/Untreated')), 'RepairUserUntreated')
+const RepairUserTreated = r => require.ensure([], () => r(require('pages/repairuser/Treated')), 'RepairUserTreated')
+const RepairUserFinished = r => require.ensure([], () => r(require('pages/repairuser/Finished')), 'RepairUserFinished')
+const RepairUserFailed = r => require.ensure([], () => r(require('pages/repairuser/Failed')), 'RepairUserFailed')
+const RepairSubmit = r => require.ensure([], () => r(require('pages/RepairSubmit')), 'RepairSubmit')
 export default [
   {
     path: '/',
@@ -73,5 +74,10 @@ export default [
         component: RepairUserFailed
       }
     ]
+  },
+  {
+    path: '/repairsubmit',
+    name: 'repairsubmit',
+    component: RepairSubmit
   }
 ]

@@ -1,15 +1,20 @@
 <template>
   <div class="repair-user">
     <userinfo @tagClick="submitOrder" tagText="我要报修"></userinfo>
-    <tabnav
-      justify="justify"
-      @on-change="tabSwitchHandler"
-    >
-      <tabnav-item>12</tabnav-item>
-      <tabnav-item>34</tabnav-item>
-      <tabnav-item>56</tabnav-item>
-      <tabnav-item>78</tabnav-item>
-    </tabnav>
+      <flexbox class="links">
+        <flexbox-item
+          v-for="(item, index) in navs"
+          :key="item.name+index"
+        >
+          <router-link
+            :to="item.name"
+            tag="div"
+            class="link"
+          >
+            <p class="text">{{item.text}}</p>
+          </router-link>
+        </flexbox-item>
+      </flexbox>
     <div class="card-wrapper">
       <router-view></router-view>
     </div>
@@ -18,41 +23,33 @@
 <script>
 import {
   Userinfo,
-  Tabnav,
-  TabnavItem
+  Flexbox,
+  FlexboxItem
 } from 'components'
 let navs = [
   {
-    component: {
-      name: 'routerlink',
-      template: '<router-link to="/repairuser/untreated" class="text" tag="p" exact>未处理</router-link>'
-    }
+      name: 'untreated',
+      text: '未处理'
   },
   {
-    component: {
-      name: 'routerlink',
-      template: '<router-link to="/repairuser/treated" class="text" tag="p" exact>已接单</router-link>'
-    }
+      name: 'treated',
+      text: '已接单'
   },
   {
-    component: {
-      name: 'routerlink',
-      template: '<router-link to="/repairuser/finished" class="text" tag="p" exact>已完成</router-link>'
-    }
+      name: 'finished',
+      text: '已完成'
   },
   {
-    component: {
-      name: 'routerlink',
-      template: '<router-link to="/repairuser/failed" class="text" tag="p" exact>未完成</router-link>'
-    }
+    name: 'failed',
+      text: '未完成'
   }
 ]
 export default {
   name: 'RepairUser',
   components: {
     Userinfo,
-    Tabnav,
-    TabnavItem
+    Flexbox,
+    FlexboxItem
   },
   data () {
     return {
@@ -66,6 +63,7 @@ export default {
       alert('我要报修')
     },
     tabSwitchHandler (val) {
+      console.log(val)
     }
   }
 }
@@ -79,6 +77,47 @@ export default {
    .user-info{
      height:p2r(240);
      background-image: url('/static/images/uctop1.png')
+   }
+   .links{
+      height:p2r(80);
+      box-shadow: $box-shadow;
+      position: relative;
+      z-index: 1;
+     .link{
+       width:100%;
+       height: 100%;
+       display: table;
+       position: relative;
+       &:after{
+        content: '';
+        display: block;
+        position: absolute;
+        bottom: -1px;
+        left:0;
+        width:100%;
+        height:1px;
+       }
+       .text{
+         font-size: p2r(26);
+         white-space: nowrap;
+         display: table-cell;
+         vertical-align: middle;
+         overflow: hidden;
+         text-overflow: clip;
+         text-align: center;
+         color:$text-color;
+         font-weight: 200;
+       }
+       &.router-link-active{
+         &:after{
+          background: $primary-color;
+         }
+         .text{
+           color:$primary-color;
+           font-weight: normal;
+         }
+       }
+     }
    }
    .card-wrapper{
      width:100%;

@@ -1,0 +1,242 @@
+<template>
+<div class="repair-submit">
+  <div class="logo">
+    <Icon name="repair"/>
+  </div>
+  <div class="panel">
+    <h3 class="title">选择房源</h3>
+    <x-select
+      :options="houses"
+      placeholder="请选择您要报修的房源"
+      class="select-house"
+    ></x-select>
+  </div>
+  <div class="panel">
+    <h3 class="title">选择具体部位</h3>
+    <flexbox class="selected-info">
+      <flexbox-item class="head">报修部位：</flexbox-item>
+      <flexbox-item class="body">
+        <div
+          v-for="(item, index) in selectedTags"
+          :key="'st-'+index"
+          class="selected-tag"
+        >
+          <span class="text">{{item}}</span>
+          <span
+            :data-index="index"
+            class="icon"
+            @click.stop="clearHandler"
+          >
+            <Icon name="close-fill"/>
+          </span>
+        </div>
+      </flexbox-item>
+    </flexbox>
+    <Split type="line"/>
+    <div class="tags">
+      <flexbox
+        wrap="wrap"
+        class="tags-row"
+      >
+        <label
+          v-for="(item, index) in tagsGroup"
+          :key="'room-'+index+item.id+Math.round(Math.random()*9999)"
+          class="radio-tag"
+        >
+          <input
+            type="radio"
+            :value="item.id"
+            :data-label="item.title"
+            data-name="room"
+            name="tag"
+            class="radio"
+            @change="changeHandler"
+          />
+          <span class="text">{{item.title}}</span>
+        </label>
+      </flexbox>
+    </div>
+  </div>
+</div>
+</template>
+<script>
+import {
+  Icon,
+  XInput,
+  XSelect,
+  Flexbox,
+  FlexboxItem,
+  Split
+} from 'components'
+import {
+  houseArray,
+  posRoom,
+  posLocation
+} from 'common/data'
+export default {
+  name: 'RepairSubmit',
+  components: {
+    Icon,
+    XInput,
+    XSelect,
+    Flexbox,
+    FlexboxItem,
+    Split
+  },
+  data () {
+    return {
+      houses: houseArray,
+      tagsState: 0,
+      selectedTags: []
+    }
+  },
+  computed: {
+    tagsGroup () {
+      if (this.tagsState <= 0) return posRoom
+      if (this.tagsState > 0 && this.tagsState <= 1) return posLocation
+    }
+  },
+  methods: {
+    changeHandler (e) {
+      if (this.tagsState > 1) return
+      this.tagsState += 1
+      this.selectedTags.push(e.target.dataset.label)
+    },
+    clearHandler (e) {
+      let length = this.selectedTags.length
+      let index = e.currentTarget.dataset.index
+      this.tagsState -= length - index
+      this.selectedTags.splice(index, length - index)
+    }
+  }
+}
+</script>
+<style lang="scss" scoped>
+@import "~common/scss/variables.scss";
+@import "~common/scss/mixins.scss";
+.repair-submit{
+  padding:p2r(80) p2r($base-padding) p2r($base-padding);
+  background: $primary-color;
+  .logo{
+    width:p2r(200);
+    height: p2r(200);
+    margin:0 auto;
+    border-radius: 50%;
+    line-height: p2r(200);
+    text-align: center;
+    position: relative;
+    border:1px solid transparent;
+    background: linear-gradient(#fff, $primary-color);
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,.2);
+    background-clip: padding-box;
+    overflow: hidden;
+    padding:1px;
+    .iconfont{
+      display:block;
+      width:100%;
+      height: 100%;
+      font-size: p2r(120);
+      color:#fff;
+      background: $primary-color;
+      border-radius: inherit;
+    }
+  }
+  .panel{
+    width:100%;
+    height:auto;
+    padding:p2r(40) p2r(45) p2r(60);
+    background: #fff;
+    border-radius: 4px;
+    margin:p2r(40) 0;
+    .title{
+      font-size: p2r(26);
+      text-align: center;
+      color: $primary-color;
+    }
+    .selected-info{
+      padding: p2r(20) 0;
+      .head{
+        flex:0 0 auto;
+        font-size: p2r(26);
+        color:$text-color;
+        font-weight: 200;
+        line-height: p2r(60);
+        padding-top: p2r(10);
+      }
+      .body{
+        margin-left: p2r(-10);
+        margin-right: p2r(-10);
+        font-size: 0;
+        .selected-tag{
+          display: inline-block;
+          border:1px solid $primary-color;
+          height: p2r(60);
+          line-height: p2r(60);
+          padding:0 p2r(20);
+          min-width: p2r(120);
+          border-radius: 4px;
+          font-size: 0;
+          text-align: center;
+          color:lighten($primary-color, 18%);
+          margin:p2r(10);
+          .text{
+            display: inline-block;
+            font-size: p2r(24);
+            vertical-align: top;
+          }
+          .icon{
+            display: inline-block;
+            vertical-align: top;
+            width: p2r(60);
+            height: p2r(60);
+            margin-right: p2r(-20);
+            .iconfont{
+              font-size: p2r(24);
+            }
+          }
+        }
+      }
+    }
+    .select-house{
+      height: p2r(100);
+      margin-top: p2r(40);
+    }
+    .tags{
+      margin-top: p2r(20);
+      .tags-row{
+        margin-left: p2r(-20);
+        margin-right: p2r(-20);
+        .radio-tag{
+          display: inline-block;
+          position: relative;
+          margin:p2r(10) p2r(20);
+          .radio{
+            position: absolute;
+            top:0;
+            left:0;
+            width:0;
+            height:0;
+            &:checked + .text{
+              background: $primary-color;
+              color:#fff;
+            }
+          }
+          .text{
+            display: block;
+            border:1px solid $primary-color;
+            height: p2r(60);
+            line-height: p2r(60);
+            padding:0 p2r(20);
+            min-width: p2r(120);
+            border-radius: 4px;
+            font-size: p2r(24);
+            text-align: center;
+            color:lighten($primary-color, 18%);
+          }
+        }
+      }
+
+    }
+  }
+}
+</style>

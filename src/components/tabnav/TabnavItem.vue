@@ -28,6 +28,7 @@ export default {
 <style lang="scss" scoped>
 @import "~common/scss/variables.scss";
 @import "~common/scss/mixins.scss";
+.tabnav{
  .tabnav-item{
    height:inherit;
    display: table-cell;
@@ -44,7 +45,7 @@ export default {
      width:100%;
      height:2px;
    }
-   &.active{
+   &.tabnav-item-active{
      &:after{
        background: $primary-color;
      }
@@ -63,4 +64,5 @@ export default {
      font-weight: 200;
    }
  }
+}
 </style>

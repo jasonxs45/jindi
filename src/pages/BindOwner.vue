@@ -76,14 +76,7 @@ import {
   XSelect,
   XInput
 } from 'components'
-let items = [
-  '金地天悦一期',
-  '金地天悦二期',
-  '金地天悦三期',
-  '金地天悦四期',
-  '金地天悦五期',
-  '金地天悦六期'
-]
+import {houseArray} from 'common/data'
 let houses = [
   {
     houseName: '金地天悦二期E栋三单元505',
@@ -121,7 +114,7 @@ export default {
       step: 1,
       checkNums: ['', '', '', ''],
       checkStr: '',
-      items,
+      items: houseArray,
       selectedItem:'',
       ownerName:'',
       houses

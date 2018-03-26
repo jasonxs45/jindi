@@ -50,7 +50,7 @@ export default {
   methods: {
     changeHandler (value) {
       this.$emit('click', value)
-      if (value !== this.active) {
+      if (value !== this.activeIndex) {
         for (let i = 0; i < this.$children.length; i++) {
           this.$children[i].active = false
           if (i === value) {
