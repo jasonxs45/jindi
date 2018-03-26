@@ -1,14 +1,13 @@
 <template>
-  <div
-    class="center-img"
-    :style="{'background-image':`url(${src})`}"
+  <img
+    :src="src"
+    class="fit-img"
     @click="clickHandler"
-  >
-  </div>
+  />
 </template>
 <script>
 export default {
-  name: 'Centerimg',
+  name: 'FitImg',
   props: {
     src: {
       type: String,
@@ -25,7 +24,11 @@ export default {
 <style lang="scss">
 @import "~common/scss/variables.scss";
 @import "~common/scss/mixins.scss";
- .center-img{
-   background: center/cover no-repeat;
+ .fit-img{
+   width:inherit;
+   height: inherit;
+   object-fit: cover;
+   border-radius: inherit;
+   background: inherit;
  }
 </style>

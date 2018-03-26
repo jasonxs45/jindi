@@ -1,49 +1,33 @@
 <template>
-  <div :class="classes">
-    <TabnavItem
-      v-for="(item, index) in navs"
-      :key="'nav-'+index+ Math.random()*9999 "
-      :item="item"
-      :class="activeIndex === index ? 'active': ''"
-      @on-click="updateActiveIndex(index)"
-    />
+  <div :class="classes" onselectstart="return false;">
+    <slot></slot>
   </div>
 </template>
 <script>
-import TabnavItem from './TabnavItem'
 let classMap = {
   justify: 'tabnav-justify',
   normal: ''
 }
 export default {
   name: 'Tabnav',
-  components: {
-    TabnavItem
-  },
   props: {
-    navs: {
-      type: Array,
-      default () {
-        return [
-          {
-            text: '导航一',
-            link: ''
-          },
-          {
-            text: '导航二',
-            link: ''
-          }
-        ]
-      }
-    },
     justify: {
       type: String,
       default: 'normal'
+    },
+    active: {
+      type: Number,
+      default: 0
+    },
+    activeClass: {
+      type: [String, Array],
+      default: ''
     }
   },
   data () {
     return {
-      activeIndex: 0
+      childLength: this.$children.length,
+      activeIndex: null
     }
   },
   computed: {
@@ -51,13 +35,31 @@ export default {
       return ['tabnav', classMap[this.justify]]
     }
   },
+  created () {
+    this.activeIndex = this.active || 0
+  },
+  mounted () {
+    if (!this.$children) return
+    this.childLength = this.$children.length
+    this.$children.forEach((item, i) => {
+      this.$children[i].$on('on-change', this.changeHandler)
+      item.index = i
+      item.active = this.activeIndex === item.index
+    })
+  },
   methods: {
-    updateActiveIndex (val) {
-      if (this.activeIndex === val) {
-        return
+    changeHandler (value) {
+      this.$emit('click', value)
+      if (value !== this.active) {
+        for (let i = 0; i < this.$children.length; i++) {
+          this.$children[i].active = false
+          if (i === value) {
+            this.$children[i].active = true
+          }
+        }
+        this.activeIndex = value
+        this.$emit('on-change', this.activeIndex)
       }
-      this.activeIndex = val
-      this.$emit('tab-switch', this.activeIndex)
     }
   }
 }

@@ -1,22 +1,26 @@
 <template>
-  <div class="tabnav-item" @click="clickHandler">
-    <p class="text">
-      {{item.text}}
-    </p>
+  <div :class="classes" @click="clickHandler">
+    <slot></slot>
   </div>
 </template>
 <script>
 export default {
   name: 'TabnavItem',
-  props: {
-    item: {
-      type: Object,
-      required: true
+  data () {
+    return {
+      active: false
+    }
+  },
+  computed: {
+    classes () {
+      return ['tabnav-item', this.active ? 'tabnav-item-active' : '']
     }
   },
   methods: {
     clickHandler (e) {
-      this.$emit('on-click', e)
+      this.active = true
+      this.$emit('on-change', this.index)
+      this.$emit('click', e)
     }
   }
 }
@@ -29,7 +33,8 @@ export default {
    display: table-cell;
    vertical-align: middle;
    position: relative;
-   padding:0 p2r(20);
+   padding:0;
+   text-align: center;
    &:after{
      content: '';
      display: block;

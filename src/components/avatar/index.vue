@@ -1,13 +1,19 @@
 <template>
   <div class="avatar">
-    <div class="img-wrapper">
-      <img class="img" :src="src" alt="" />
-    </div>
+    <Fitimg
+      :src="src"
+      class="img"
+      alt=""
+    />
   </div>
 </template>
 <script>
+import Fitimg from 'components/fitimg'
 export default {
   name: 'Avatar',
+  components: {
+    Fitimg
+  },
   props: {
     src: {
       type: String
@@ -21,20 +27,9 @@ export default {
   .avatar{
     width:p2r(120);
     height: p2r(120);
-    border:1px solid #fff;
     border-radius: 50%;
-    display: table;
     background: $primary-color;
     overflow: hidden;
-    .img-wrapper{
-      display: table-cell;
-      vertical-align: middle;
-      .img{
-        max-width: 100%;
-        max-height: 100%;
-        width:p2r(118);
-        height: p2r(118);
-      }
-    }
+    border:1px solid #fff;
   }
 </style>

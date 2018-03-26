@@ -19,7 +19,7 @@
         :key="'ownerPhoto-'+ order.id + index "
         class="img-wrapper"
       >
-        <Centerimg
+        <Fitimg
           :src="item"
           @on-click="previewImg"
         />
@@ -59,7 +59,7 @@
         :key="'repairPhoto-'+ order.id + index "
         class="img-wrapper"
       >
-        <Centerimg :src="item" @on-click="previewImg"/>
+        <Fitimg :src="item" @on-click="previewImg"/>
       </flexbox-item>
     </flexbox>
     <Btn
@@ -91,7 +91,7 @@ import {
 import Split from 'components/split'
 import Btn from 'components/btn'
 import Star from 'components/star'
-import Centerimg from 'components/centerimg'
+import Fitimg from 'components/fitimg'
 export default {
   name: 'RepairCard',
   components: {
@@ -100,7 +100,7 @@ export default {
     Split,
     Btn,
     Star,
-    Centerimg
+    Fitimg
   },
   props: {
     order: {
@@ -166,11 +166,7 @@ export default {
      flex:0 0 p2r(120);
      height: p2r(120);
      background: $background-color;
-     .center-img{
-       width:100%;
-       height:100%;
-       border-radius: 4px;
-     }
+     border-radius: 4px;
    }
    .owner-photo,.repair-photo{
      margin-top: p2r(30);

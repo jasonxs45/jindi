@@ -1,11 +1,15 @@
 <template>
   <div class="repair-user">
     <userinfo @tagClick="submitOrder" tagText="我要报修"></userinfo>
-    <Tabnav
-      :navs="navs"
+    <tabnav
       justify="justify"
-      @tab-switch="tabSwitchHandler"
-    />
+      @on-change="tabSwitchHandler"
+    >
+      <tabnav-item>12</tabnav-item>
+      <tabnav-item>34</tabnav-item>
+      <tabnav-item>56</tabnav-item>
+      <tabnav-item>78</tabnav-item>
+    </tabnav>
     <div class="card-wrapper">
       <router-view></router-view>
     </div>
@@ -14,31 +18,41 @@
 <script>
 import {
   Userinfo,
-  Tabnav
+  Tabnav,
+  TabnavItem
 } from 'components'
 let navs = [
   {
-    text: '未处理',
-    link: 'untreated'
+    component: {
+      name: 'routerlink',
+      template: '<router-link to="/repairuser/untreated" class="text" tag="p" exact>未处理</router-link>'
+    }
   },
   {
-    text: '已接单',
-    link: 'treated'
+    component: {
+      name: 'routerlink',
+      template: '<router-link to="/repairuser/treated" class="text" tag="p" exact>已接单</router-link>'
+    }
   },
   {
-    text: '已完成',
-    link: 'finished'
+    component: {
+      name: 'routerlink',
+      template: '<router-link to="/repairuser/finished" class="text" tag="p" exact>已完成</router-link>'
+    }
   },
   {
-    text: '未完成',
-    link: 'failed'
+    component: {
+      name: 'routerlink',
+      template: '<router-link to="/repairuser/failed" class="text" tag="p" exact>未完成</router-link>'
+    }
   }
 ]
 export default {
   name: 'RepairUser',
   components: {
     Userinfo,
-    Tabnav
+    Tabnav,
+    TabnavItem
   },
   data () {
     return {
@@ -52,9 +66,6 @@ export default {
       alert('我要报修')
     },
     tabSwitchHandler (val) {
-      this.$router.push({
-        name: `repairuser${this.navs[val].link}`
-      })
     }
   }
 }
