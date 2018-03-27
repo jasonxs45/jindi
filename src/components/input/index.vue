@@ -101,16 +101,18 @@ export default {
   border-radius: 25px;
   background: lighten($primary-color, 38%);
   border:1px solid lighten($primary-color, 18%);
+  color:$text-color;
+  font-size: p2r(28);
   .input{
     display: block;
     width:100%;
     height: 100%;
     padding:0 p2r(30);
-    font-size: p2r(28);
+    font-size: inherit;
     background: none;
     -webkit-appearance: none;
     outline: none;
-    color:$text-color;
+    color:inherit;
     &::-webkit-input-placeholder{
       color:lighten($primary-color, 20%);
       font-weight: 200;

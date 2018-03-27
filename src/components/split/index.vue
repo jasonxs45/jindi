@@ -26,6 +26,7 @@ export default {
    background: $background-color;
    &.line{
      height: 1px;
+     background: $line-color;
      transform: scaleY(.5);
    }
  }

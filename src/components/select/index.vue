@@ -6,6 +6,7 @@
     :class="showOptions?'half':''"
     :value="value"
     @click.native.stop="toggleSelect"
+    @on-focus="focus"
   />
   <Icon class="icon" name="caret-down"/>
   <div
@@ -62,6 +63,9 @@ export default {
       this.value = e.currentTarget.dataset.val
       this.toggleSelect()
       this.$emit('on-change', this.value)
+    },
+    focus (e) {
+      e.target.blur()
     }
   }
 }
@@ -79,13 +83,14 @@ export default {
     top:50%;
     margin-top: p2r(-10);
     right:p2r(30);
-    color:$primary-color;
+    color:lighten($primary-color, 12%);
     font-size: p2r(20);
-    transform: rotate(90deg);
+    transform: rotate(-90deg);
     transition: transform .2s;
     vertical-align: middle;
   }
   .x-input{
+    color:$text-color;
     &.half{
       border-bottom-right-radius: 0;
       border-bottom-left-radius: 0;
@@ -113,10 +118,13 @@ export default {
     -webkit-overflow-scrolling: touch;
     .option{
       font-size: p2r(24);
-      padding:p2r(20) 0;
+      padding:p2r(30) 0;
       margin:0 p2r(30);
       color:$thr-color;
       @include _1px(lighten($primary-color, 30%));
+      &:last-child{
+        background: none;
+      }
     }
   }
 }

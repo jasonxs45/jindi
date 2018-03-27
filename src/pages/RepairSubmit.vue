@@ -56,6 +56,10 @@
         </label>
       </flexbox>
     </div>
+    <XTextarea
+      placeholder="请输入您要报修的具体内容"
+      class="desc"
+    />
   </div>
 </div>
 </template>
@@ -66,7 +70,8 @@ import {
   XSelect,
   Flexbox,
   FlexboxItem,
-  Split
+  Split,
+  XTextarea
 } from 'components'
 import {
   houseArray,
@@ -81,7 +86,8 @@ export default {
     XSelect,
     Flexbox,
     FlexboxItem,
-    Split
+    Split,
+    XTextarea
   },
   data () {
     return {
@@ -177,7 +183,7 @@ export default {
           border-radius: 4px;
           font-size: 0;
           text-align: center;
-          color:lighten($primary-color, 18%);
+          color:lighten($primary-color, 8%);
           margin:p2r(10);
           .text{
             display: inline-block;
@@ -187,7 +193,7 @@ export default {
           .icon{
             display: inline-block;
             vertical-align: top;
-            width: p2r(60);
+            width: p2r(50);
             height: p2r(60);
             margin-right: p2r(-20);
             .iconfont{
@@ -237,6 +243,10 @@ export default {
       }
 
     }
+    .desc{
+      margin-top: p2r(20);
+    }
+
   }
 }
 </style>

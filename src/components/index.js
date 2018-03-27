@@ -13,6 +13,7 @@ import XInput from './input'
 import {Tabnav, TabnavItem} from './tabnav'
 import Repaircard from './repaircard'
 import Star from './star'
+import XTextarea from './textarea'
 ((w) => {
   w.$toast = msg => {
     return layer.open({
@@ -65,5 +66,6 @@ export {
   Tabnav,
   TabnavItem,
   Repaircard,
-  Star
+  Star,
+  XTextarea
 }
