@@ -13,6 +13,7 @@ import XInput from './input'
 import {Tabnav, TabnavItem} from './tabnav'
 import Repaircard from './repaircard'
 import Star from './star'
+import Fitimg from './fitimg'
 import XTextarea from './textarea'
 ((w) => {
   w.$toast = msg => {
@@ -67,5 +68,6 @@ export {
   TabnavItem,
   Repaircard,
   Star,
-  XTextarea
+  XTextarea,
+  Fitimg
 }

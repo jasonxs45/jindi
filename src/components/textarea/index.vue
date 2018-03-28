@@ -19,7 +19,7 @@ export default {
   },
   methods: {
     changeHandler (e) {
-      this.$emit('on-change', e.target.value)
+      this.$emit('change', e.target.value)
     },
     inputHandler (e) {
       this.$emit('input', e.target ? e.target.value : e)
@@ -53,6 +53,7 @@ export default {
     min-height:inherit;
     color:inherit;
     resize: none;
+    background: inherit;
     &::-webkit-input-placeholder{
       color:lighten($primary-color, 20%);
       font-weight: 200;

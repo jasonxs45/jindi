@@ -14,6 +14,7 @@
       :maxlength="maxlength"
       :name="name"
       :required="required"
+      ref="input"
       class="input"
       @change="changeHandler"
       @input="inputHandler"
@@ -81,11 +82,13 @@ export default {
   methods: {
     changeHandler (e) {
       this.inputVal = e.target.value
-      this.$emit('on-change', e.target.value)
+      this.$refs.input.value = e.target.value
+      this.$emit('change', e.target.value)
     },
     inputHandler (e) {
       this.inputVal = e.target.value
-      this.$emit('on-input', e.target ? e.target.value : e)
+      this.$refs.input.value = e.target.value
+      this.$emit('input', e.target ? e.target.value : e)
     }
   }
 }
@@ -98,7 +101,7 @@ export default {
   width:inherit;
   height: inherit;
   position: relative;
-  border-radius: 25px;
+  border-radius: p2r(80);
   background: lighten($primary-color, 38%);
   border:1px solid lighten($primary-color, 18%);
   color:$text-color;

@@ -76,7 +76,10 @@ import {
   XSelect,
   XInput
 } from 'components'
-import {houseArray} from 'common/data'
+import {
+  houseArray,
+  NAME_REG
+} from 'common/data'
 let houses = [
   {
     houseName: '金地天悦二期E栋三单元505',
@@ -148,7 +151,7 @@ export default {
         })
         return
       }
-      if (!this.ownerName.match(/^[\u4e00-\u9fa5]{2,6}$/i)) {
+      if (!this.ownerName.match(NAME_REG)) {
         window.$alert({
           content: '请填写正确格式的姓名'
         })

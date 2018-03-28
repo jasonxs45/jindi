@@ -6,6 +6,7 @@
   <div class="panel">
     <h3 class="title">选择房源</h3>
     <x-select
+      v-model="form.house"
       :options="houses"
       placeholder="请选择您要报修的房源"
       class="select-house"
@@ -57,10 +58,58 @@
       </flexbox>
     </div>
     <XTextarea
+      v-model="form.desc"
       placeholder="请输入您要报修的具体内容"
       class="desc"
     />
+    <p class="tips">* 上传照片（最多四张）</p>
+    <div class="img-group-container">
+      <div class="img-row">
+        <div
+          v-for="(item, index) in uploadedImgs"
+          :key="'upimg-'+index"
+          class="upload-box"
+        >
+          <Fitimg :src="item"/>
+          <div
+            class="delete"
+            :data-index="index"
+            @click="deleteImg"
+          >
+            <Icon
+              name="close-fill"
+            />
+          </div>
+        </div>
+        <div
+          v-if="uploadedImgs.length<4"
+          class="upload-box upload-btn"
+          @click="uploadImg"
+        >
+          <Icon name="camera"/>
+        </div>
+      </div>
+    </div>
   </div>
+  <div class="panel">
+    <h3 class="title">联系人信息</h3>
+    <XInput
+      v-model="form.name"
+      placeholder="联系人姓名"
+      class="name"
+    />
+    <XInput
+      v-model="form.tel"
+      placeholder="联系人电话"
+      htmlType="tel"
+      class="tel"
+    />
+  </div>
+  <Btn
+    text="提交"
+    size="lar"
+    @click="submitHandler"
+  />
 </div>
 </template>
 <script>
@@ -71,12 +120,16 @@ import {
   Flexbox,
   FlexboxItem,
   Split,
-  XTextarea
+  XTextarea,
+  Fitimg,
+  Btn
 } from 'components'
 import {
   houseArray,
   posRoom,
-  posLocation
+  posLocation,
+  NAME_REG,
+  TEL_REG
 } from 'common/data'
 export default {
   name: 'RepairSubmit',
@@ -87,13 +140,26 @@ export default {
     Flexbox,
     FlexboxItem,
     Split,
-    XTextarea
+    XTextarea,
+    Fitimg,
+    Btn
   },
   data () {
     return {
       houses: houseArray,
       tagsState: 0,
-      selectedTags: []
+      selectedTags: [],
+      uploadedImgs: [
+        '/static/images/banner2.png',
+        '/static/images/active1.png',
+        '/static/images/banner2.png'
+      ],
+      form: {
+        house: '',
+        desc: '',
+        name: '',
+        tel: ''
+      }
     }
   },
   computed: {
@@ -113,6 +179,40 @@ export default {
       let index = e.currentTarget.dataset.index
       this.tagsState -= length - index
       this.selectedTags.splice(index, length - index)
+    },
+    uploadImg (e) {
+      console.log('upload')
+    },
+    deleteImg (e) {
+      let index = e.currentTarget.dataset.index
+      this.uploadedImgs.splice(index, 1)
+    },
+    submitHandler () {
+      if (!this.form.name) {
+        window.$alert({
+          content: '请填写联系人姓名'
+        })
+        return
+      }
+      if (!this.form.name.match(NAME_REG)) {
+        window.$alert({
+          content: '请填写正确格式的联系人姓名'
+        })
+        return
+      }
+      if (!this.form.tel) {
+        window.$alert({
+          content: '请填写联系人电话'
+        })
+        return
+      }
+      if (!this.form.tel.match(TEL_REG)) {
+        window.$alert({
+          content: '请填写正确格式的联系人电话'
+        })
+        return
+      }
+      console.log(1)
     }
   }
 }
@@ -245,8 +345,68 @@ export default {
     }
     .desc{
       margin-top: p2r(20);
+      font-size: p2r(26);
     }
-
+    .tips{
+      color:lighten($primary-color, 10%);
+      font-size: p2r(24);
+      margin-top: p2r(40);
+    }
+    .img-group-container{
+      .img-row{
+        margin-left: p2r(-20);
+        margin-right: p2r(-20);
+        font-size: 0;
+        .upload-box{
+          width:p2r(120);
+          height: p2r(120);
+          border-radius: 0;
+          margin:p2r(20) p2r(20) 0;
+          position: relative;
+          display: inline-block;
+          vertical-align: top;
+          &:nth-child(4n){
+            margin-right: 0;
+          }
+          .fit-img{
+            border-radius: 4px;
+          }
+          .delete{
+            position: absolute;
+            width:p2r(40);
+            height: p2r(40);
+            line-height: p2r(40);
+            text-align: center;
+            color:$primary-color;
+            top:p2r(-15);
+            right:p2r(-15);
+            z-index:1;
+          }
+        }
+        .upload-btn{
+          display: inline-block;
+          width:p2r(120);
+          height: p2r(120);
+          border-radius: 4px;
+          border:1px dashed lighten($primary-color, 15%);
+          line-height: p2r(120);
+          text-align: center;
+          color:lighten($primary-color, 15%);
+          .iconfont{
+            font-size: p2r(34);
+          }
+        }
+      }
+    }
+    .name,
+    .tel{
+      height: p2r(100);
+      font-size: p2r(24);
+      margin-top: p2r(20);
+    }
+    .name{
+      margin-top: p2r(40);
+    }
   }
 }
 </style>

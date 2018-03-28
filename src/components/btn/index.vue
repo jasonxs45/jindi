@@ -50,6 +50,7 @@ export default {
   padding:p2r(30) 0;
   line-height: 1;
   outline: none;
+  border: none;
   &.disabled{
     background:$thr-color !important;
     color:$btn-disable-color !important;

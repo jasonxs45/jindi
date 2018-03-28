@@ -9,20 +9,22 @@
     @on-focus="focus"
   />
   <Icon class="icon" name="caret-down"/>
-  <div
-    v-show="showOptions"
-    class="options-wrapper"
-  >
-    <p
-      v-for="(item, index) in options"
-      :key="'item-'+index"
-      class="option"
-      :data-val="item"
-      @click="selectHandler"
+  <transition name="show">
+    <div
+      v-show="showOptions"
+      class="options-wrapper"
     >
-    {{item}}
-    </p>
-  </div>
+      <p
+        v-for="(item, index) in options"
+        :key="'item-'+index"
+        class="option"
+        :data-val="item"
+        @click="selectHandler"
+      >
+      {{item}}
+      </p>
+    </div>
+  </transition>
 </div>
 </template>
 <script>
@@ -62,7 +64,7 @@ export default {
     selectHandler (e) {
       this.value = e.currentTarget.dataset.val
       this.toggleSelect()
-      this.$emit('on-change', this.value)
+      this.$emit('change', this.value).$emit('input', this.value)
     },
     focus (e) {
       e.target.blur()
@@ -91,6 +93,8 @@ export default {
   }
   .x-input{
     color:$text-color;
+    transition: border-radius .1s;
+    border-radius: p2r(50);
     &.half{
       border-bottom-right-radius: 0;
       border-bottom-left-radius: 0;
@@ -106,14 +110,13 @@ export default {
     top:100%;
     left:0;
     width:100%;
-    min-height: p2r(300);
-    max-height:p2r(500);
+    height:p2r(500);
     padding-bottom:p2r(10);
     background: lighten($primary-color, 38%);
     border:1px solid lighten($primary-color, 18%);
     border-top:none;
-    border-bottom-left-radius: 25px;
-    border-bottom-right-radius: 25px;
+    border-bottom-left-radius: p2r(50);
+    border-bottom-right-radius: p2r(50);
     overflow: auto;
     -webkit-overflow-scrolling: touch;
     .option{
@@ -126,6 +129,13 @@ export default {
         background: none;
       }
     }
+  }
+  .show-enter-active, .show-leave-active {
+    transition: all .2s;
+  }
+  .show-enter, .show-leave-to{
+    height: 0;
+    opacity: 0;
   }
 }
 </style>
