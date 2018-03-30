@@ -1,14 +1,21 @@
 <template>
-  <div class="untreated-list">
-    <Repaircard
-      v-for="(item, index) in orders"
-      :order="item"
-      :key="'untreatedorder-'+index"
-    />
-  </div>
+  <order-list
+    :dataArr="orders"
+    :showGetMore="showGetMore"
+    @get-more="getMoreHandler"
+  >
+      <div class="list">
+        <Repaircard
+          v-for="(item, index) in orders"
+          :order="item"
+          :key="'untreatedorder-'+index"
+        />
+      </div>
+  </order-list>
 </template>
 <script>
 import {
+  OrderList,
   Repaircard
 } from 'components'
 let orders = []
@@ -30,22 +37,29 @@ for (let i = 0; i < 5; i++) {
   orders.push(obj)
 }
 export default {
-  name: 'Untreated',
+  name: 'RUUntreated',
   components: {
-    Repaircard
+    Repaircard,
+    OrderList
   },
   data () {
     return {
-      orders
+      orders,
+      show: false
+    }
+  },
+  computed: {
+    showGetMore () {
+      return this.show
+    }
+  },
+  methods: {
+    getMoreHandler () {
+      console.log('get more')
+      this.show = !this.show
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-@import "~common/scss/variables.scss";
-@import "~common/scss/mixins.scss";
- .untreated-list{
-   width:100%;
-   background: $background-color;
- }
 </style>

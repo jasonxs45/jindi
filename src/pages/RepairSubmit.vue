@@ -1,115 +1,113 @@
 <template>
 <div class="repair-submit">
+  <div class="top">
+    <img src="/static/images/rstop.jpg" alt="" />
+  </div>
   <div class="logo">
     <Icon name="repair"/>
   </div>
-  <div class="panel">
-    <h3 class="title">选择房源</h3>
-    <x-select
-      v-model="form.house"
-      :options="houses"
-      placeholder="请选择您要报修的房源"
-      class="select-house"
-    ></x-select>
-  </div>
-  <div class="panel">
-    <h3 class="title">选择具体部位</h3>
-    <flexbox class="selected-info">
-      <flexbox-item class="head">报修部位：</flexbox-item>
-      <flexbox-item class="body">
-        <div
-          v-for="(item, index) in selectedTags"
-          :key="'st-'+index"
-          class="selected-tag"
-        >
-          <span class="text">{{item}}</span>
-          <span
-            :data-index="index"
-            class="icon"
-            @click.stop="clearHandler"
-          >
-            <Icon name="close-fill"/>
-          </span>
-        </div>
-      </flexbox-item>
-    </flexbox>
-    <Split type="line"/>
-    <div class="tags">
-      <flexbox
-        wrap="wrap"
-        class="tags-row"
-      >
-        <label
-          v-for="(item, index) in tagsGroup"
-          :key="'room-'+index+item.id+Math.round(Math.random()*9999)"
-          class="radio-tag"
-        >
-          <input
-            type="radio"
-            :value="item.id"
-            :data-label="item.title"
-            data-name="room"
-            name="tag"
-            class="radio"
-            @change="changeHandler"
-          />
-          <span class="text">{{item.title}}</span>
-        </label>
-      </flexbox>
+  <div class="panel-group">
+    <div class="panel">
+      <h3 class="title">选择房源</h3>
+      <x-select
+        v-model="form.house"
+        :options="houses"
+        placeholder="请选择您要报修的房源"
+        class="select-house"
+      ></x-select>
     </div>
-    <XTextarea
-      v-model="form.desc"
-      placeholder="请输入您要报修的具体内容"
-      class="desc"
-    />
-    <p class="tips">* 上传照片（最多四张）</p>
-    <div class="img-group-container">
-      <div class="img-row">
-        <div
+    <div class="panel">
+      <h3 class="title">选择具体部位</h3>
+      <flexbox class="selected-info">
+        <flexbox-item class="head">报修部位：</flexbox-item>
+        <flexbox-item class="body">
+          <div
+            v-for="(item, index) in selectedTags"
+            :key="'st-'+index"
+            class="selected-tag"
+          >
+            <span class="text">{{item}}</span>
+            <span
+              :data-index="index"
+              class="icon"
+              @click.stop="clearHandler"
+            >
+              <Icon name="close-fill"/>
+            </span>
+          </div>
+        </flexbox-item>
+      </flexbox>
+      <Split type="line"/>
+      <div class="tags">
+        <flexbox
+          wrap="wrap"
+          class="tags-row"
+        >
+          <label
+            v-for="(item, index) in tagsGroup"
+            :key="'room-'+index+item.id+Math.round(Math.random()*9999)"
+            class="radio-tag"
+          >
+            <input
+              type="radio"
+              :value="item.id"
+              :data-label="item.title"
+              data-name="room"
+              name="tag"
+              class="radio"
+              @change="changeHandler"
+            />
+            <span class="text">{{item.title}}</span>
+          </label>
+        </flexbox>
+      </div>
+      <XTextarea
+        v-model="form.desc"
+        placeholder="请输入您要报修的具体内容"
+        class="desc"
+      />
+      <p class="tips">* 上传照片（最多四张）</p>
+      <img-row
+        :group="uploadedImgs"
+        :canUpload="true"
+        @on-upload="uploadImg"
+      >
+        <img-cell
           v-for="(item, index) in uploadedImgs"
+          :index="index"
+          :canUpload="true"
+          :del="true"
+          :group="uploadedImgs"
           :key="'upimg-'+index"
-          class="upload-box"
         >
           <Fitimg :src="item"/>
-          <div
-            class="delete"
-            :data-index="index"
-            @click="deleteImg"
-          >
-            <Icon
-              name="close-fill"
-            />
-          </div>
-        </div>
-        <div
-          v-if="uploadedImgs.length<4"
-          class="upload-box upload-btn"
-          @click="uploadImg"
-        >
-          <Icon name="camera"/>
-        </div>
-      </div>
+        </img-cell>
+      </img-row>
     </div>
-  </div>
-  <div class="panel">
-    <h3 class="title">联系人信息</h3>
-    <XInput
-      v-model="form.name"
-      placeholder="联系人姓名"
-      class="name"
-    />
-    <XInput
-      v-model="form.tel"
-      placeholder="联系人电话"
-      htmlType="tel"
-      class="tel"
-    />
+    <div class="panel">
+      <h3 class="title">联系人信息</h3>
+      <XInput
+        v-model="form.name"
+        placeholder="联系人姓名"
+        class="name"
+      />
+      <XInput
+        v-model="form.tel"
+        placeholder="联系人电话"
+        htmlType="tel"
+        class="tel"
+      />
+    </div>
   </div>
   <Btn
     text="提交"
     size="lar"
+    class="submit"
     @click="submitHandler"
   />
+  <div class="bottom">
+    <img src="/static/images/rsbot.jpg" alt="" srcset="">
+  </div>
 </div>
 </template>
 <script>
@@ -122,14 +120,18 @@ import {
   Split,
   XTextarea,
   Fitimg,
-  Btn
+  Btn,
+  ImgRow,
+  ImgCell
 } from 'components'
 import {
   houseArray,
   posRoom,
   posLocation,
   NAME_REG,
-  TEL_REG
+  TEL_REG,
+  suc,
+  fail
 } from 'common/data'
 export default {
   name: 'RepairSubmit',
@@ -142,7 +144,9 @@ export default {
     Split,
     XTextarea,
     Fitimg,
-    Btn
+    Btn,
+    ImgRow,
+    ImgCell
   },
   data () {
     return {
@@ -212,7 +216,11 @@ export default {
         })
         return
       }
-      console.log(1)
+      // 提交
+      window.$alert({
+        className: 'rs-alertbox',
+        content: fail || suc
+      })
     }
   }
 }
@@ -222,7 +230,14 @@ export default {
 @import "~common/scss/mixins.scss";
 .repair-submit{
   padding:p2r(80) p2r($base-padding) p2r($base-padding);
-  background: $primary-color;
+  background: linear-gradient($primary-color, #f26262);
+  .top{
+    position: absolute;
+    width:100%;
+    z-index: 0;
+    left:0;
+    top:0;
+  }
   .logo{
     width:p2r(200);
     height: p2r(200);
@@ -254,6 +269,29 @@ export default {
     background: #fff;
     border-radius: 4px;
     margin:p2r(40) 0;
+    position: relative;
+    &:before,
+    &:after{
+      content: '';
+      display: block;
+      width: p2r(20);
+      height: p2r(120);
+      background: url('/static/images/chain.png') center/100% 100% no-repeat;
+      position: absolute;
+      z-index: 2;
+      bottom: p2r(-80);
+      left: p2r(80);
+    }
+    &:after{
+      left: auto;
+      right: p2r(80);
+    }
+    &:last-child{
+      &:before,
+      &:after{
+        display: none;
+      }
+    }
     .title{
       font-size: p2r(26);
       text-align: center;
@@ -352,52 +390,6 @@ export default {
       font-size: p2r(24);
       margin-top: p2r(40);
     }
-    .img-group-container{
-      .img-row{
-        margin-left: p2r(-20);
-        margin-right: p2r(-20);
-        font-size: 0;
-        .upload-box{
-          width:p2r(120);
-          height: p2r(120);
-          border-radius: 0;
-          margin:p2r(20) p2r(20) 0;
-          position: relative;
-          display: inline-block;
-          vertical-align: top;
-          &:nth-child(4n){
-            margin-right: 0;
-          }
-          .fit-img{
-            border-radius: 4px;
-          }
-          .delete{
-            position: absolute;
-            width:p2r(40);
-            height: p2r(40);
-            line-height: p2r(40);
-            text-align: center;
-            color:$primary-color;
-            top:p2r(-15);
-            right:p2r(-15);
-            z-index:1;
-          }
-        }
-        .upload-btn{
-          display: inline-block;
-          width:p2r(120);
-          height: p2r(120);
-          border-radius: 4px;
-          border:1px dashed lighten($primary-color, 15%);
-          line-height: p2r(120);
-          text-align: center;
-          color:lighten($primary-color, 15%);
-          .iconfont{
-            font-size: p2r(34);
-          }
-        }
-      }
-    }
     .name,
     .tel{
       height: p2r(100);
@@ -407,6 +399,14 @@ export default {
     .name{
       margin-top: p2r(40);
     }
+  }
+  .submit{
+    margin-top: p2r(100);
+    font-size: p2r(36) !important;
+  }
+  .bottom{
+    text-align: center;
+    margin:p2r(60) p2r(-$base-padding) p2r(-$base-padding);
   }
 }
 </style>

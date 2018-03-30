@@ -114,7 +114,7 @@ export default {
   },
   methods: {
     previewImg (src) {
-      console.log(src)
+      console.log('showImage')
     },
     showRate (val) {
       console.log('score is ' + val)
@@ -142,6 +142,8 @@ export default {
      top:p2r(20);
      right: p2r($base-padding);
      line-height: p2r(28);
+     font-weight: 200;
+     color:$thr-color;
    }
    .title{
      font-size: p2r(28);
@@ -170,7 +172,9 @@ export default {
    }
    .owner-photo,.repair-photo{
      margin-top: p2r(30);
-     margin-bottom: p2r(30);
+   }
+   .split{
+     margin-top:p2r(40);
    }
    .engineer{
      margin-top: p2r(40);

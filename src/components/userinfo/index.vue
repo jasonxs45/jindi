@@ -1,5 +1,5 @@
 <template>
-<div class="user-info">
+<div :class="classes">
   <flexbox>
     <flexbox-item class="avatar-wrapper">
       <Avatar :src="userInfo.avatar" />
@@ -35,14 +35,21 @@ export default {
     Avatar,
     Icon
   },
-  computed: {
-    userInfo () {
-      return this.$store.state.userInfo
-    }
-  },
   props: {
+    typeClass: {
+      type: String,
+      default: 'triangle'
+    },
     tagText: {
       type: String
+    }
+  },
+  computed: {
+    classes () {
+      return ['user-info', this.typeClass]
+    },
+    userInfo () {
+      return this.$store.state.userInfo
     }
   },
   methods: {
@@ -62,6 +69,10 @@ export default {
   padding-top: p2r(50);
   padding-left: p2r(30);
   position: relative;
+  &.rectangle{
+    height:p2r(240);
+    background-image: url('/static/images/uctop1.png')
+  }
   .avatar-wrapper{
     flex:0 0 p2r(120)
   }

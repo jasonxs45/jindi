@@ -5,12 +5,25 @@ const Bind = r => require.ensure([], () => r(require('pages/Bind')), 'Bind')
 const BindOwner = r => require.ensure([], () => r(require('pages/BindOwner')), 'BindOwner')
 const ActivityList = r => require.ensure([], () => r(require('pages/ActivityList')), 'ActivityList')
 const ActivityDetail = r => require.ensure([], () => r(require('pages/ActivityDetail')), 'ActivityDetail')
+
 const RepairUser = r => require.ensure([], () => r(require('pages/RepairUser')), 'RepairUser')
 const RepairUserUntreated = r => require.ensure([], () => r(require('pages/repairuser/Untreated')), 'RepairUserUntreated')
 const RepairUserTreated = r => require.ensure([], () => r(require('pages/repairuser/Treated')), 'RepairUserTreated')
 const RepairUserFinished = r => require.ensure([], () => r(require('pages/repairuser/Finished')), 'RepairUserFinished')
 const RepairUserFailed = r => require.ensure([], () => r(require('pages/repairuser/Failed')), 'RepairUserFailed')
 const RepairSubmit = r => require.ensure([], () => r(require('pages/RepairSubmit')), 'RepairSubmit')
+
+const RepairEngineer = r => require.ensure([], () => r(require('pages/RepairEngineer')), 'RepairEngineer')
+const RepairEngineerUntreated = r => require.ensure([], () => r(require('pages/repairengineer/Untreated')), 'RepairEngineerUntreated')
+const RepairEngineerTreated = r => require.ensure([], () => r(require('pages/repairengineer/Treated')), 'RepairEngineerTreated')
+const RepairEngineerFinished = r => require.ensure([], () => r(require('pages/repairengineer/Finished')), 'RepairEngineerFinished')
+const RepairEngineerCanceled = r => require.ensure([], () => r(require('pages/repairengineer/Canceled')), 'RepairEngineerCanceled')
+// const OrderList = r => require.ensure([], () => r(require('components/orderlist')), 'OrderList')
+const AdviseUser = r => require.ensure([], () => r(require('pages/AdviseUser')), 'AdviseUser')
+const AdviseUserUntreated = r => require.ensure([], () => r(require('pages/adviseuser/Untreated')), 'AdviseUserUntreated')
+const AdviseUserTreated = r => require.ensure([], () => r(require('pages/adviseuser/Treated')), 'AdviseUserTreated')
+const AdviseUserFinished = r => require.ensure([], () => r(require('pages/adviseuser/Finished')), 'AdviseUserFinished')
+const AdviseSubmit = r => require.ensure([], () => r(require('pages/AdviseSubmit')), 'AdviseSubmit')
 export default [
   {
     path: '/',
@@ -51,26 +64,22 @@ export default [
     path: '/repairuser',
     name: 'repairuser',
     component: RepairUser,
-    redirect: '/repairuser/untreated',
+    redirect: '/repairuser/list/untreated',
     children: [
       {
-        path: 'untreated',
-        name: 'repairuseruntreated',
+        path: 'list/untreated',
         component: RepairUserUntreated
       },
       {
-        path: 'treated',
-        name: 'repairusertreated',
+        path: 'list/treated',
         component: RepairUserTreated
       },
       {
-        path: 'finished',
-        name: 'repairuserfinished',
+        path: 'list/finished',
         component: RepairUserFinished
       },
       {
-        path: 'failed',
-        name: 'repairuserfailed',
+        path: 'list/failed',
         component: RepairUserFailed
       }
     ]
@@ -79,5 +88,54 @@ export default [
     path: '/repairsubmit',
     name: 'repairsubmit',
     component: RepairSubmit
+  },
+  {
+    path: '/repairengineer',
+    name: 'repairengineer',
+    component: RepairEngineer,
+    redirect: '/repairengineer/list/untreated',
+    children: [
+      {
+        path: 'list/untreated',
+        component: RepairEngineerUntreated
+      },
+      {
+        path: 'list/treated',
+        component: RepairEngineerTreated
+      },
+      {
+        path: 'list/finished',
+        component: RepairEngineerFinished
+      },
+      {
+        path: 'list/canceled',
+        component: RepairEngineerCanceled
+      }
+    ]
+  },
+  {
+    path: '/adviseuser',
+    name: 'adviseuser',
+    component: AdviseUser,
+    redirect: '/adviseuser/list/untreated',
+    children: [
+      {
+        path: 'list/untreated',
+        component: AdviseUserUntreated
+      },
+      {
+        path: 'list/treated',
+        component: AdviseUserTreated
+      },
+      {
+        path: 'list/finished',
+        component: AdviseUserFinished
+      }
+    ]
+  },
+  {
+    path: '/advisesubmit',
+    name: 'advisesubmit',
+    component: AdviseSubmit
   }
 ]

@@ -11,6 +11,9 @@ export default {
 </script>
 
 <style lang="scss">
+@import "~common/scss/variables.scss";
+@import "~common/scss/mixins.scss";
+// swiper
 .swiper-pagination-bullets{
   .swiper-pagination-bullet{
     background: #ffffff;
@@ -19,6 +22,43 @@ export default {
     &.swiper-pagination-bullet-active{
       width: 12px;
       border-radius: 12px;
+    }
+  }
+}
+//  报修弹窗
+.rs-alertbox{
+  &.layui-m-layerchild{
+    background: url('/static/images/rsbg.png') center/cover no-repeat;
+    .icon{
+      width:p2r(240);
+      margin:p2r(60) auto;
+    }
+    .title{
+      color:#fff;
+      font-size: p2r(40);
+    }
+    .text{
+      color:#fff;
+      font-size: p2r(26);
+    }
+    .layui-m-layerbtn{
+      border-top:none;
+      display: block;
+      width:p2r(500);
+      margin: p2r(40) auto p2r(80);
+      border-radius: 25px;
+      height: auto;
+      line-height: auto;
+      box-shadow: 0 1px 8px 1px lighten($primary-color, 10%);
+      overflow: hidden;
+      span{
+        text-align: center;
+        padding:p2r(30) 0;
+        line-height: 1;
+        font-size: p2r(36);
+        background:#fff;
+        color:$primary-color;
+      }
     }
   }
 }

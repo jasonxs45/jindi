@@ -115,11 +115,20 @@ let posLocation = [
 ]
 const NAME_REG = /^[\u4e00-\u9fa5]{2,6}$/i
 const TEL_REG = /^1([3,4,5,7,8]{1}[0-9]{9})$/i
+// 报修弹窗
+let suc = `<img src="/static/images/rssuc.png" class="icon"/>
+                  <h3 class="title">恭喜您</h3>
+                  <p class="text">您已成功提交报修，请耐心等待~<br/>工作人员将尽快处理</p>`
+let fail = `<img src="/static/images/rsfail.png" class="icon"/>
+                  <h3 class="title">对不起</h3>
+                  <p class="text">提交失败</p>`
 // 正则
 export {
   houseArray,
   posRoom,
   posLocation,
   NAME_REG,
-  TEL_REG
+  TEL_REG,
+  suc,
+  fail
 }

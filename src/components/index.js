@@ -1,5 +1,7 @@
 import layer from 'common/utils/layer'
 import 'common/scss/layer.scss'
+import Container from './container'
+import Row from './row'
 import Icon from './icon'
 import {Flexbox, FlexboxItem} from './flexbox'
 import Split from './split'
@@ -15,7 +17,18 @@ import Repaircard from './repaircard'
 import Star from './star'
 import Fitimg from './fitimg'
 import XTextarea from './textarea'
+import OrderList from './orderlist'
+import Nodata from './nodata'
+import Getmore from './getmore'
+import {ImgRow, ImgCell} from './imgrow'
 ((w) => {
+  w.$simplealert = opts => {
+    opts = Object.assign({
+      shadeClose: false,
+      btn: ''
+    }, opts)
+    return layer.open(opts)
+  }
   w.$toast = msg => {
     return layer.open({
       content: msg,
@@ -53,6 +66,8 @@ import XTextarea from './textarea'
 })(window)
 
 export {
+  Container,
+  Row,
   Icon,
   Flexbox,
   FlexboxItem,
@@ -68,6 +83,11 @@ export {
   TabnavItem,
   Repaircard,
   Star,
+  Fitimg,
   XTextarea,
-  Fitimg
+  OrderList,
+  Nodata,
+  Getmore,
+  ImgRow,
+  ImgCell
 }

@@ -1,8 +1,8 @@
 <template>
-  <div class="repair-user">
+  <div class="repair-engineer">
     <userinfo
       type-class="rectangle"
-      tagText="我要报修"
+      tagText="业务分单"
       @tagClick="submitOrder"
     ></userinfo>
     <flexbox class="links">
@@ -11,7 +11,7 @@
         :key="item.path+index"
       >
         <router-link
-          :to="'/repairuser/list/'+item.path"
+          :to="item.path"
           tag="div"
           class="link"
         >
@@ -19,32 +19,31 @@
         </router-link>
       </flexbox-item>
     </flexbox>
-    <router-view></router-view>
+    <router-view :order-list="navs" :key="key"></router-view>
   </div>
 </template>
 <script>
 import {
   Userinfo,
   Flexbox,
-  FlexboxItem,
-  OrderList
+  FlexboxItem
 } from 'components'
 let navs = [
   {
-    path: 'untreated',
+    path: '/repairengineer/list/untreated',
     text: '未处理'
   },
   {
-    path: 'treated',
+    path: '/repairengineer/list/treated',
     text: '已接单'
   },
   {
-    path: 'finished',
+    path: '/repairengineer/list/finished',
     text: '已完成'
   },
   {
-    path: 'failed',
-    text: '未完成'
+    path: '/repairengineer/list/canceled',
+    text: '已取消'
   }
 ]
 export default {
@@ -52,8 +51,7 @@ export default {
   components: {
     Userinfo,
     Flexbox,
-    FlexboxItem,
-    OrderList
+    FlexboxItem
   },
   data () {
     return {
@@ -61,6 +59,9 @@ export default {
     }
   },
   computed: {
+    key () {
+      return this.$route.name !== undefined ? this.$route.name + new Date() : this.$route + new Date()
+    }
   },
   methods: {
     submitOrder () {
@@ -75,7 +76,7 @@ export default {
 <style lang="scss" scoped>
 @import "~common/scss/variables.scss";
 @import "~common/scss/mixins.scss";
- .repair-user{
+ .repair-engineer{
    width: 100vw;
    height: 100vh;
    .links{
