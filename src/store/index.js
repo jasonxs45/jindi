@@ -10,6 +10,9 @@ import modules from './modules'
 Vue.use(Vuex)
 
 let state = {
+  global: {
+    openid: '123asda'
+  }
 }
 
 const debug = process.env.NODE_ENV !== 'production'

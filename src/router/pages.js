@@ -24,6 +24,11 @@ const AdviseUserUntreated = r => require.ensure([], () => r(require('pages/advis
 const AdviseUserTreated = r => require.ensure([], () => r(require('pages/adviseuser/Treated')), 'AdviseUserTreated')
 const AdviseUserFinished = r => require.ensure([], () => r(require('pages/adviseuser/Finished')), 'AdviseUserFinished')
 const AdviseSubmit = r => require.ensure([], () => r(require('pages/AdviseSubmit')), 'AdviseSubmit')
+
+const NewsCenter = r => require.ensure([], () => r(require('pages/NewsCenter')), 'NewsCenter')
+
+const Contract = r => require.ensure([], () => r(require('pages/tradeprogress/Contract')), 'Contract')
+const Licence = r => require.ensure([], () => r(require('pages/tradeprogress/Licence')), 'Licence')
 export default [
   {
     path: '/',
@@ -38,7 +43,20 @@ export default [
   {
     path: '/tradeprogress',
     name: 'tradeprogress',
-    component: TradeProgress
+    component: TradeProgress,
+    redirect: '/tradeprogress/contract',
+    children: [
+      {
+        path: 'contract',
+        name: 'contractprogress',
+        component: Contract
+      },
+      {
+        path: 'licence',
+        name: 'licenceprogress',
+        component: Licence
+      }
+    ]
   },
   {
     path: '/bind',
@@ -137,5 +155,10 @@ export default [
     path: '/advisesubmit',
     name: 'advisesubmit',
     component: AdviseSubmit
+  },
+  {
+    path: '/newscenter',
+    name: 'newscenter',
+    component: NewsCenter
   }
 ]
