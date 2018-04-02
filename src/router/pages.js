@@ -2,7 +2,11 @@ const Home = r => require.ensure([], () => r(require('pages/Home')), 'Home')
 const Usercenter = r => require.ensure([], () => r(require('pages/Usercenter')), 'Usercenter')
 const TradeProgress = r => require.ensure([], () => r(require('pages/TradeProgress')), 'TradeProgress')
 const Bind = r => require.ensure([], () => r(require('pages/Bind')), 'Bind')
-const BindOwner = r => require.ensure([], () => r(require('pages/BindOwner')), 'BindOwner')
+const BindOwner = r => require.ensure([], () => r(require('pages/bind/BindOwner')), 'BindOwner')
+const BindRelative = r => require.ensure([], () => r(require('pages/bind/BindRelative')), 'BindRelative')
+const BindRenter = r => require.ensure([], () => r(require('pages/bind/BindRenter')), 'BindRenter')
+const BindSecond = r => require.ensure([], () => r(require('pages/bind/BindSecond')), 'BindSecond')
+
 const ActivityList = r => require.ensure([], () => r(require('pages/ActivityList')), 'ActivityList')
 const ActivityDetail = r => require.ensure([], () => r(require('pages/ActivityDetail')), 'ActivityDetail')
 
@@ -64,9 +68,24 @@ export default [
     component: Bind
   },
   {
-    path: '/bindowner',
+    path: '/bind/bindowner',
     name: 'bindowner',
     component: BindOwner
+  },
+  {
+    path: '/bind/bindrelative',
+    name: 'bindrelative',
+    component: BindRelative
+  },
+  {
+    path: '/bind/bindrenter',
+    name: 'bindrenter',
+    component: BindRenter
+  },
+  {
+    path: '/bind/bindsecond',
+    name: 'bindsecond',
+    component: BindSecond
   },
   {
     path: '/activitylist',

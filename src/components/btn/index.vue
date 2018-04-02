@@ -51,6 +51,11 @@ export default {
   line-height: 1;
   outline: none;
   border: none;
+  font-size: p2r(30);
+  &.default{
+    background:$btn-disable-color;
+    color:$text-color;
+  }
   &.disabled{
     background:$thr-color !important;
     color:$btn-disable-color !important;
@@ -58,7 +63,6 @@ export default {
   &.base{
     background:#fff;
     color:$primary-color;
-    font-size: p2r(30);
   }
   &.primary{
     background:$primary-color;

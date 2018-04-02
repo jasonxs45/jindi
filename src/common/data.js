@@ -1,13 +1,4 @@
 /* eslint-disable no-unused-vars */
-// 项目房源
-let houseArray = [
-  '金地天悦一期',
-  '金地天悦二期',
-  '金地天悦三期',
-  '金地天悦四期',
-  '金地天悦五期',
-  '金地天悦六期'
-]
 // 报修单的数据结构
 let order = {
   state: 0, // 订单状态
@@ -115,6 +106,8 @@ let posLocation = [
 ]
 const NAME_REG = /^[\u4e00-\u9fa5]{2,6}$/i
 const TEL_REG = /^1([3,4,5,7,8]{1}[0-9]{9})$/i
+const ID_REG = /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}$)/i
+const LAST_FOUR_REG = /\d{3}[0-9Xx]/i
 // 报修弹窗
 let suc = `<img src="/static/images/rssuc.png" class="icon"/>
                   <h3 class="title">恭喜您</h3>
@@ -124,11 +117,12 @@ let fail = `<img src="/static/images/rsfail.png" class="icon"/>
                   <p class="text">提交失败</p>`
 // 正则
 export {
-  houseArray,
   posRoom,
   posLocation,
   NAME_REG,
   TEL_REG,
+  ID_REG,
+  LAST_FOUR_REG,
   suc,
   fail
 }

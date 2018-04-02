@@ -4,7 +4,7 @@
     :placeholder="placeholder"
     :readonly="true"
     :class="showOptions?'half':''"
-    :value="value"
+    :value="value.label"
     @click.native.stop="toggleSelect"
     @on-focus="focus"
   />
@@ -14,7 +14,8 @@
       v-show="showOptions"
       class="options-wrapper"
     >
-      <p
+      <slot></slot>
+      <!-- <p
         v-for="(item, index) in options"
         :key="'item-'+index"
         class="option"
@@ -22,7 +23,7 @@
         @click="selectHandler"
       >
       {{item}}
-      </p>
+      </p> -->
     </div>
   </transition>
 </div>
@@ -37,10 +38,6 @@ export default {
     XInput
   },
   props: {
-    options: {
-      type: Array,
-      required: true
-    },
     placeholder: {
       type: String
     }
@@ -57,12 +54,19 @@ export default {
       _self.showOptions = false
     }, false)
   },
+  updated () {
+    if (!this.$children) return
+    this.childLength = this.$children.length
+    this.$children.forEach((item, i) => {
+      this.$children[i].$on('on-change', this.changeHandler)
+    })
+  },
   methods: {
     toggleSelect () {
       this.showOptions = !this.showOptions
     },
-    selectHandler (e) {
-      this.value = e.currentTarget.dataset.val
+    changeHandler (value) {
+      this.value = value
       this.toggleSelect()
       this.$emit('change', this.value).$emit('input', this.value)
     },
@@ -95,6 +99,7 @@ export default {
     color:$text-color;
     transition: border-radius .1s;
     border-radius: p2r(50);
+    width: inherit;
     &.half{
       border-bottom-right-radius: 0;
       border-bottom-left-radius: 0;
@@ -119,16 +124,6 @@ export default {
     border-bottom-right-radius: p2r(50);
     overflow: auto;
     -webkit-overflow-scrolling: touch;
-    .option{
-      font-size: p2r(24);
-      padding:p2r(30) 0;
-      margin:0 p2r(30);
-      color:$thr-color;
-      @include _1px(lighten($primary-color, 30%));
-      &:last-child{
-        background: none;
-      }
-    }
   }
   .show-enter-active, .show-leave-active {
     transition: all .2s;

@@ -27,6 +27,7 @@ export default {
    padding:p2r($base-padding);
    font-size: p2r(28);
    font-weight: 200;
+   line-height: 1.4;
  }
 }
 </style>

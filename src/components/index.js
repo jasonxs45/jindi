@@ -10,7 +10,7 @@ import Activitycard from './activitycard'
 import Avatar from './avatar'
 import Btn from './btn'
 import Userinfo from './userinfo'
-import XSelect from './select'
+import {XSelect, XOption} from './select'
 import XInput from './input'
 import {Tabnav, TabnavItem} from './tabnav'
 import Repaircard from './repaircard'
@@ -43,12 +43,24 @@ import {ImgRow, ImgCell} from './imgrow'
       shadeClose: false
     })
   }
-  w.$alert = opts => {
-    opts = Object.assign({
-      shadeClose: false,
-      btn: '确定'
-    }, opts)
-    return layer.open(opts)
+  w.$alert = opt => {
+    if (typeof opt === 'string') {
+      let opts = {
+        shadeClose: false,
+        btn: '确定',
+        content: opt
+      }
+      return layer.open(opts)
+    }
+    if (typeof opt === 'object') {
+      let opts = {
+        shadeClose: false,
+        content: '',
+        btn: '确定'
+      }
+      opts = Object.assign(opts, opt)
+      return layer.open(opts)
+    }
   }
   w.$confirm = opts => {
     opts = Object.assign({
@@ -60,8 +72,13 @@ import {ImgRow, ImgCell} from './imgrow'
       }
     }, opts)
     let index = layer.open(opts)
-    console.log(index)
     return index
+  }
+  w.$close = index => {
+    layer.close(index)
+  }
+  w.$closeAll = () => {
+    layer.closeAll()
   }
 })(window)
 
@@ -78,6 +95,7 @@ export {
   Btn,
   Userinfo,
   XSelect,
+  XOption,
   XInput,
   Tabnav,
   TabnavItem,

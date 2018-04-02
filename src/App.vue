@@ -62,4 +62,17 @@ export default {
     }
   }
 }
+// 一些过渡
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .2s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+.slide-up-enter-active, .slide-up-leave-active {
+  transition: transform .2s;
+}
+.slide-up-enter, .slide-up-leave-to {
+  transform: translateY(100%);
+}
 </style>

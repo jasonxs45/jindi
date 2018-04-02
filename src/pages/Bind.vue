@@ -4,23 +4,29 @@
       <img src="/static/images/logo.png" alt="" />
     </div>
     <flexbox class="entries" wrap="wrap" justify="justify">
-      <flexbox-item class="entry large">
-        <div class="entry-wrapper">
+      <flexbox-item class="entry middle">
+        <router-link to="/bind/bindowner" tag="div" class="entry-wrapper">
           <Icon class="icon" name="user"/>
           <span class="text">我是业主</span>
-        </div>
+        </router-link>
       </flexbox-item>
       <flexbox-item class="entry middle">
-         <div class="entry-wrapper">
+         <router-link to="/bind/bindrelative" tag="div" class="entry-wrapper">
             <Icon class="icon" name="group"/>
             <span class="text">我是家属</span>
-          </div>
+          </router-link>
       </flexbox-item>
       <flexbox-item class="entry middle">
-        <div class="entry-wrapper">
+        <router-link to="/bind/bindrenter" tag="div" class="entry-wrapper">
           <Icon class="icon" name="rent"/>
           <span class="text">我是租户</span>
-        </div>
+        </router-link>
+      </flexbox-item>
+      <flexbox-item class="entry middle">
+        <router-link to="/bind/bindsecond" tag="div" class="entry-wrapper">
+          <Icon class="icon" name="second-user"/>
+          <span class="text">我是二手业主</span>
+        </router-link>
       </flexbox-item>
     </flexbox>
     <p class="tip">
@@ -40,6 +46,9 @@ export default {
     Flexbox,
     FlexboxItem,
     Icon
+  },
+  created () {
+    window.document.title = '业主绑定'
   }
 }
 </script>
