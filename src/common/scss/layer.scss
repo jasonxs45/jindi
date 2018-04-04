@@ -1,6 +1,8 @@
+@import "~common/scss/variables.scss";
+@import "~common/scss/mixins.scss";
 .layui-m-layer {
   position: relative;
-  z-index: 19891014
+  z-index: 99999
 }
 
 .layui-m-layer * {
@@ -37,7 +39,7 @@
   position: relative;
   display: inline-block;
   text-align: left;
-  background-color: #fff;
+  background:url('../../../static/images/layerbg.png') center/cover no-repeat;
   font-size: 14px;
   border-radius: 5px;
   box-shadow: 0 0 8px rgba(0, 0, 0, .1);
@@ -78,7 +80,7 @@
 
 .layui-m-layer0 .layui-m-layerchild {
   width: 90%;
-  max-width: 640px
+  max-width: p2r(640);
 }
 
 .layui-m-layer1 .layui-m-layerchild {
@@ -103,7 +105,14 @@
   font-size: 16px;
   font-weight: 400;
   border-radius: 5px 5px 0 0;
-  text-align: center
+  text-align: center;
+  padding-top: p2r(160);
+  color:$primary-color;
+  font-weight: 500;
+  & + .layui-m-layercont{
+    padding-top: p2r(40);
+    min-height: p2r(100);
+  }
 }
 
 .layui-m-layerbtn span, .layui-m-layerchild h3 {
@@ -113,9 +122,12 @@
 }
 
 .layui-m-layercont {
-  padding: 40px 30px;
+  box-sizing: border-box;
+  padding: p2r(220) p2r(30) p2r(30);
+  min-height: p2r(380);
   line-height: 22px;
-  text-align: center
+  text-align: center;
+  font-size: p2r(26);
 }
 
 .layui-m-layer1 .layui-m-layercont {
@@ -181,8 +193,15 @@
   height: 50px;
   line-height: 50px;
   font-size: 0;
-  border-top: 1px solid #D0D0D0;
-  background-color: #F2F2F2
+  position: relative;
+  &:before{
+    content: '';
+    display: block;
+    border-top:1px solid #ddd;
+    position: absolute;
+    width:88%;
+    left:6%;
+  }
 }
 
 .layui-m-layerbtn span {
@@ -193,7 +212,7 @@
 }
 
 .layui-m-layerbtn span[yes] {
-  color: #40AFFE
+  color:$text-color;
 }
 
 .layui-m-layerbtn span[no] {
