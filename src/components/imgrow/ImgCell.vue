@@ -44,16 +44,13 @@ export default {
 @import "~common/scss/variables.scss";
 @import "~common/scss/mixins.scss";
 .img-cell{
-  width:p2r(120);
-  height: p2r(120);
+  width:25%;
   border-radius: 4px;
-  margin:p2r(20) p2r(20) 0;
+  margin:p2r(20) 0 0;
   position: relative;
   display: inline-block;
   vertical-align: top;
-  &:nth-child(4n){
-    margin-right: 0;
-  }
+  text-align: center;
   .delete{
     position: absolute;
     width:p2r(40);
@@ -62,7 +59,7 @@ export default {
     text-align: center;
     color:$primary-color;
     top:p2r(-15);
-    right:p2r(-15);
+    right:p2r(5);
     z-index:1;
   }
 }

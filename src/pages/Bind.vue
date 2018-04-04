@@ -59,7 +59,7 @@ export default {
   width:100vw;
   height: 100vh;
   padding-top: p2r(30);
-  background:$primary-color url('/static/images/bindtop.jpg') center top/100% auto no-repeat;
+  background:$primary-color url('../../static/images/bindtop.jpg') center top/100% auto no-repeat;
   .logo{
     width:p2r(208);
     height: p2r(56);

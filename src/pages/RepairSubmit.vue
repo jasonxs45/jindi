@@ -125,7 +125,6 @@ import {
   ImgCell
 } from 'components'
 import {
-  houseArray,
   posRoom,
   posLocation,
   NAME_REG,
@@ -150,7 +149,7 @@ export default {
   },
   data () {
     return {
-      houses: houseArray,
+      houses: [],
       tagsState: 0,
       selectedTags: [],
       uploadedImgs: [
@@ -276,7 +275,7 @@ export default {
       display: block;
       width: p2r(20);
       height: p2r(120);
-      background: url('/static/images/chain.png') center/100% 100% no-repeat;
+      background: url('../../static/images/chain.png') center/100% 100% no-repeat;
       position: absolute;
       z-index: 2;
       bottom: p2r(-80);
@@ -384,6 +383,14 @@ export default {
     .desc{
       margin-top: p2r(20);
       font-size: p2r(26);
+    }
+    .img-row{
+      .img-cell{
+        .fit-img{
+          width: p2r(120);
+          height: p2r(120);
+        }
+      }
     }
     .tips{
       color:lighten($primary-color, 10%);

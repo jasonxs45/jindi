@@ -5,8 +5,14 @@
     <p>【二手业主】房产绑定</p>
   </div>
   <div class="content">
+    <p class="tip">* 请选择所在项目</p>
     <x-select v-model="form.project" placeholder="请选择所在项目">
-      <x-option></x-option>
+      <x-option
+        v-for="(item, index) in items"
+        :key="'item-'+index+Math.random().toString(36).substr(2)"
+        :label="item.label"
+        :value="item.value"
+      ></x-option>
     </x-select>
     <p class="tip">* 请输入所在楼栋</p>
     <XInput v-model="form.building" placeholder="请输入楼栋"/>
@@ -32,6 +38,7 @@ import {
   XInput,
   Btn
 } from 'components'
+import api from 'common/api'
 export default {
   name: 'BindSecond',
   components: {
@@ -51,7 +58,35 @@ export default {
         name: '',
         id: '',
         tel: ''
+      },
+      item: null
+    }
+  },
+  created () {
+    this.getItem()
+  },
+  methods: {
+    getItem () {
+      let index = window.$loading()
+      let opt = {
+        Act: 'ProjectGetList'
       }
+      api.query(opt).then(res => {
+        window.$close(index)
+        if (res.data.IsSuccess) {
+          let [...items] = res.data.Data
+          this.items = items.map(item => {
+            return {
+              label: item.Name,
+              value: item.ID
+            }
+          })
+        } else {
+          window.$alert(res.Message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 }
@@ -78,7 +113,7 @@ export default {
     padding:p2r($base-padding) p2r(45);
     .tip{
       color:$primary-color;
-      font-size: p2r(28);
+      font-size: p2r(26);
       margin-top: p2r(30);
       font-weight: 200;
       line-height: 1.4;
@@ -90,8 +125,8 @@ export default {
     .x-input{
       display: block;
       width:100%;
-      height: p2r(100);
-      margin-top: p2r(20);
+      height: p2r(90);
+      margin-top: p2r(15);
     }
     .btn{
       width:100%;

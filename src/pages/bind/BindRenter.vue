@@ -13,7 +13,7 @@
       <XInput v-model="form.tel" placeholder="请输入手机号码" htmlType="tel"/>
       <p class="tip">租户绑定房源，必须业主审核，<br/>请将此页面转发给业主，提醒业主审核您的家属身份。</p>
       <Btn type="primary" size="lar" text="提交" @click="submitHandler"/>
-      <Btn type="default" size="lar" text="返回"/>
+      <Btn type="default" size="lar" text="返回" @click="$router.go(-1)"/>
     </div>
     <transition name="fade">
       <div class="share" v-if="showShare" @click="toggleShare"></div>
@@ -114,7 +114,7 @@ export default {
     padding:p2r($base-padding) p2r(45);
     .tip{
       color:$primary-color;
-      font-size: p2r(28);
+      font-size: p2r(26);
       margin-top: p2r(30);
       font-weight: 200;
       line-height: 1.4;
@@ -124,8 +124,8 @@ export default {
     }
     .x-input{
       display: block;
-      height: p2r(100);
-      margin-top: p2r(20);
+      height: p2r(90);
+      margin-top: p2r(15);
     }
     .btn{
       width:100%;

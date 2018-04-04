@@ -72,7 +72,6 @@ import {
   ImgCell
 } from 'components'
 import {
-  houseArray,
   suc,
   fail
 } from 'common/data'
@@ -93,7 +92,7 @@ export default {
   },
   data () {
     return {
-      houses: houseArray,
+      houses: [],
       uploadedImgs: [
         '/static/images/banner2.png',
         '/static/images/active1.png',
