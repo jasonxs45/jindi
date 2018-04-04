@@ -51,6 +51,10 @@ export default {
   display: inline-block;
   vertical-align: top;
   text-align: center;
+  .fit-img{
+    width: p2r(120);
+    height: p2r(120);
+  }
   .delete{
     position: absolute;
     width:p2r(40);

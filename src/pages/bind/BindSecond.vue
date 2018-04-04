@@ -26,7 +26,24 @@
     <XInput  v-model="form.id" placeholder="请输入身份证"/>
     <p class="tip">* 请输入手机号码</p>
     <XInput v-model="form.tel" placeholder="请输入手机号码" htmlType="tel"/>
-    <p class="tip">家属绑定房源，必须业主审核，<br/>请将此页面转发给业主，提醒业主审核您的家属身份。</p>
+    <p class="tip">* 请上传房产证及身份证正反面照片</p>
+    <img-row
+      :group="uploadedImgs"
+      :canUpload="true"
+      @on-upload="uploadImg"
+    >
+      <img-cell
+        v-for="(item, index) in uploadedImgs"
+        :index="index"
+        :canUpload="true"
+        :del="true"
+        :group="uploadedImgs"
+        :key="'upimg-'+index"
+      >
+        <Fitimg :src="item"/>
+      </img-cell>
+    </img-row>
+    <Btn type="primary" size="lar" text="提交" @click="submitHandler"/>
   </div>
 </div>
 </template>
@@ -36,9 +53,17 @@ import {
   XSelect,
   XOption,
   XInput,
-  Btn
+  Btn,
+  ImgRow,
+  ImgCell,
+  Fitimg
 } from 'components'
 import api from 'common/api'
+import {
+  NAME_REG,
+  TEL_REG,
+  ID_REG
+} from 'common/data'
 export default {
   name: 'BindSecond',
   components: {
@@ -46,7 +71,10 @@ export default {
     XSelect,
     XOption,
     XInput,
-    Btn
+    Btn,
+    ImgRow,
+    ImgCell,
+    Fitimg
   },
   data () {
     return {
@@ -59,7 +87,12 @@ export default {
         id: '',
         tel: ''
       },
-      item: null
+      items: null,
+      uploadedImgs: [
+        'static/images/banner2.png',
+        'static/images/active1.png',
+        'static/images/banner2.png'
+      ]
     }
   },
   created () {
@@ -69,7 +102,7 @@ export default {
     getItem () {
       let index = window.$loading()
       let opt = {
-        Act: 'ProjectGetList'
+        Act: 'StageGetList'
       }
       api.query(opt).then(res => {
         window.$close(index)
@@ -87,6 +120,79 @@ export default {
       }).catch(err => {
         console.log(err)
       })
+    },
+    submitHandler () {
+      if (!this.form.project) {
+        window.$alert('请选择项目')
+        return
+      }
+      if (!this.form.building) {
+        window.$alert('请输入楼栋')
+        return
+      }
+      if (!this.form.unit) {
+        window.$alert('请输入单元')
+        return
+      }
+      if (!this.form.houseid) {
+        window.$alert('请输入房号')
+        return
+      }
+            if (!this.form.name) {
+        window.$alert('姓名不能为空')
+        return
+      }
+      if (!this.form.name.match(NAME_REG)) {
+        window.$alert('请填写正确格式的姓名')
+        return
+      }
+      if (!this.form.id) {
+        window.$alert('身份证号码不能为空')
+        return
+      }
+      if (!this.form.id.match(ID_REG)) {
+        window.$alert('请填写正确格式的身份证号码')
+        return
+      }
+      if (!this.form.tel) {
+        window.$alert('手机号码不能为空')
+        return
+      }
+      if (!this.form.tel.match(TEL_REG)) {
+        window.$alert('请填写正确格式的手机号码')
+        return
+      }
+      if (!this.uploadedImgs.length) {
+        window.$alert('请上传房产证及身份证正反面照片')
+        return
+      }
+      let index = window.$loading()
+      let opt = {
+        Act: 'HouseSecendApply',
+        Data: JSON.stringify({
+          StageID: this.form.project.value,
+          Building: this.form.building,
+          Unit: this.form.unit,
+          HouseNo: this.form.houseid,
+          Name: this.form.name,
+          Tel: this.form.tel,
+          Images: this.uploadedImgs.join(','),
+          CertNumber: this.form.id
+        })
+      }
+      api.query(opt).then(res => {
+        window.$close(index)
+        if (res.data.IsSuccess) {
+          window.$alert('提交成功，请等待工作人员审核！')
+        } else {
+          window.$alert(res.Message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    uploadImg () {
+      console.log('upload')
     }
   }
 }
@@ -130,7 +236,10 @@ export default {
     }
     .btn{
       width:100%;
-      margin-top: p2r(30);
+      margin: {
+        top: p2r(100);
+        bottom: p2r(60);
+      }
     }
   }
 }

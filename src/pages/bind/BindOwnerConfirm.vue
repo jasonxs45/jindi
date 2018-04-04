@@ -19,14 +19,14 @@
           :value="item.value"
         ></x-option>
       </x-select>
-      <p class="tip">* 请输入姓名</p>
+      <p class="tip">* 姓名</p>
       <XInput v-model="form.name" readonly placeholder="请输入姓名"/>
-      <p class="tip">* 请输入身份证</p>
+      <p class="tip">* 身份证</p>
       <XInput  v-model="form.id" readonly placeholder="请输入身份证"/>
-      <p class="tip">* 请输入手机号码</p>
+      <p class="tip">* 手机号码</p>
       <XInput v-model="form.tel" readonly placeholder="请输入手机号码" htmlType="tel"/>
       <Btn type="primary" size="lar" text="提交" @click="submitHandler"/>
-      <Btn type="default" size="lar" text="返回" @click="$router.go(-1)"/>
+      <Btn type="default" size="lar" text="取消" @click="$router.go(-1)"/>
     </div>
   </div>
 </template>
