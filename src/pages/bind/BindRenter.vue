@@ -26,6 +26,7 @@ import {
   XInput,
   Btn
 } from 'components'
+import api from 'common/api'
 import {
   NAME_REG,
   TEL_REG,
@@ -45,12 +46,80 @@ export default {
         name: '',
         tel: '',
         id: ''
-      }
+      },
+      user: null,
+      typeid: 1,
+      memberid: null
+    }
+  },
+  computed: {
+    readonly () {
+      return !!this.user
     }
   },
   created () {
+    this.getMemberInfo()
   },
   methods: {
+    getMemberInfo () {
+      let index = window.$loading()
+      let opt = {
+        Act: 'MemberGetMyInfo'
+      }
+      api.query(opt).then(res => {
+        window.$close(index)
+        if (res.data.IsSuccess) {
+          this.user = res.data.Data
+          if (this.user) {
+            this.form = {
+              name: this.user.Name,
+              tel: this.user.Tel,
+              id: this.user.CertNumber
+            }
+          } else {
+            this.form = {
+              name: '',
+              tel: '',
+              id: ''
+            }
+          }
+        } else {
+          window.$alert(res.data.Message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    getRegist () {
+      let _self = this
+      let index = window.$loading()
+      let opt = {
+        Act: 'MemberRegister',
+        Data: JSON.stringify({
+          Name: this.form.name,
+          Tel: this.form.tel,
+          IDCard: this.form.id
+        })
+      }
+      api.query(opt).then(res => {
+        window.$close(index)
+        if (res.data.IsSuccess) {
+          this.memberid = res.data.Data.ID
+          let index = window.$alert({
+            title: '申请已提交！',
+            content: '请将本页面转发给已绑定的业主审核，<br/>待通过后才能完成家属注册流程！',
+            yes () {
+              window.$close(index)
+              _self.toggleShare()
+            }
+          })
+        } else {
+          window.$alert(res.data.Message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
     submitHandler () {
       if (!this.form.name) {
         window.$alert('姓名不能为空')
@@ -76,15 +145,7 @@ export default {
         window.$alert('请填写正确格式的手机号码')
         return
       }
-      let _self = this
-      let index = window.$alert({
-        title: '申请已提交！',
-        content: '请将本页面转发给已绑定的业主审核，<br/>待通过后才能完成家属注册流程！',
-        yes () {
-          window.$close(index)
-          _self.toggleShare()
-        }
-      })
+      this.getRegist()
     },
     toggleShare () {
       this.showShare = !this.showShare

@@ -1,17 +1,30 @@
 <template>
   <div class="bind-relative">
     <div class="top">
-      <h3 class="title">【家属】会员注册审核</h3>
+      <h3 class="title">【{{typeid === 2 ? '家属' : typeid === 1 ? '租户' : ''}}】会员注册审核</h3>
       <div class="sub-title">绑定居住房源，获得物业专属服务权益</div>
     </div>
     <div class="content">
-      <p class="tip title">要以【】身份注册会员，以下是注册信息，请确认是否属实。如果审核通过，用户将以业主等同身份享受您所在物业的服务！</p>
+      <p class="tip title">xx要以【{{typeid === 2 ? '家属' : typeid === 1 ? '租户' : ''}}】身份注册会员，以下是注册信息，请确认是否属实。如果审核通过，用户将以业主等同身份享受您所在物业的服务！</p>
+      <p class="tip">* 请选择房源</p>
+      <x-select
+        v-model="selectedItem"
+        placeholder="请选择房源"
+        class="roundbar"
+      >
+        <x-option
+          v-for="(item, index) in houseList"
+          :key="'myhouse-'+index+Math.random().toString(36).substr(2)"
+          :label="item.label"
+          :value="item.value"
+        ></x-option>
+      </x-select>
       <p class="tip">* 请输入姓名</p>
-      <XInput v-model="form.name" placeholder="请输入姓名"/>
+      <XInput v-model="form.name" readonly placeholder="请输入姓名"/>
       <p class="tip">* 请输入身份证</p>
-      <XInput  v-model="form.id" placeholder="请输入身份证"/>
+      <XInput  v-model="form.id" readonly placeholder="请输入身份证"/>
       <p class="tip">* 请输入手机号码</p>
-      <XInput v-model="form.tel" placeholder="请输入手机号码" htmlType="tel"/>
+      <XInput v-model="form.tel" readonly placeholder="请输入手机号码" htmlType="tel"/>
       <Btn type="primary" size="lar" text="提交" @click="submitHandler"/>
       <Btn type="default" size="lar" text="返回" @click="$router.go(-1)"/>
     </div>
@@ -21,66 +34,124 @@
 import {
   Icon,
   XInput,
+  XSelect,
+  XOption,
   Btn
 } from 'components'
-import {
-  NAME_REG,
-  TEL_REG,
-  ID_REG
-} from 'common/data'
+import api from 'common/api'
 export default {
   name: 'BindOwnerConfirm',
   components: {
     Icon,
     XInput,
-    Btn
+    Btn,
+    XSelect,
+    XOption
   },
   data () {
     return {
+      houseList: [],
+      selectedItem: '',
       form: {
         name: '',
         tel: '',
         id: ''
-      }
+      },
+      member: null,
+      typeid: null,
+      memberid: null
     }
   },
   created () {
+    this.typeid = parseInt(this.$route.params.typeid)
+    this.memberid = parseInt(this.$route.params.memberid)
+    this.getMyhouse()
+    this.getApplier()
+  },
+  watch: {
+    '$route' (to, from) {
+      this.typeid = parseInt(to.params.typeid)
+      this.memberid = parseInt(to.params.memberid)
+      this.getMyhouse()
+      this.getApplier()
+    }
   },
   methods: {
-    submitHandler () {
-      if (!this.form.name) {
-        window.$alert('姓名不能为空')
-        return
+    getMyhouse () {
+      let index = window.$loading()
+      let opt = {
+        Act: 'HouseGetMyList'
       }
-      if (!this.form.name.match(NAME_REG)) {
-        window.$alert('请填写正确格式的姓名')
-        return
-      }
-      if (!this.form.id) {
-        window.$alert('身份证号码不能为空')
-        return
-      }
-      if (!this.form.id.match(ID_REG)) {
-        window.$alert('请填写正确格式的身份证号码')
-        return
-      }
-      if (!this.form.tel) {
-        window.$alert('手机号码不能为空')
-        return
-      }
-      if (!this.form.tel.match(TEL_REG)) {
-        window.$alert('请填写正确格式的手机号码')
-        return
-      }
-      let _self = this
-      let index = window.$alert({
-        title: '申请已提交！',
-        content: '请将本页面转发给已绑定的业主审核，<br/>待通过后才能完成家属注册流程！',
-        yes () {
-          window.$close(index)
-          _self.toggleShare()
+      api.query(opt).then(res => {
+        window.$close(index)
+        if (res.data.IsSuccess) {
+          let houseList = res.data.Data
+          this.houseList = houseList.map(item => {
+            return {
+              label: item.ProjectName + '--' + item.Building + '栋' + item.Unit + '单元' + item.HouseNo,
+              value: item.ID
+            }
+          })
+        } else {
+          window.$alert(res.data.Message)
         }
+      }).catch(err => {
+        console.log(err)
       })
+    },
+    getApplier () {
+      let index = window.$loading()
+      let opt = {
+        Act: 'MemberGetInfo',
+        Data: JSON.stringify({
+          ID: this.memberid
+        })
+      }
+      api.query(opt).then(res => {
+        window.$close(index)
+        if (res.data.IsSuccess) {
+          this.member = res.data.Data
+          if (this.member) {
+            this.form = {
+              name: this.member.Name,
+              tel: this.member.Tel,
+              id: this.member.CertNumber
+            }
+          }
+        } else {
+          window.$alert(res.data.Message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    getPass () {
+      let index = window.$loading()
+      let opt = {
+        Act: 'HouseRelationBind',
+        Data: JSON.stringify({
+          HouseID: this.selectedItem.value,
+          MemberID: this.memberid,
+          Type: this.typeid
+        })
+      }
+      api.query(opt).then(res => {
+        window.$close(index)
+        if (res.data.IsSuccess) {
+          window.$alert('已审核通过！')
+        } else {
+          window.$alert(res.data.Message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    submitHandler () {
+      if (!this.selectedItem.value) {
+        window.$alert('请选择房源')
+        return
+      }
+      this.getPass()
     }
   }
 }
@@ -119,8 +190,10 @@ export default {
         margin-top: 0;
       }
     }
-    .x-input{
+    .x-input,
+    .x-select{
       display: block;
+      width:100%;
       height: p2r(90);
       margin-top: p2r(20);
     }
