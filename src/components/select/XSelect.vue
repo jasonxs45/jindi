@@ -115,7 +115,7 @@ export default {
     top:100%;
     left:0;
     width:100%;
-    height:p2r(500);
+    max-height:p2r(500);
     padding-bottom:p2r(10);
     background: lighten($primary-color, 38%);
     border:1px solid lighten($primary-color, 18%);

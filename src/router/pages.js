@@ -6,6 +6,7 @@ const BindOwner = r => require.ensure([], () => r(require('pages/bind/BindOwner'
 const BindRelative = r => require.ensure([], () => r(require('pages/bind/BindRelative')), 'BindRelative')
 const BindRenter = r => require.ensure([], () => r(require('pages/bind/BindRenter')), 'BindRenter')
 const BindSecond = r => require.ensure([], () => r(require('pages/bind/BindSecond')), 'BindSecond')
+const BindOwnerConfirm = r => require.ensure([], () => r(require('pages/bind/BindOwnerConfirm')), 'BindOwnerConfirm')
 
 const ActivityList = r => require.ensure([], () => r(require('pages/ActivityList')), 'ActivityList')
 const ActivityDetail = r => require.ensure([], () => r(require('pages/ActivityDetail')), 'ActivityDetail')
@@ -86,6 +87,11 @@ export default [
     path: '/bind/bindsecond',
     name: 'bindsecond',
     component: BindSecond
+  },
+  {
+    path: '/bind/bindownerconfirm/type/:typeid/member/:memberid',
+    name: 'bindownerconfirm',
+    component: BindOwnerConfirm
   },
   {
     path: '/activitylist',

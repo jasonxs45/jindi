@@ -97,6 +97,7 @@ export default {
       }
       &.large{
         flex:0 0 100%;
+        width: 100%;
         line-height: p2r(200);
         .icon{
           margin-right: p2r(10);
@@ -104,6 +105,7 @@ export default {
       }
       &.middle{
         flex:0 0 p2r(330);
+        width: p2r(330);
         .icon{
           margin-top: p2r(30);
         }
