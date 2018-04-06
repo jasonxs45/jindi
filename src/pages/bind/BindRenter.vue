@@ -27,6 +27,7 @@ import {
   Btn
 } from 'components'
 import api from 'common/api'
+import wx from 'weixin-js-sdk'
 import {
   NAME_REG,
   TEL_REG,
@@ -90,8 +91,17 @@ export default {
         console.log(err)
       })
     },
+    changeShare () {
+      let shareData = {
+          title: 'xx申请加入金地',
+          desc: '请审核身份真实有效性后进行绑定',
+          link: location.origin + location.pathname + `#/bind/bindownerconfirm/type/${this.typeid}/member/${this.memberid}`,
+          imgUrl: 'http://jindi.1juke.cn/dist/static/images/active1.png'
+      }
+      wx.onMenuShareAppMessage(shareData)
+    },
     getRegist () {
-      let _self = this
+      // let _self = this
       let index = window.$loading()
       let opt = {
         Act: 'MemberRegister',
@@ -105,12 +115,13 @@ export default {
         window.$close(index)
         if (res.data.IsSuccess) {
           this.memberid = res.data.Data.ID
+          this.changeShare()
           let index = window.$alert({
             title: '申请已提交！',
             content: '请将本页面转发给已绑定的业主审核，<br/>待通过后才能完成家属注册流程！',
             yes () {
               window.$close(index)
-              _self.toggleShare()
+              // _self.toggleShare()
             }
           })
         } else {

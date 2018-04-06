@@ -1,7 +1,7 @@
 <template>
   <div class="bind">
     <div class="logo">
-      <img src="/static/images/logo.png" alt="" />
+      <img src="static/images/logo.png" alt="" />
     </div>
     <flexbox class="entries" wrap="wrap" justify="justify">
       <flexbox-item class="entry middle">

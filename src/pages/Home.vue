@@ -21,16 +21,16 @@
       <flexbox-item
         v-for="(item, index) in entries"
         :key="'entery'+index">
-        <div class="entry">
+        <router-link :to="item.link" tag="div" class="entry">
           <Icon :name="item.icon"/>
           <p class="name">{{item.name}}</p>
-        </div>
+        </router-link>
       </flexbox-item>
     </flexbox>
     <Split />
     <flexbox class="notice-board">
       <flexbox-item class="head">
-        <img src="/static/images/notice-board.png" alt="" />
+        <img src="static/images/notice-board.png" alt="" />
       </flexbox-item>
       <flexbox-item>
         <flexbox
@@ -79,11 +79,11 @@
   import { swiper, swiperSlide } from 'vue-awesome-swiper'
   let fetchedBanners = [
     {
-      src: '/static/images/banner1.png',
+      src: 'static/images/banner1.png',
       link:''
     },
     {
-      src: '/static/images/banner2.png',
+      src: 'static/images/banner2.png',
       link:''
     }
   ]
@@ -112,27 +112,33 @@
         entries: [
           {
             name: '购房进度',
-            icon: 'graph'
+            icon: 'graph',
+            link: '/tradeprogress'
           },
           {
             name: '业主报修',
-            icon: 'repair'
+            icon: 'repair',
+            link: '/repairuser'
           },
           {
             name: '我的活动',
-            icon: 'activity'
+            icon: 'activity',
+            link: '/activitylist'
           },
           {
             name: '社区期刊',
-            icon: 'books'
+            icon: 'books',
+            link: '/magazine'
           },
           {
             name: '在线客服',
-            icon: 'msg'
+            icon: 'msg',
+            link: '/service'
           },
           {
             name: '投诉建议',
-            icon: 'suggest'
+            icon: 'suggest',
+            link: '/adviseuser'
           }
         ],
         notices: [
@@ -147,7 +153,7 @@
         ],
         activityList: [
           {
-            src: '/static/images/active1.png',
+            src: 'static/images/active1.png',
             title: '武汉金地樱花季免费送武大门票',
             date: '2018/03/23',
             readNum: '13',
@@ -155,7 +161,7 @@
             link: ''
           },
           {
-            src: '/static/images/active2.png',
+            src: 'static/images/active2.png',
             title: '武汉金地樱花季免费送武大门票',
             date: '2018/03/23',
             readNum: '13',
