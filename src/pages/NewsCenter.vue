@@ -18,7 +18,10 @@
         <Split :key="'news-item'+index+Math.random().toString(36).substr(2)"/>
         <flexbox
           :key="'news-item'+index+Math.random().toString(36).substr(2)"
-          class="item">
+          :data-id="item.id"
+          class="item"
+          @click="newsDetail"
+        >
           <flexbox-item class="thumb">
             <Fitimg
               :src="item.img"
@@ -82,9 +85,7 @@ export default {
   },
   methods: {
     getList () {
-      api.query({
-        v: 'newslist'
-      }).then(res => {
+      api.mock('newslist').then(res => {
         console.log(res)
         this.newslist = res.data.data
       }).catch(err => {
@@ -93,6 +94,14 @@ export default {
     },
     swipeChangeHandler () {
       console.log(this.swiper.activeIndex)
+    },
+    newsDetail (e) {
+      this.$router.push({
+        name: 'newsdetail',
+        params: {
+          id: e.currentTarget.dataset.id
+        }
+      })
     }
   }
 }

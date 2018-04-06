@@ -31,6 +31,7 @@ const AdviseUserFinished = r => require.ensure([], () => r(require('pages/advise
 const AdviseSubmit = r => require.ensure([], () => r(require('pages/AdviseSubmit')), 'AdviseSubmit')
 
 const NewsCenter = r => require.ensure([], () => r(require('pages/NewsCenter')), 'NewsCenter')
+const NewsDetail = r => require.ensure([], () => r(require('pages/NewsDetail')), 'NewsDetail')
 
 const Contract = r => require.ensure([], () => r(require('pages/tradeprogress/Contract')), 'Contract')
 const Licence = r => require.ensure([], () => r(require('pages/tradeprogress/Licence')), 'Licence')
@@ -185,5 +186,10 @@ export default [
     path: '/newscenter',
     name: 'newscenter',
     component: NewsCenter
+  },
+  {
+    path: '/newsdetail/:id',
+    name: 'newsdetail',
+    component: NewsDetail
   }
 ]
