@@ -27,8 +27,11 @@ export default {
     }
   },
   data () {
-    return {
-      classes: ['btn', this.type, this.size, this.disabled ? 'disabled' : '']
+    return {}
+  },
+  computed: {
+    classes () {
+      return ['btn', this.type, this.size, this.disabled ? 'disabled' : '']
     }
   },
   methods: {

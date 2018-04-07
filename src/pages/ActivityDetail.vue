@@ -2,15 +2,15 @@
   <div class="activity-detail">
     <div class="activity-detail-wrapper">
       <div class="banner">
-        <img :src="activity.src" alt="" class="img" />
+        <img :src="usedActivity.Img" alt="" class="img" />
       </div>
       <div class="details">
         <flexbox class="oneline">
-          <flexbox-item class="title">{{activity.title}}</flexbox-item>
-          <flexbox-item class="state" :class="activity.state === 0?'':'timeout'">{{activity.state === 0?'进行中':'已过期'}}</flexbox-item>
+          <flexbox-item class="title">{{usedActivity.Name}}</flexbox-item>
+          <flexbox-item class="state" :class="!usedActivity.IsOver?'':'timeout'">{{usedActivity.state === 0?'进行中':'已过期'}}</flexbox-item>
         </flexbox>
         <p class="desc">
-          {{activity.desc}}
+          {{usedActivity.Explain}}
         </p>
         <flexbox class="date">
           <flexbox-item class="icon">
@@ -18,17 +18,17 @@
           </flexbox-item>
           <flexbox-item>
             <p class="text">
-              {{activity.PlayStart}} - {{activity.PlayEnd}}
+              {{usedActivity.PlayStart}} - {{usedActivity.PlayEnd}}
             </p>
           </flexbox-item>
         </flexbox>
-        <flexbox class="location">
+        <flexbox class="location" v-if="usedActivity.Location">
           <flexbox-item class="icon">
             <Icon name="location"/>
           </flexbox-item>
           <flexbox-item>
             <p class="text">
-              {{activity.location}}
+              {{usedActivity.Location}}
             </p>
           </flexbox-item>
         </flexbox>
@@ -37,16 +37,14 @@
           <div class="text">活动明细</div>
           <flexbox-item class="line"></flexbox-item>
         </flexbox>
-        <div class="content-detail">
-          {{activity.content}}
-        </div>
+        <div class="content-detail" v-html="usedActivity.Content"></div>
       </div>
     </div>
     <div class="btn-area">
       <Btn
         type="primary"
-        text="我要报名"
-        :disabled="activity.state?true:false"
+        :text="usedActivity.IsOver?'报名截至时间已过':'我要报名'"
+        :disabled="usedActivity.IsOver?true:false"
         @click="toggleMask"
       />
     </div>
@@ -67,16 +65,10 @@ import {
   Icon,
   Btn
 } from 'components'
-let activity = {
-  src: '/static/images/active2.png',
-  title: '武汉金地樱花季免费送武大门票',
-  desc:'这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介',
-  PlayStart: '2018/03/23',
-  PlayEnd: '2018/03/31',
-  location: '这里是地址地址地址这里是地址地址地址这里是地址地址地址这里是地址地址地址这里是地址地址地址',
-  state: 0,
-  content: '这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介这里是活动简介'
-}
+import api from 'common/api'
+import {
+  formatDate
+} from 'common/utils/date'
 export default {
   name: 'ActivityDetail',
   components: {
@@ -87,11 +79,52 @@ export default {
   },
   data () {
     return {
-      activity,
+      activity: {},
+      activityId: null,
       showPanel: false
     }
   },
+  computed: {
+    id () {
+      return this.activityId
+    },
+    usedActivity () {
+      return this.activity
+    }
+  },
+  watch: {
+    '$route' (to, from) {
+      this.activityId = to.params.id
+    }
+  },
+  created () {
+    this.activityId = this.$route.params.id
+    this.getActivityInfo()
+  },
   methods: {
+    getActivityInfo () {
+      let index = window.$loading()
+      let opt = {
+        Act: 'GetActivityInfo',
+        Data: JSON.stringify({
+          ID: this.id
+        })
+      }
+      api.mock(opt).then(res => {
+        window.$close(index)
+        if (res.data.IsSuccess) {
+          let activity = res.data.Data
+          activity.Content = activity.Content.replace(/src="\/UploadFiles\//g, 'src="http://dongyuan.1juke.cn/UploadFiles/')
+          activity.PlayStart = formatDate(new Date(activity.PlayStart), 'yyyy/MM/dd')
+          activity.PlayEnd = formatDate(new Date(activity.PlayEnd), 'yyyy/MM/dd')
+          this.activity = activity
+        } else {
+          window.$alert(res.data.Message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
     toggleMask () {
       this.showPanel = !this.showPanel
     }
@@ -105,15 +138,16 @@ export default {
   width:100vw;
   height: 100vh;
   padding-bottom: p2r(140);
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
   .activity-detail-wrapper{
+    width:100%;
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     .banner{
       width:100%;
-      height:p2r(300);
       .img{
         max-width: 100%;
-        height: 100%;
       }
     }
     .details{
@@ -141,6 +175,9 @@ export default {
         .icon{
           font-size: p2r(30);
           flex: 0 0 p2r(40);
+          .iconfont{
+            line-height:1.2;
+          }
         }
         .text{
           font-weight: 200;
@@ -208,7 +245,7 @@ export default {
     left:0;
     text-align: center;
     width:100%;
-    padding-bottom: p2r(40);
+    padding-bottom: p2r(20);
     z-index:1
   }
   .mask{

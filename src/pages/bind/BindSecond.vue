@@ -88,11 +88,7 @@ export default {
         tel: ''
       },
       items: null,
-      uploadedImgs: [
-        'static/images/banner2.png',
-        'static/images/active1.png',
-        'static/images/banner2.png'
-      ]
+      uploadedImgs: []
     }
   },
   created () {
@@ -191,8 +187,8 @@ export default {
         console.log(err)
       })
     },
-    uploadImg () {
-      console.log('upload')
+    uploadImg (res) {
+      this.uploadedImgs.push(res)
     }
   }
 }

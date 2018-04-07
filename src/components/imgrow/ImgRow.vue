@@ -22,6 +22,7 @@ import Container from 'components/container'
 import Row from 'components/row'
 import Icon from 'components/icon'
 import ImgCell from './ImgCell'
+import wxConf from 'common/utils/wxConf'
 export default {
   name: 'ImgRow',
   components: {
@@ -41,7 +42,12 @@ export default {
   },
   methods: {
     clickHandler (e) {
-      this.$emit('on-upload', e)
+      wxConf.wxUpload(res => {
+        this.$emit('on-upload', res)
+      })
+      .catch(error => {
+        alert(error)
+      })
     }
   }
 }

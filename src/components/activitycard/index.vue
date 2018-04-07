@@ -1,7 +1,7 @@
 <template>
-  <div class="activity-card">
+  <div class="activity-card" @click="clickHandler">
     <div class="img-wrapper">
-      <img :src="src" alt="" />
+      <img :src="img" alt="" />
     </div>
     <div class="card-content">
       <flexbox class="oneline">
@@ -9,7 +9,7 @@
         <flexbox-item class="state" :class="state === 0?'':'timeout'">{{state === 0?'进行中':'已过期'}}</flexbox-item>
       </flexbox>
       <flexbox class="oneline">
-        <flexbox-item class="date">{{date}}</flexbox-item>
+        <flexbox-item class="date">活动时间：{{playDateRange}}</flexbox-item>
         <flexbox-item class="read-num">{{readNum}}人查看</flexbox-item>
       </flexbox>
     </div>
@@ -27,12 +27,12 @@ export default {
     FlexboxItem
   },
   props: {
-    src: {
+    img: {
       type: String,
       required: true
     },
-    link: {
-      type: String
+    id: {
+      type: [String, Number]
     },
     title: {
       type: String,
@@ -42,12 +42,26 @@ export default {
       type: [String, Number],
       required: true
     },
-    date: {
-      type: String,
-      required: true
+    playDateRange: {
+      type: String
+    },
+    applyDateRange: {
+      type: String
     },
     readNum: {
       type: [String, Number]
+    }
+  },
+  methods: {
+    clickHandler (e) {
+      let id = e.currentTarget.dataset.id
+      this.$router.push({
+        name: 'activitydetail',
+        params: {
+          id
+        }
+      })
+      this.$emit('click', e)
     }
   }
 }
@@ -84,6 +98,7 @@ export default {
       font-weight: 500;
       line-height: p2r(32);
       display: inline-block;
+      padding-right: p2r(30);
     }
     .date{
       font-size: p2r(24);

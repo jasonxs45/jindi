@@ -50,16 +50,17 @@
     <Split />
     <div class="activity-board">
       <statisctitle text="社区活动">
-        <div slot="more">
+        <router-link tag="div" to="/activitylist" slot="more">
           <span class="text">更多</span><Icon name="arrow-right1"/>
-        </div>
+        </router-link>
       </statisctitle>
       <activitycard
-        v-for="(item, index) in activityList"
+        v-for="(item, index) in list"
+        :data-id="item.id"
         :key="'activity-'+index"
-        :src="item.src"
+        :img="item.img"
         :title="item.title"
-        :date="item.date"
+        :playDateRange="item.playDateRange"
         :read-num="item.readNum"
         :state="item.state"
       ></activitycard>
@@ -77,6 +78,10 @@
   } from 'components'
   import 'swiper/dist/css/swiper.css'
   import { swiper, swiperSlide } from 'vue-awesome-swiper'
+  import api from 'common/api'
+  import {
+    formatDate
+  } from 'common/utils/date'
   let fetchedBanners = [
     {
       src: 'static/images/banner1.png',
@@ -151,38 +156,48 @@
             newsid: 1
           }
         ],
-        activityList: [
-          {
-            src: 'static/images/active1.png',
-            title: '武汉金地樱花季免费送武大门票',
-            date: '2018/03/23',
-            readNum: '13',
-            state: 0,
-            link: ''
-          },
-          {
-            src: 'static/images/active2.png',
-            title: '武汉金地樱花季免费送武大门票',
-            date: '2018/03/23',
-            readNum: '13',
-            state: 1,
-            link: ''
-          }
-        ]
+        activityList: []
       }
     },
     computed: {
+      list () {
+        return this.activityList.map(item => {
+          return {
+            id: item.ID,
+            img: item.Img,
+            title: item.Name,
+            applyDateRange: formatDate(new Date(item.ApplyStart), 'yyyy/MM/dd') + ' - ' + formatDate(new Date(item.ApplyEnd), 'yyyy/MM/dd'),
+            playDateRange: formatDate(new Date(item.PlayStart), 'yyyy/MM/dd') + ' - ' + formatDate(new Date(item.PlayEnd), 'yyyy/MM/dd'),
+            readNum: item.ViewCount,
+            state: item.IsOver ? 1 : 0
+          }
+        })
+      },
       swiper () {
         return this.$refs.mySwiper.swiper
       }
     },
     created () {
-
+      this.getActivityList()
     },
     mounted () {
       this.banners = this.banners.concat(fetchedBanners)
     },
     methods: {
+      getActivityList () {
+        let index = window.$loading()
+        api.getActivityList().then(res => {
+          window.$close(index)
+          if (res.data.IsSuccess) {
+            this.activityList = res.data.Data
+            this.activityList = this.activityList.splice(0, 2)
+          } else {
+            window.$alert(res.data.Message)
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      },
       swipeChangeHandler () {
         console.log(this.swiper.activeIndex)
       }
