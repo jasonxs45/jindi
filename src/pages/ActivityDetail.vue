@@ -66,9 +66,6 @@ import {
   Btn
 } from 'components'
 import api from 'common/api'
-import {
-  formatDate
-} from 'common/utils/date'
 export default {
   name: 'ActivityDetail',
   components: {
@@ -115,8 +112,8 @@ export default {
         if (res.data.IsSuccess) {
           let activity = res.data.Data
           activity.Content = activity.Content.replace(/src="\/UploadFiles\//g, 'src="http://dongyuan.1juke.cn/UploadFiles/')
-          activity.PlayStart = formatDate(new Date(activity.PlayStart), 'yyyy/MM/dd')
-          activity.PlayEnd = formatDate(new Date(activity.PlayEnd), 'yyyy/MM/dd')
+          activity.PlayStart = activity.PlayStart
+          activity.PlayEnd = activity.PlayEnd
           this.activity = activity
         } else {
           window.$alert(res.data.Message)

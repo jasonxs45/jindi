@@ -80,8 +80,8 @@
   import { swiper, swiperSlide } from 'vue-awesome-swiper'
   import api from 'common/api'
   import {
-    formatDate
-  } from 'common/utils/date'
+    entries
+  } from 'common/data'
   let fetchedBanners = [
     {
       src: 'static/images/banner1.png',
@@ -114,38 +114,7 @@
           freeModeMomentumBounce: false,
           effect: 'slide'
         },
-        entries: [
-          {
-            name: '购房进度',
-            icon: 'graph',
-            link: '/tradeprogress'
-          },
-          {
-            name: '业主报修',
-            icon: 'repair',
-            link: '/repairuser'
-          },
-          {
-            name: '我的活动',
-            icon: 'activity',
-            link: '/activitylist'
-          },
-          {
-            name: '社区期刊',
-            icon: 'books',
-            link: '/magazine'
-          },
-          {
-            name: '在线客服',
-            icon: 'msg',
-            link: '/service'
-          },
-          {
-            name: '投诉建议',
-            icon: 'suggest',
-            link: '/adviseuser'
-          }
-        ],
+        entries,
         notices: [
           {
             text: '01公告公告公告公告公告公告公告公告公告公告公告公告公告公告公告',
@@ -166,8 +135,8 @@
             id: item.ID,
             img: item.Img,
             title: item.Name,
-            applyDateRange: formatDate(new Date(item.ApplyStart), 'yyyy/MM/dd') + ' - ' + formatDate(new Date(item.ApplyEnd), 'yyyy/MM/dd'),
-            playDateRange: formatDate(new Date(item.PlayStart), 'yyyy/MM/dd') + ' - ' + formatDate(new Date(item.PlayEnd), 'yyyy/MM/dd'),
+            applyDateRange: item.ApplyStart + ' - ' + item.ApplyEnd,
+            playDateRange: item.PlayStart + ' - ' + item.PlayEnd,
             readNum: item.ViewCount,
             state: item.IsOver ? 1 : 0
           }

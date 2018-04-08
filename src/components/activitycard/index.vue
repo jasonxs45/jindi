@@ -9,7 +9,7 @@
         <flexbox-item class="state" :class="state === 0?'':'timeout'">{{state === 0?'进行中':'已过期'}}</flexbox-item>
       </flexbox>
       <flexbox class="oneline">
-        <flexbox-item class="date">活动时间：{{playDateRange}}</flexbox-item>
+        <flexbox-item class="date">{{playDateRange}}</flexbox-item>
         <flexbox-item class="read-num">{{readNum}}人查看</flexbox-item>
       </flexbox>
     </div>

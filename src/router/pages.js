@@ -33,8 +33,9 @@ const AdviseSubmit = r => require.ensure([], () => r(require('pages/AdviseSubmit
 const NewsCenter = r => require.ensure([], () => r(require('pages/NewsCenter')), 'NewsCenter')
 const NewsDetail = r => require.ensure([], () => r(require('pages/NewsDetail')), 'NewsDetail')
 
-const Contract = r => require.ensure([], () => r(require('pages/tradeprogress/Contract')), 'Contract')
-const Licence = r => require.ensure([], () => r(require('pages/tradeprogress/Licence')), 'Licence')
+const Magazine = r => require.ensure([], () => r(require('pages/Magazine')), 'Magazine')
+const MagazineInner = r => require.ensure([], () => r(require('pages/MagazineInner')), 'MagazineInner')
+const ProjectProgress = r => require.ensure([], () => r(require('pages/ProjectProgress')), 'ProjectProgress')
 export default [
   {
     path: '/',
@@ -49,20 +50,7 @@ export default [
   {
     path: '/tradeprogress',
     name: 'tradeprogress',
-    component: TradeProgress,
-    redirect: '/tradeprogress/contract',
-    children: [
-      {
-        path: 'contract',
-        name: 'contractprogress',
-        component: Contract
-      },
-      {
-        path: 'licence',
-        name: 'licenceprogress',
-        component: Licence
-      }
-    ]
+    component: TradeProgress
   },
   {
     path: '/bind',
@@ -191,5 +179,20 @@ export default [
     path: '/newsdetail/:id',
     name: 'newsdetail',
     component: NewsDetail
+  },
+  {
+    path: '/magazine',
+    name: 'magazine',
+    component: Magazine
+  },
+  {
+    path: '/magazineinner/:id',
+    name: 'magazineinner',
+    component: MagazineInner
+  },
+  {
+    path: '/projectprogress',
+    name: 'projectprogress',
+    component: ProjectProgress
   }
 ]

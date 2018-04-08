@@ -1,4 +1,41 @@
 /* eslint-disable no-unused-vars */
+let entries = [
+  {
+    name: '工程进度',
+    icon: 'msg',
+    link: '/projectprogress'
+  },
+  {
+    name: '购房进度',
+    icon: 'graph',
+    link: '/tradeprogress'
+  },
+  {
+    name: '业主报修',
+    icon: 'repair',
+    link: '/repairuser'
+  },
+  {
+    name: '我的活动',
+    icon: 'activity',
+    link: '/activitylist'
+  },
+  {
+    name: '社区期刊',
+    icon: 'books',
+    link: '/magazine'
+  },
+  // {
+  //   name: '在线客服',
+  //   icon: 'msg',
+  //   link: '/service'
+  // },
+  {
+    name: '投诉建议',
+    icon: 'suggest',
+    link: '/adviseuser'
+  }
+]
 // 报修单的数据结构
 let order = {
   state: 0, // 订单状态
@@ -117,6 +154,7 @@ let fail = `<img src="/static/images/rsfail.png" class="icon"/>
                   <p class="text">提交失败</p>`
 // 正则
 export {
+  entries,
   posRoom,
   posLocation,
   NAME_REG,

@@ -17,7 +17,7 @@ let wxConf = {
       alert('请使用微信浏览器访问，否则部分功能可能无法使用！')
     }
   },
-  wxUpload (a) {
+  wxUpload (limit, a) {
     /* 图片组 */
     let images = {
       localId: [],
@@ -25,6 +25,7 @@ let wxConf = {
     }
     /* 选择文件 */
     wx.chooseImage({
+      count: limit,
       success (res) {
         images.localId = res.localIds
         uploadImage()

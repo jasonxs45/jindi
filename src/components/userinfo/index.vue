@@ -7,9 +7,9 @@
     <flexbox-item>
       <div class="nickname">
         <span class="text">{{userInfo.nickname}}</span>
-        <span class="mark">{{userInfo.markMap[userInfo.mark]}}</span>
+        <span class="mark">{{userInfo.markMap[userInfo.state]}}</span>
       </div>
-      <div class="state-info">{{userInfo.state === 0?'尚未绑定房源信息':'已绑定'}}</div>
+      <div class="state-info">{{userInfo.state === 0?'尚未绑定房源信息':userInfo.house}}</div>
     </flexbox-item>
   </flexbox>
 <div class="tag-area" v-if="tagText">
@@ -27,6 +27,7 @@ import {
 } from 'components/flexbox'
 import Avatar from 'components/avatar'
 import Icon from 'components/icon'
+import { mapActions } from 'vuex'
 export default {
   name: 'Userinfo',
   components: {
@@ -52,7 +53,15 @@ export default {
       return this.$store.state.userInfo
     }
   },
+  created () {
+    this.getInfoAsync()
+  },
   methods: {
+    ...mapActions([
+      'getInfoAsync'
+    ]),
+    getUserInfo () {
+    },
     tagClick (e) {
       this.$emit('tagClick', e)
     }
@@ -65,13 +74,13 @@ export default {
 .user-info{
   width:100%;
   height:p2r(300);
-  background:url('/static/images/uctop.png') center/100% 100% no-repeat;
+  background:url('../../../static/images/uctop.png') center/100% 100% no-repeat;
   padding-top: p2r(50);
   padding-left: p2r(30);
   position: relative;
   &.rectangle{
     height:p2r(240);
-    background-image: url('/static/images/uctop1.png')
+    background-image: url('../../../static/images/uctop1.png')
   }
   .avatar-wrapper{
     flex:0 0 p2r(120)

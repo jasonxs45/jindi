@@ -3,20 +3,25 @@
    <userinfo tagText="绑定房源" @tagClick="goBind"></userinfo>
    <div class="entry-list">
     <div class="entry-list-wrapper">
-      <flexbox
-        v-for="(item, index) in entryList"
+      <router-link
+        tag="div"
+        v-for="(item, index) in entries"
         :key="'entry--'+index"
-        class="list-item"
-        align="center"
+        :to="item.link"
       >
-        <flexbox-item class="start-icon">
-          <Icon :name="item.icon"/>
-        </flexbox-item>
-        <flexbox-item class="item-body">
-          <span class="name">{{item.name}}</span>
-          <Icon class="end-icon" name="arrow-right"/>
-        </flexbox-item>
-      </flexbox>
+        <flexbox
+          class="list-item"
+          align="center"
+        >
+          <flexbox-item class="start-icon">
+            <Icon :name="item.icon"/>
+          </flexbox-item>
+          <flexbox-item class="item-body">
+            <span class="name">{{item.name}}</span>
+            <Icon class="end-icon" name="arrow-right"/>
+          </flexbox-item>
+        </flexbox>
+      </router-link>
     </div>
     <div class="user-footer"></div>
    </div>
@@ -30,38 +35,9 @@ import {
   Icon,
   Userinfo
 } from 'components'
-let entryList = [
-  {
-    icon:'graph',
-    name:'购房进度',
-    link:''
-  },
-  {
-    icon:'repair',
-    name:'业主报修',
-    link:''
-  },
-  {
-    icon:'activity',
-    name:'我的活动',
-    link:''
-  },
-  {
-    icon:'books',
-    name:'社区周刊',
-    link:''
-  },
-  {
-    icon:'msg',
-    name:'在线客服',
-    link:''
-  },
-  {
-    icon:'suggest',
-    name:'投诉建议',
-    link:''
-  }
-]
+import {
+  entries
+} from 'common/data'
 export default {
   name: 'Usercenter',
   components: {
@@ -73,7 +49,7 @@ export default {
   },
   data () {
     return {
-      entryList
+      entries
     }
   },
   methods: {
@@ -132,7 +108,7 @@ export default {
     .user-footer{
       width:100%;
       height: p2r(76);
-      background: url('/static/images/ucbot.png') bottom right/auto 100% no-repeat;
+      background: url('../../static/images/ucbot.png') bottom right/auto 100% no-repeat;
       margin-top: p2r(-76);
     }
   }

@@ -17,9 +17,6 @@ import {
   Activitycard
 } from 'components'
 import api from 'common/api'
-import {
-  formatDate
-} from 'common/utils/date'
 export default {
   name: 'ActivityList',
   components: {
@@ -37,8 +34,8 @@ export default {
           id: item.ID,
           img: item.Img,
           title: item.Name,
-          applyDateRange: formatDate(new Date(item.ApplyStart), 'yyyy/MM/dd') + ' - ' + formatDate(new Date(item.ApplyEnd), 'yyyy/MM/dd'),
-          playDateRange: formatDate(new Date(item.PlayStart), 'yyyy/MM/dd') + ' - ' + formatDate(new Date(item.PlayEnd), 'yyyy/MM/dd'),
+          applyDateRange: item.ApplyStart + '-' + item.ApplyEnd,
+          playDateRange: item.PlayStart + '-' + item.PlayEnd,
           readNum: item.ViewCount,
           state: item.IsOver ? 1 : 0
         }
@@ -69,10 +66,6 @@ export default {
 @import "~common/scss/variables.scss";
 @import "~common/scss/mixins.scss";
 .activity-list{
-  width:100vw;
-  height:100vh;
   padding: p2r($base-padding);
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
 }
 </style>

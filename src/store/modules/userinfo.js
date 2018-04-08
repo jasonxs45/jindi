@@ -1,13 +1,14 @@
+import api from 'common/api'
 const state = {
-  avatar: '/static/images/active1.png',
-  nickname: '这是昵称',
-  state: 0,
-  mark:0,
+  avatar: '',
+  nickname: '',
+  state: null,
+  house: null,
   markMap: [
-    '业主',
-    '家属',
+    '未注册',
     '租户',
-    '未注册'
+    '家属',
+    '业主'
   ]
 }
 // getters
@@ -17,9 +18,31 @@ const getters = {
 
 // actions
 const actions = {
+  getInfoAsync ({ commit }) {
+    let index = window.$loading()
+    let opt = {
+      Act: 'MemberCenterData'
+    }
+    api.query(opt).then(res => {
+      window.$close(index)
+      if (res.data.IsSuccess) {
+        commit('getInfo', res.data.Data)
+      } else {
+        window.$alert(res.data.Message)
+      }
+    }).catch(err => {
+      console.log(err)
+    })
+  }
 }
 // mutations
 const mutations = {
+  getInfo (state, res) {
+    state.avatar = res.HeadImgUrl
+    state.nickname = res.NickName
+    state.state = res.Identity
+    state.house = res.House.StageName + res.House.Building + '栋' + res.House.Unit + '单元' + res.House.HouseNo
+  }
 }
 
 export default {

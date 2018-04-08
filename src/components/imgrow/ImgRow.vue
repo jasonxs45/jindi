@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     clickHandler (e) {
-      wxConf.wxUpload(res => {
+      wxConf.wxUpload(4, (res) => {
         this.$emit('on-upload', res)
       })
       .catch(error => {
