@@ -3,10 +3,12 @@
     <flexbox
       v-for="(item, index) in list"
       :key="'project-'+index"
+      :data-id="item.ID"
       class="item"
+      @click="goMonthlyList"
     >
       <flexbox-item class="img">
-        <Fitimg :src="item.Img"/>
+        <Fitimg :src="'http://jindi.1juke.cn'+item.Logo"/>
       </flexbox-item>
       <flexbox-item class="text">
         <h3 class="name">{{item.Name}}</h3>
@@ -46,9 +48,9 @@ export default {
     getProjectList () {
       let index = window.$loading()
       let opt = {
-        Act: 'GetProjectList'
+        Act: 'ProgressGetProjectList'
       }
-      api.mock(opt).then(res => {
+      api.query(opt).then(res => {
         window.$close(index)
         if (res.data.IsSuccess) {
           this.fetchedList = res.data.Data
@@ -58,6 +60,15 @@ export default {
       }).catch(err => {
         console.log(err)
       })
+    },
+    goMonthlyList (e) {
+      let id = e.currentTarget.dataset.id
+      this.$router.push({
+        name: 'monthlyprogress',
+        params: {
+          id
+        }
+      })
     }
   }
 }
@@ -66,12 +77,17 @@ export default {
 @import "~common/scss/variables.scss";
 @import "~common/scss/mixins.scss";
 .project-progress{
+  width:100vw;
+  height: 100vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: p2r($base-padding);
+  background: $background-color;
   .item{
     margin:p2r(30) 0;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
     padding: p2r(20);
     border-radius: 4px;
+    background: #fff;
     &:first-child{
       margin-top: 0;
     }
@@ -82,7 +98,7 @@ export default {
         width:p2r(160);
         height: p2r(160);
         border-radius: 4px;
-        border:1px solid #ddd;
+        box-shadow: 0 0 2px 0 rgba(0,0,0,.2);
       }
     }
     .text{

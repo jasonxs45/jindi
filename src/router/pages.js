@@ -35,7 +35,12 @@ const NewsDetail = r => require.ensure([], () => r(require('pages/NewsDetail')),
 
 const Magazine = r => require.ensure([], () => r(require('pages/Magazine')), 'Magazine')
 const MagazineInner = r => require.ensure([], () => r(require('pages/MagazineInner')), 'MagazineInner')
+
 const ProjectProgress = r => require.ensure([], () => r(require('pages/ProjectProgress')), 'ProjectProgress')
+const MonthlyProgress = r => require.ensure([], () => r(require('pages/MonthlyProgress')), 'MonthlyProgress')
+const ProgressDetail = r => require.ensure([], () => r(require('pages/ProgressDetail')), 'ProgressDetail')
+
+const Investigate = r => require.ensure([], () => r(require('pages/Investigate')), 'Investigate')
 export default [
   {
     path: '/',
@@ -194,5 +199,20 @@ export default [
     path: '/projectprogress',
     name: 'projectprogress',
     component: ProjectProgress
+  },
+  {
+    path: '/monthlyprogress/:id',
+    name: 'monthlyprogress',
+    component: MonthlyProgress
+  },
+  {
+    path: '/progressdetail/:id',
+    name: 'progressdetail',
+    component: ProgressDetail
+  },
+  {
+    path: '/investigate/:id',
+    name: 'investigate',
+    component: Investigate
   }
 ]

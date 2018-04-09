@@ -1,7 +1,7 @@
 <template>
   <div class="activity-card" @click="clickHandler">
     <div class="img-wrapper">
-      <img :src="img" alt="" />
+      <Fitimg :src="img" alt="" />
     </div>
     <div class="card-content">
       <flexbox class="oneline">
@@ -10,7 +10,7 @@
       </flexbox>
       <flexbox class="oneline">
         <flexbox-item class="date">{{playDateRange}}</flexbox-item>
-        <flexbox-item class="read-num">{{readNum}}人查看</flexbox-item>
+        <flexbox-item v-if="readNum" class="read-num">{{readNum}}人查看</flexbox-item>
       </flexbox>
     </div>
   </div>
@@ -20,11 +20,13 @@ import {
   Flexbox,
   FlexboxItem
 } from 'components/flexbox'
+import Fitimg from 'components/fitimg'
 export default {
   name: 'Activitycard',
   components: {
     Flexbox,
-    FlexboxItem
+    FlexboxItem,
+    Fitimg
   },
   props: {
     img: {
@@ -72,15 +74,16 @@ export default {
 .activity-card{
   border-radius: 4px;
   overflow: hidden;
-  box-shadow: $box-shadow;
+  background:#fff;
+  box-shadow: 0 0 10px 0 rgba(0,0,0,.1);
   margin-top: p2r(30);
   &:first-child{
     margin-top:0;
   }
   .img-wrapper{
     width:100%;
-    // height:p2r(240);
-    // overflow: hidden;
+    height:p2r(320);
+    overflow: hidden;
     text-align: center;
     img{
       border-top-left-radius: 4px;

@@ -1,18 +1,18 @@
 <template>
   <div class="monthly-progress">
-    <flexbox
+    <div
       v-for="(item, index) in list"
-      :key="'project-'+index"
+      :key="'monthlyprogress-'+index"
+      :data-id="item.ID"
       class="item"
+      @click="goProgressDetail"
     >
-      <flexbox-item class="img">
-        <Fitimg :src="item.Img"/>
-      </flexbox-item>
-      <flexbox-item class="text">
-        <h3 class="name">{{item.Name}}</h3>
-        <p class="updatetime">更新时间：{{item.Ext}}</p>
-      </flexbox-item>
-    </flexbox>
+      <h3 class="title">{{item.AddTime}}</h3>
+      <div class="img">
+        <Fitimg :src="'http://jindi.1juke.cn'+item.Img" />
+      </div>
+      <p class="desc">{{item.Title}}</p>
+    </div>
   </div>
 </template>
 <script>
@@ -22,8 +22,11 @@ import {
   Fitimg
 } from 'components'
 import api from 'common/api'
+import {
+  formatDate
+} from 'common/utils/date'
 export default {
-  name: 'ProjectProgress',
+  name: 'MonthlyProgress',
   components: {
     Flexbox,
     FlexboxItem,
@@ -31,7 +34,8 @@ export default {
   },
   data () {
     return {
-      fetchedList: null
+      fetchedList: null,
+      id: null
     }
   },
   computed: {
@@ -39,27 +43,46 @@ export default {
       return this.fetchedList
     }
   },
+  watch: {
+    '$route' (to, from) {
+      this.id = to.params.id
+      this.getMonthlyList()
+    }
+  },
   created () {
-    this.getProjectList()
+    this.id = this.$route.params.id
+    this.getMonthlyList()
   },
   methods: {
-    getProjectList () {
+    getMonthlyList () {
       let index = window.$loading()
       let opt = {
-        Act: 'GetProjectList',
+        Act: 'GetProjectProgress',
         Data: JSON.stringify({
-          StageID: 20
+          StageID: this.id
         })
       }
-      api.mock(opt).then(res => {
+      api.query(opt).then(res => {
         window.$close(index)
         if (res.data.IsSuccess) {
           this.fetchedList = res.data.Data
+          this.fetchedList.forEach(item => {
+            item.AddTime = formatDate(new Date(item.AddTime.replace(/-/g, '/')), 'yyyy年MMM月')
+          })
         } else {
           window.$alert(res.Message)
         }
       }).catch(err => {
         console.log(err)
+      })
+    },
+    goProgressDetail (e) {
+      let id = e.currentTarget.dataset.id
+      this.$router.push({
+        name: 'progressdetail',
+        params: {
+          id
+        }
       })
     }
   }
@@ -68,24 +91,33 @@ export default {
 <style lang="scss" scoped>
 @import "~common/scss/variables.scss";
 @import "~common/scss/mixins.scss";
-.project-progress{
+.monthly-progress{
   padding: p2r($base-padding);
+  width:100vw;
+  height: 100vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: $background-color;
   .item{
     margin:p2r(30) 0;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,.2);
-    padding: p2r(20);
+    background: #fff;
+    padding: p2r(30);
     border-radius: 4px;
     &:first-child{
       margin-top: 0;
     }
+    .title{
+      font-size: p2r(32);
+      color:$primary-color;
+      font-weight: 600;
+    }
     .img{
-      flex: 0 0 p2r(180);
-      width:p2r(180);
+      width:100%;
+      height: p2r(260);
+      margin:p2r(30) 0;
       .fit-img{
-        width:p2r(160);
-        height: p2r(160);
         border-radius: 4px;
-        border:1px solid #ddd;
+        box-shadow: 0 0 1px 0 rgba(0,0,0,.2);
       }
     }
     .text{

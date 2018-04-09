@@ -4,7 +4,7 @@
       v-for="(item, index) in list"
       :data-id="item.id"
       :key="'activity-'+index"
-      :img="item.img"
+      :img="'http://jindi.1juke.cn'+item.img"
       :title="item.title"
       :playDateRange="item.playDateRange"
       :read-num="item.readNum"

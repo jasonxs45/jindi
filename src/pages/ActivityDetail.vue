@@ -7,7 +7,7 @@
       <div class="details">
         <flexbox class="oneline">
           <flexbox-item class="title">{{usedActivity.Name}}</flexbox-item>
-          <flexbox-item class="state" :class="!usedActivity.IsOver?'':'timeout'">{{usedActivity.state === 0?'进行中':'已过期'}}</flexbox-item>
+          <flexbox-item class="state" :class="!usedActivity.IsOver?'':'timeout'">{{usedActivity.state === 1?'进行中':'已过期'}}</flexbox-item>
         </flexbox>
         <p class="desc">
           {{usedActivity.Explain}}
@@ -45,7 +45,7 @@
         type="primary"
         :text="usedActivity.IsOver?'报名截至时间已过':'我要报名'"
         :disabled="usedActivity.IsOver?true:false"
-        @click="toggleMask"
+        @click="btnClick"
       />
     </div>
     <div class="mask">
@@ -53,7 +53,33 @@
         <div class="bg" v-show="showPanel" @click="toggleMask"></div>
       </transition>
       <transition name="slide-up">
-        <div class="panel"  v-show="showPanel"></div>
+        <div class="panel"  v-show="showPanel">
+          <div class="panel-wrapper">
+            <dl
+              v-for="(item, index) in usedActivity.Options"
+              :key="'usedActivity-'+index"
+              class="choosing-item"
+            >
+              <dt class="title">{{item.title}}</dt>
+              <dd class="content">
+                <label
+                  v-for="(tag, index) in item.keys"
+                  :key="'choosingtag-'+index+Math.random().toString(36).substr(2)"
+                  class="radio-wrapper"
+                >
+                  <input
+                    type="radio"
+                    :name="item.title"
+                    :value="tag"
+                    class="radio"
+                  >
+                  <span class="text">{{tag}}</span>
+                </label>
+              </dd>
+            </dl>
+          </div>
+          <Btn type="primary" size="lar" text="确定" @click="optionSignIn"/>
+        </div>
       </transition>
     </div>
   </div>
@@ -66,6 +92,9 @@ import {
   Btn
 } from 'components'
 import api from 'common/api'
+import {
+  formatDate
+} from 'common/utils/date'
 export default {
   name: 'ActivityDetail',
   components: {
@@ -78,7 +107,8 @@ export default {
     return {
       activity: {},
       activityId: null,
-      showPanel: false
+      showPanel: false,
+      selectedOptions: []
     }
   },
   computed: {
@@ -92,6 +122,7 @@ export default {
   watch: {
     '$route' (to, from) {
       this.activityId = to.params.id
+      this.getActivityInfo()
     }
   },
   created () {
@@ -101,20 +132,82 @@ export default {
   methods: {
     getActivityInfo () {
       let index = window.$loading()
-      let opt = {
-        Act: 'GetActivityInfo',
-        Data: JSON.stringify({
-          ID: this.id
-        })
-      }
-      api.mock(opt).then(res => {
+      let id = this.id
+      api.getActivityDetail(id).then(res => {
         window.$close(index)
         if (res.data.IsSuccess) {
           let activity = res.data.Data
-          activity.Content = activity.Content.replace(/src="\/UploadFiles\//g, 'src="http://dongyuan.1juke.cn/UploadFiles/')
-          activity.PlayStart = activity.PlayStart
-          activity.PlayEnd = activity.PlayEnd
+          activity.Img = 'http://jindi.1juke.cn' + activity.Img
+          activity.Content = activity.Content.replace(/src="\/UploadFiles\//g, 'src="http://jindi.1juke.cn/UploadFiles/')
+          activity.PlayStart = formatDate(new Date(activity.PlayStart), 'yyyy/MM/dd hh:mm')
+          activity.PlayEnd = formatDate(new Date(activity.PlayEnd), 'yyyy/MM/dd hh:mm')
+          activity.state = activity.IsOver ? 0 : 1
+          if (activity.Options) {
+            activity.Options = JSON.parse(activity.Options)
+          }
           this.activity = activity
+        } else {
+          window.$alert(res.data.Message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    btnClick () {
+      if (this.usedActivity.Options) {
+        this.toggleMask()
+      } else {
+        this.directSignIn()
+      }
+    },
+    directSignIn () {
+      let index = window.$loading()
+      let opt = {
+        Act: 'ActivityApply',
+        Data: JSON.stringify({
+          ID: this.activityId
+        })
+      }
+      api.query(opt).then(res => {
+        window.$close(index)
+        if (res.data.IsSuccess) {
+          window.$alert({
+            title: '恭喜您！',
+            content: '报名成功！'
+          })
+        } else {
+          window.$alert(res.data.Message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    optionSignIn () {
+      this.selectedOptions = []
+      for (let i = 0; i < this.usedActivity.Options.length; i++) {
+        let title = this.usedActivity.Options[i].title
+        let value = document.querySelector(`input[name="${title}"]:checked`).value
+        let obj = {
+          title,
+          value
+        }
+        this.selectedOptions.push(obj)
+      }
+      let index = window.$loading()
+      let opt = {
+        Act: 'ActivityApply',
+        Data: JSON.stringify({
+          ID: this.activityId,
+          Options: JSON.stringify(this.selectedOptions)
+        })
+      }
+      api.query(opt).then(res => {
+        window.$close(index)
+        if (res.data.IsSuccess) {
+          window.$alert({
+            title: '恭喜您！',
+            content: '报名成功！'
+          })
         } else {
           window.$alert(res.data.Message)
         }
@@ -259,12 +352,67 @@ export default {
       position: fixed;
       width:100%;
       height: p2r(900);
-      background: rgba(255,255,255,.95);
+      background: rgba(255,255,255,1);
       border-top-left-radius: 4px;
       border-top-right-radius: 4px;
       bottom:0;
       z-index:$zindex-notification;
       padding:p2r(80) p2r(30) 0;
+      .panel-wrapper{
+        height: p2r(640);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        .choosing-item{
+          margin-top: p2r(80);
+          overflow: hidden;
+          &:first-child{
+            margin-top: 0;
+          }
+          .title{
+            font-size: p2r(28);
+            color:$text-sub-color;
+            font-weight: 600;
+          }
+          .content{
+            margin: {
+              top:p2r(40);
+              left: p2r(-30);
+              right: p2r(-30);
+            }
+            .radio-wrapper{
+              display: inline-block;
+              position: relative;
+              width:p2r(190);
+              height:p2r(60);
+              margin:p2r(20) p2r(30) 0;
+              .radio{
+                width:0;
+                height:0;
+                display: block;
+                &:checked + .text{
+                  background: $primary-color;
+                  color:#fff;
+                }
+              }
+              .text{
+                color:lighten($primary-color, 15%);
+                font-size: p2r(24);
+                display: block;
+                width:100%;
+                height: 100%;
+                border-radius: 25px;
+                border:1px solid lighten($primary-color, 15%);
+                line-height: p2r(58);
+                text-align: center;
+                font-weight: 200;
+              }
+            }
+          }
+        }
+      }
+      .btn{
+        margin-top: p2r(30);
+      }
     }
   }
 }

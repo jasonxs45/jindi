@@ -6,8 +6,10 @@
         <swiper-slide
           v-for="(item, index) in banners"
           :key="'banner-'+index"
+          :data-id="item.ID"
+          @click.native="newsDetail"
         >
-          <Fitimg :src="item.img" alt="" />
+          <Fitimg :src="item.Thumbnail" alt="" />
         </swiper-slide>
         <!-- Optional controls -->
         <div class="swiper-pagination"  slot="pagination"></div>
@@ -18,20 +20,20 @@
         <Split :key="'news-item'+index+Math.random().toString(36).substr(2)"/>
         <flexbox
           :key="'news-item'+index+Math.random().toString(36).substr(2)"
-          :data-id="item.id"
+          :data-id="item.ID"
           class="item"
           @click="newsDetail"
         >
           <flexbox-item class="thumb">
             <Fitimg
-              :src="item.img"
+              :src="item.Thumbnail"
             />
           </flexbox-item>
           <flexbox-item class="text">
             <p class="title">
-              {{item.title}}
+              {{item.Title}}
             </p>
-            <p class="date">{{item.date}}</p>
+            <p class="date">{{item.AddTime}}</p>
           </flexbox-item>
         </flexbox>
       </template>
@@ -85,9 +87,15 @@ export default {
   },
   methods: {
     getList () {
-      api.mock('newslist').then(res => {
-        console.log(res)
-        this.newslist = res.data.data
+      api.getNewsList().then(({res, index}) => {
+        if (res.data.IsSuccess) {
+          this.newslist = res.data.Data
+          this.newslist.forEach(item => {
+            item.Thumbnail = 'http://jindi.1juke.cn' + item.Thumbnail
+          })
+        } else {
+          window.$alert(res.data.Message)
+        }
       }).catch(err => {
         console.log(err)
       })
