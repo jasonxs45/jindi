@@ -42,6 +42,8 @@ const MonthlyProgress = r => require.ensure([], () => r(require('pages/MonthlyPr
 const ProgressDetail = r => require.ensure([], () => r(require('pages/ProgressDetail')), 'ProgressDetail')
 
 const Investigate = r => require.ensure([], () => r(require('pages/Investigate')), 'Investigate')
+
+const MessageCenter = r => require.ensure([], () => r(require('pages/MessageCenter')), 'MessageCenter')
 export default [
   {
     path: '/',
@@ -220,5 +222,10 @@ export default [
     path: '/investigate/:id',
     name: 'investigate',
     component: Investigate
+  },
+  {
+    path: '/messagecenter',
+    name: 'messagecenter',
+    component: MessageCenter
   }
 ]

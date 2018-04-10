@@ -47,9 +47,7 @@ export default {
   },
   methods: {
     getList () {
-      let index = window.$loading()
-      api.getActivityList().then(res => {
-        window.$close(index)
+      api.getActivityList().then(({res, index}) => {
         if (res.data.IsSuccess) {
           this.activityList = res.data.Data
         } else {

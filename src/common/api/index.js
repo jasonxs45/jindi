@@ -48,11 +48,22 @@ let api = {
   },
   // 公用请求
   // 获取活动列表
-  getActivityList () {
+  getActivityList (type = 1) {
+    let index = window.$loading()
     let opt = {
-      Act: 'ActivityGetList'
+      Act: 'ActivityGetList',
+      Data: JSON.stringify({
+        S_Class: type
+      })
     }
-    return this.query(opt)
+    return this.query(opt).then(res => {
+      return new Promise((resolve, reject) => {
+        if (res.status === 200) {
+          window.$close(index)
+          resolve({res, index})
+        }
+      })
+    })
   },
   // 获取活动详情
   getActivityDetail (ID) {
@@ -179,6 +190,21 @@ let api = {
       Data: JSON.stringify({
         Answer
       })
+    }
+    return this.query(opt).then(res => {
+      return new Promise((resolve, reject) => {
+        if (res.status === 200) {
+          window.$close(index)
+          resolve({res, index})
+        }
+      })
+    })
+  },
+  // 消息中心
+  getMyMessage () {
+    let index = window.$loading()
+    let opt = {
+      Act: 'GetMyMessage'
     }
     return this.query(opt).then(res => {
       return new Promise((resolve, reject) => {

@@ -14,12 +14,12 @@
           class="link-item"
         >
           <span
-            v-if="parseInt(item.ArticleType)<2"
+            v-if="!item.Url"
             :data-id="item.ID"
             class="txt"
             @click="goDetail"
           >{{item.Title}}</span>
-          <a v-else class="txt" :href="item.ArticleContent">{{item.Title}}</a>
+          <a v-else class="txt" :href="item.Url">{{item.Title}}</a>
         </div>
       </div>
     </div>
