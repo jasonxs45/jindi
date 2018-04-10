@@ -46,12 +46,8 @@ export default {
   },
   methods: {
     getProjectList () {
-      let index = window.$loading()
-      let opt = {
-        Act: 'ProgressGetProjectList'
-      }
-      api.query(opt).then(res => {
-        window.$close(index)
+      api.getProjectProgress()
+      .then(({res, index}) => {
         if (res.data.IsSuccess) {
           this.fetchedList = res.data.Data
         } else {

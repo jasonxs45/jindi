@@ -27,7 +27,7 @@
           </swiper-slide>
         </swiper>
       </div>
-      <div class="progress">
+      <div v-if="currentProgress.length" class="progress">
         <flexbox
           v-for="(item, index) in currentProgress"
           :key="'item-'+activeTabIndex+index"
@@ -44,6 +44,9 @@
             </div>
           </flexbox-item>
         </flexbox>
+      </div>
+      <div v-else class="no-data-guide">
+        <nodata>暂无信息</nodata>
       </div>
     </div>
     <div v-else class="no-data-guide">
@@ -125,12 +128,8 @@ export default {
   },
   methods: {
     getProgress () {
-      let index = window.$loading()
-      let opt = {
-        Act: 'ProcessData'
-      }
-      api.query(opt).then(res => {
-        window.$close(index)
+      api.getTradeProgress()
+      .then(({res, index}) => {
         if (res.data.IsSuccess) {
           this.fetchedData = res.data.Data
         } else {

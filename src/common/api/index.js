@@ -38,6 +38,12 @@ let api = {
       qs.stringify(opt)
     )
   },
+  // 授权
+  getAuth () {
+    return axios.post('/Admin-GetAuthorize', {
+      redirectUrl: location.href
+    })
+  },
   // 真实查询
   query (opt) {
     Object.assign(opt, { openid })
@@ -47,6 +53,71 @@ let api = {
     )
   },
   // 公用请求
+  // 获取购房进度
+  getTradeProgress () {
+    let index = window.$loading()
+    let opt = {
+      Act: 'ProcessData'
+    }
+    return this.query(opt).then(res => {
+      return new Promise((resolve, reject) => {
+        if (res.status === 200) {
+          window.$close(index)
+          resolve({res, index})
+        }
+      })
+    })
+  },
+  // 获取工程进度项目列表
+  getProjectProgress () {
+    let index = window.$loading()
+    let opt = {
+      Act: 'ProgressGetProjectList'
+    }
+    return this.query(opt).then(res => {
+      return new Promise((resolve, reject) => {
+        if (res.status === 200) {
+          window.$close(index)
+          resolve({res, index})
+        }
+      })
+    })
+  },
+  // 获取工程进度月份列表
+  getMonthlyProgress (StageID) {
+    let index = window.$loading()
+    let opt = {
+      Act: 'GetProjectProgress',
+      Data: JSON.stringify({
+        StageID
+      })
+    }
+    return this.query(opt).then(res => {
+      return new Promise((resolve, reject) => {
+        if (res.status === 200) {
+          window.$close(index)
+          resolve({res, index})
+        }
+      })
+    })
+  },
+  getProgressDetail (ID) {
+    let index = window.$loading()
+    let opt = {
+      Act: 'GetProgressDetail',
+      Data: JSON.stringify({
+        ID
+      })
+    }
+    return this.query(opt).then(res => {
+      return new Promise((resolve, reject) => {
+        if (res.status === 200) {
+          window.$close(index)
+          resolve({res, index})
+        }
+      })
+    })
+  },
   // 获取活动列表
   getActivityList (type = 1) {
     let index = window.$loading()

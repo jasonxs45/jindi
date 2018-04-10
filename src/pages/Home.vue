@@ -39,10 +39,10 @@
           justify="center"
         >
           <flexbox-item
-            v-for="(item, index) in notices"
-            :key="'notice'+index"
+            v-for="(item, index) in newslist"
+            :key="'news'+index"
           >
-            <p  class="notice">{{item.text}}</p>
+            <p class="notice" :data-id="item.ID" @click="goNewsDetail">{{item.Title}}</p>
           </flexbox-item>
         </flexbox>
       </flexbox-item>
@@ -80,6 +80,9 @@
   import { swiper, swiperSlide } from 'vue-awesome-swiper'
   import api from 'common/api'
   import {
+    formatDate
+  } from 'common/utils/date'
+  import {
     entries
   } from 'common/data'
   let fetchedBanners = [
@@ -115,16 +118,7 @@
           effect: 'slide'
         },
         entries,
-        notices: [
-          {
-            text: '01公告公告公告公告公告公告公告公告公告公告公告公告公告公告公告',
-            newsid: 0
-          },
-          {
-            text: '12公告公告公告公告公告公告公告公告公告公告公告公告公告公告公告',
-            newsid: 1
-          }
-        ],
+        newslist: [],
         activityList: []
       }
     },
@@ -148,6 +142,7 @@
     },
     created () {
       this.getActivityList()
+      this.getNewsList()
     },
     mounted () {
       this.banners = this.banners.concat(fetchedBanners)
@@ -159,6 +154,10 @@
           if (res.data.IsSuccess) {
             this.activityList = res.data.Data
             this.activityList = this.activityList.splice(0, 2)
+            this.activityList.forEach(item => {
+              item.PlayStart = formatDate(new Date(item.PlayStart), 'yyyy/MM/dd hh:mm')
+              item.PlayEnd = formatDate(new Date(item.PlayEnd), 'yyyy/MM/dd hh:mm')
+            })
           } else {
             window.$alert(res.data.Message)
           }
@@ -166,8 +165,31 @@
           console.log(err)
         })
       },
+      getNewsList () {
+        api.getNewsList()
+        .then(({res, index}) => {
+          if (res.data.IsSuccess) {
+            this.newslist = res.data.Data
+            this.newslist = this.newslist.splice(0, 2)
+          } else {
+            window.$alert(res.data.Message)
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      },
       swipeChangeHandler () {
         console.log(this.swiper.activeIndex)
+      },
+      goNewsDetail (e) {
+        let id = e.currentTarget.dataset.id
+        this.$router.push({
+          name: 'newsdetail',
+          params: {
+            id
+          }
+        })
       }
     }
   }
@@ -219,7 +241,7 @@
     overflow: hidden;
     .notice{
       color:$text-color;
-      font-size: p2r(20);
+      font-size: p2r(24);
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
@@ -227,6 +249,7 @@
       line-height: p2r(48);
       padding-left:p2r(30);
       position: relative;
+      font-weight: 200;
       &:before{
         content: '';
         display: inline-block;

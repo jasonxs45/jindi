@@ -39,14 +39,8 @@ export default {
   },
   methods: {
     getMonthlyDetail () {
-      let index = window.$loading()
-      let opt = {
-        Act: 'GetProgressDetail',
-        Data: JSON.stringify({
-          ID: this.id
-        })
-      }
-      api.query(opt).then(res => {
+      api.getProgressDetail(this.id)
+      .then(({res, index}) => {
         window.$close(index)
         if (res.data.IsSuccess) {
           this.fetchedDetail = res.data.Data
@@ -76,6 +70,13 @@ export default {
     font-size: p2r(24);
     color:$thr-color;
     line-height: 1.4;
+  }
+  .content{
+    color: $text-sub-color;
+    line-height: 1.5 !important;
+    font-size: p2r(26) !important;
+    text-indent: 0 !important;
+    font-family: 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', arial, sans-serif !important;
   }
 }
 </style>

@@ -54,7 +54,9 @@ export default {
   },
   methods: {
     goBind () {
-      alert('绑定房源')
+      this.$router.push({
+        name: 'bind'
+      })
     }
   }
 }

@@ -13,7 +13,7 @@ let entries = [
   {
     name: '业主报修',
     icon: 'repair',
-    link: '/repairuser'
+    link: '/wait'
   },
   {
     name: '我的活动',
@@ -33,7 +33,7 @@ let entries = [
   {
     name: '投诉建议',
     icon: 'suggest',
-    link: '/adviseuser'
+    link: '/wait'
   }
 ]
 // 报修单的数据结构

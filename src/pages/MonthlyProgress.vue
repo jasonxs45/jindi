@@ -55,15 +55,8 @@ export default {
   },
   methods: {
     getMonthlyList () {
-      let index = window.$loading()
-      let opt = {
-        Act: 'GetProjectProgress',
-        Data: JSON.stringify({
-          StageID: this.id
-        })
-      }
-      api.query(opt).then(res => {
-        window.$close(index)
+      api.getMonthlyProgress(this.id)
+      .then(({res, index}) => {
         if (res.data.IsSuccess) {
           this.fetchedList = res.data.Data
           this.fetchedList.forEach(item => {

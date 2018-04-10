@@ -44,11 +44,24 @@ const ProgressDetail = r => require.ensure([], () => r(require('pages/ProgressDe
 const Investigate = r => require.ensure([], () => r(require('pages/Investigate')), 'Investigate')
 
 const MessageCenter = r => require.ensure([], () => r(require('pages/MessageCenter')), 'MessageCenter')
+
+const Auth = r => require.ensure([], () => r(require('pages/Auth')), 'Auth')
+const Wait = r => require.ensure([], () => r(require('pages/Wait')), 'Wait')
 export default [
   {
     path: '/',
     name: 'home',
     component: Home
+  },
+  {
+    path: '/auth',
+    name: 'auth',
+    component: Auth
+  },
+  {
+    path: '/wait',
+    name: 'wait',
+    component: Wait
   },
   {
     path: '/usercenter',

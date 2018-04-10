@@ -1,6 +1,7 @@
 import axios from 'axios'
+import wx from 'weixin-js-sdk'
+import api from '../api'
 import qs from 'qs'
-let wx = window.wx
 // const comOpenId = 'gh_ba3ae28cdc9b'
 const webRoot = 'http://jindi.1juke.cn'
 let wxConf = {
@@ -16,6 +17,28 @@ let wxConf = {
     if (!(/micromessenger/i).test(ua)) {
       alert('请使用微信浏览器访问，否则部分功能可能无法使用！')
     }
+    let _self = this
+    api.getAuth().then((res) => {
+      if (res.data.IsSuccess) {
+        wx.config({
+          debug: false,
+          appId: res.data.Data.AppId,
+          timestamp: res.data.Data.Timestamp,
+          nonceStr: res.data.Data.NonceStr,
+          signature: res.data.Data.Signature,
+          jsApiList: this.apilist
+        })
+        wx.ready(() => {
+          wx.onMenuShareAppMessage(_self.shareData)
+          wx.onMenuShareTimeline(_self.shareData)
+          wx.onMenuShareQQ(_self.shareData)
+        })
+      } else {
+        location.href = res.data.Data
+      }
+    }).catch((err) => {
+      console.log(err)
+    })
   },
   wxUpload (limit, a) {
     /* 图片组 */
@@ -76,6 +99,42 @@ let wxConf = {
         console.log(err)
       })
     }
-}
+  },
+  apilist: [
+    'checkJsApi',
+    'onMenuShareTimeline',
+    'onMenuShareAppMessage',
+    'onMenuShareQQ',
+    'onMenuShareWeibo',
+    'hideMenuItems',
+    'showMenuItems',
+    'hideAllNonBaseMenuItem',
+    'showAllNonBaseMenuItem',
+    'translateVoice',
+    'startRecord',
+    'stopRecord',
+    'onRecordEnd',
+    'playVoice',
+    'pauseVoice',
+    'stopVoice',
+    'uploadVoice',
+    'downloadVoice',
+    'chooseImage',
+    'previewImage',
+    'uploadImage',
+    'downloadImage',
+    'getNetworkType',
+    'openLocation',
+    'getLocation',
+    'hideOptionMenu',
+    'showOptionMenu',
+    'closeWindow',
+    'scanQRCode',
+    'chooseWXPay',
+    'openProductSpecificView',
+    'addCard',
+    'chooseCard',
+    'openCard'
+  ]
 }
 export default wxConf
