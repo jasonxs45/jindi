@@ -249,7 +249,7 @@ export default {
 .bind-owner {
   width: 100vw;
   height: 100vh;
-  background: url("/static/images/bg.png") center/cover no-repeat;
+  background: url("../../../static/images/bg.png") center/cover no-repeat;
   padding: p2r(30);
   .bind-owner-wrapper {
     width: 100%;

@@ -19,12 +19,8 @@ const getters = {
 // actions
 const actions = {
   getInfoAsync ({ commit }) {
-    let index = window.$loading()
-    let opt = {
-      Act: 'MemberCenterData'
-    }
-    api.query(opt).then(res => {
-      window.$close(index)
+    api.getWeixinInfo()
+    .then(({res, index}) => {
       if (res.data.IsSuccess) {
         commit('getInfo', res.data.Data)
       } else {

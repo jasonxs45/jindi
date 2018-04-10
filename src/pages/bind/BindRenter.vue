@@ -60,14 +60,13 @@ export default {
   },
   created () {
     this.getMemberInfo()
+    // 获取个人微信昵称
+    this.$store.dispatch('getInfoAsync')
   },
   methods: {
     getMemberInfo () {
-      let index = window.$loading()
-      let opt = {
-        Act: 'MemberGetMyInfo'
-      }
-      api.query(opt).then(res => {
+      api.getMemberInfo()
+      .then(({res, index}) => {
         window.$close(index)
         if (res.data.IsSuccess) {
           this.user = res.data.Data
@@ -93,7 +92,7 @@ export default {
     },
     changeShare () {
       let shareData = {
-          title: 'xx申请加入金地',
+          title: `${this.$store.state.userInfo.nickname}申请加入金地`,
           desc: '请审核身份真实有效性后进行绑定',
           link: location.origin + location.pathname + `#/bind/bindownerconfirm/type/${this.typeid}/member/${this.memberid}`,
           imgUrl: 'http://jindi.1juke.cn/dist/static/images/active1.png'

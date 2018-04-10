@@ -1,8 +1,5 @@
 export default {
   GLOBAL: 'GLOBAL',
   HOME: 'HOME',
-  HOME_LOADING: 'HOME_LOADING',
-  TOPIC: 'TOPIC',
-  DESTROYED: 'DESTROYED',
   USER: 'USER'
 }

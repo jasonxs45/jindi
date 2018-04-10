@@ -53,6 +53,36 @@ let api = {
     )
   },
   // 公用请求
+  // 获取微信昵称头像等
+  getWeixinInfo () {
+    let index = window.$loading()
+    let opt = {
+      Act: 'MemberCenterData'
+    }
+    return this.query(opt).then(res => {
+      return new Promise((resolve, reject) => {
+        if (res.status === 200) {
+          window.$close(index)
+          resolve({res, index})
+        }
+      })
+    })
+  },
+  // 获取会员信息
+  getMemberInfo () {
+    let index = window.$loading()
+    let opt = {
+      Act: 'MemberGetMyInfo'
+    }
+    return this.query(opt).then(res => {
+      return new Promise((resolve, reject) => {
+        if (res.status === 200) {
+          window.$close(index)
+          resolve({res, index})
+        }
+      })
+    })
+  },
   // 获取购房进度
   getTradeProgress () {
     let index = window.$loading()
@@ -101,6 +131,7 @@ let api = {
       })
     })
   },
+  // 获取工程进度月份详细
   getProgressDetail (ID) {
     let index = window.$loading()
     let opt = {

@@ -1,5 +1,6 @@
 <template>
   <div class="activity-list">
+    <nodata v-if="list.length<1">暂无活动信息</nodata>
     <activitycard
       v-for="(item, index) in list"
       :data-id="item.id"
@@ -14,13 +15,15 @@
 </template>
 <script>
 import {
-  Activitycard
+  Activitycard,
+  Nodata
 } from 'components'
 import api from 'common/api'
 export default {
   name: 'ActivityList',
   components: {
-    Activitycard
+    Activitycard,
+    Nodata
   },
   data () {
     return {
