@@ -188,7 +188,7 @@ export default {
       })
     },
     uploadImg (res) {
-      alert(res)
+      // alert(res)
       this.uploadedImgs.push(res)
     }
   }
