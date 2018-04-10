@@ -83,23 +83,111 @@ let api = {
       })
     })
   },
-    // 获取新闻详细
-    getNewsDetail (ID) {
-      let index = window.$loading()
-      let opt = {
-        Act: 'NewsGetInfo',
-        Data: JSON.stringify({
-          ID
-        })
-      }
-      return this.query(opt).then(res => {
-        return new Promise((resolve, reject) => {
-          if (res.status === 200) {
-            window.$close(index)
-            resolve({res, index})
-          }
-        })
+  // 获取新闻详细
+  getNewsDetail (ID) {
+    let index = window.$loading()
+    let opt = {
+      Act: 'NewsGetInfo',
+      Data: JSON.stringify({
+        ID
       })
     }
+    return this.query(opt).then(res => {
+      return new Promise((resolve, reject) => {
+        if (res.status === 200) {
+          window.$close(index)
+          resolve({res, index})
+        }
+      })
+    })
+  },
+  // 电子期刊列表
+  getMagazineList () {
+    let index = window.$loading()
+    let opt = {
+      Act: 'PeriodicalGetList',
+      Data: JSON.stringify({})
+    }
+    return this.query(opt).then(res => {
+      return new Promise((resolve, reject) => {
+        if (res.status === 200) {
+          window.$close(index)
+          resolve({res, index})
+        }
+      })
+    })
+  },
+  // 电子期刊列表内页
+  getMagazineInner (ID) {
+    let index = window.$loading()
+    let opt = {
+      Act: 'PeriodicalGetArticle',
+      Data: JSON.stringify({
+        ID
+      })
+    }
+    return this.query(opt).then(res => {
+      return new Promise((resolve, reject) => {
+        if (res.status === 200) {
+          window.$close(index)
+          resolve({res, index})
+        }
+      })
+    })
+  },
+  // 电子期刊详细
+  getMagazineDetail (ID) {
+    let index = window.$loading()
+    let opt = {
+      Act: 'PeriodicalGetArticleDetail',
+      Data: JSON.stringify({
+        ID
+      })
+    }
+    return this.query(opt).then(res => {
+      return new Promise((resolve, reject) => {
+        if (res.status === 200) {
+          window.$close(index)
+          resolve({res, index})
+        }
+      })
+    })
+  },
+  // 获取问卷调查内容
+  getInvestigate (ID) {
+    let index = window.$loading()
+    let opt = {
+      Act: 'ResearchGetInfo',
+      Data: JSON.stringify({
+        ID
+      })
+    }
+    return this.query(opt).then(res => {
+      return new Promise((resolve, reject) => {
+        if (res.status === 200) {
+          window.$close(index)
+          resolve({res, index})
+        }
+      })
+    })
+  },
+  // 获取问卷调查内容
+  saveInvestigate (Answer) {
+    let index = window.$loading()
+    let opt = {
+      Act: 'ResearchSaveAnswer',
+      Data: JSON.stringify({
+        Answer
+      })
+    }
+    return this.query(opt).then(res => {
+      return new Promise((resolve, reject) => {
+        if (res.status === 200) {
+          window.$close(index)
+          resolve({res, index})
+        }
+      })
+    })
+  }
 }
 export default api

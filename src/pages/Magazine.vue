@@ -1,17 +1,18 @@
 <template>
   <div class="magazine">
     <h2 class="title">社区期刊</h2>
-    <p class="desc">这里是刊内容的说明这里是对于社区期刊内容的说明这里是对于社区期刊内容的说明这里是对于社区期刊内容的说明这里是对于社区期刊内容的说明这里是对于社区期刊内容的说明</p>
+    <p class="desc">{{desc}}</p>
     <div class="swiper">
       <swiper :options="swiperOption" ref="mySwiper" @slideChange="swipeChangeHandler">
         <!-- slides -->
         <swiper-slide
           v-for="(item, index) in banners"
           :key="'banner-'+index"
-          :data-index="index"
+          :data-id="item.id"
           @click.native="goInner"
         >
-          <img :src="item.src" alt="" />
+          <p class="tit">{{item.title}}</p>
+          <Fitimg :src="item.img" alt="" />
         </swiper-slide>
       </swiper>
     </div>
@@ -20,24 +21,20 @@
 <script>
 import 'swiper/dist/css/swiper.css'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import {
+  Fitimg
+} from 'components'
+import api from 'common/api'
 export default {
   name: 'Magazine',
   components: {
     swiper,
-    swiperSlide
+    swiperSlide,
+    Fitimg
   },
   data () {
     return {
-      banners: [
-        {
-          src: 'static/images/magazine.png',
-          link:''
-        },
-        {
-          src: 'static/images/magazine.png',
-          link:''
-        }
-      ],
+      fetchedList: [],
       swiperOption: {
         slidesPerView: 'auto',
         centeredSlides: true,
@@ -52,16 +49,57 @@ export default {
     }
   },
   computed: {
+    banners () {
+      return this.fetchedList.map(item => {
+        return {
+          title: item.Title,
+          img: item.CoverImg,
+          id: item.ID,
+          desc: item.Description
+        }
+      })
+    },
+    desc () {
+      if (this.banners.length > 0) {
+        return this.banners[this.activeSwipeIndex].desc
+      }
+    },
     swiper () {
       return this.$refs.mySwiper.swiper
     }
   },
+  created () {
+    this.getMagazineList()
+  },
   methods: {
+    getMagazineList () {
+      api.getMagazineList()
+      .then(({res, index}) => {
+        if (res.data.IsSuccess) {
+          let fetchedList = res.data.Data
+          fetchedList.forEach(item => {
+            item.CoverImg = 'http://jindi.1juke.cn' + item.CoverImg
+          })
+          this.fetchedList = fetchedList
+        } else {
+          window.$alert(res.data.Message)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
     swipeChangeHandler (val) {
       this.activeSwipeIndex = this.swiper.activeIndex
     },
     goInner (e) {
-      console.log(e.currentTarget.dataset.index)
+      let id = e.currentTarget.dataset.id
+      this.$router.push({
+        name: 'magazineinner',
+        params: {
+          id
+        }
+      })
     }
   }
 }
@@ -95,17 +133,28 @@ export default {
     .swiper-container{
       width:100%;
       height: 100%;
-      padding-top: p2r(100);
+      padding-top: p2r(40);
       .swiper-slide{
         width:p2r(440) !important;
-        height: p2r(600) !important;
-        background: #fff;
-        padding: p2r(20);
-        box-shadow: 0 8px 20px 0 rgba(0,0,0,.2);
+        height:p2r(700) !important;
         transform: scale(.9);
         transition: transform .3s;
         &.swiper-slide-active{
           transform: scale(1);
+        }
+        .tit{
+          font-size: p2r(30);
+          color: $primary-color;
+          margin: p2r(30) 0;
+          text-shadow: 1px 1px 1px lighten($primary-color, 20%);
+        }
+        .fit-img{
+          display: block;
+          width:100%;
+          height: p2r(600);
+          background: #fff;
+          padding: p2r(20);
+          box-shadow: 0 8px 20px 0 rgba(0,0,0,.2);
         }
       }
     }

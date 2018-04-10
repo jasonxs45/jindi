@@ -2,6 +2,7 @@
   <label class="textarea-wrapper">
     <textarea
       :placeholder="placeholder"
+      :name="name"
       @input="inputHandler"
       @change="changeHandler"
       class="textarea"
@@ -14,6 +15,9 @@ export default {
   name: 'XTextarea',
   props: {
     placeholder: {
+      type: String
+    },
+    name: {
       type: String
     }
   },

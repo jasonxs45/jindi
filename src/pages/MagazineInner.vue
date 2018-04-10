@@ -8,14 +8,19 @@
       <Split type="line" />
       <h3 class="title"><span class="num">{{month}}</span>月刊</h3>
       <div class="links">
-        <a
+        <div
           v-for="(item, index) in links"
           :key="'link-'+index"
-          :href="item.link"
           class="link-item"
         >
-          {{item.text}}
-        </a>
+          <span
+            v-if="parseInt(item.ArticleType)<2"
+            :data-id="item.ID"
+            class="txt"
+            @click="goDetail"
+          >{{item.Title}}</span>
+          <a v-else class="txt" :href="item.ArticleContent">{{item.Title}}</a>
+        </div>
       </div>
     </div>
   </div>
@@ -24,6 +29,10 @@
 import {
   Split
 } from 'components'
+import api from 'common/api'
+import {
+  formatDate
+} from 'common/utils/date'
 export default {
   name: 'MagazineInner',
   components: {
@@ -32,55 +41,60 @@ export default {
   data () {
     return {
       id: null,
-      month: '03',
-      bg: 'static/images/coverbg.png',
-      links: [
-        {
-          text: '走进社区  走进环保',
-          link: ''
-        },
-        {
-          text: '走进社区  走进环保走进社区  走进环保走进社区  走进环保走进社区  走进环保',
-          link: ''
-        },
-        {
-          text: '走进社区  走进环保',
-          link: ''
-        },
-        {
-          text: '走进社区  走进环保',
-          link: ''
-        },
-        {
-          text: '走进社区  走进环保',
-          link: ''
-        },
-                {
-          text: '走进社区  走进环保',
-          link: ''
-        },
-        {
-          text: '走进社区  走进环保',
-          link: ''
-        },
-                {
-          text: '走进社区  走进环保',
-          link: ''
-        },
-        {
-          text: '走进社区  走进环保',
-          link: ''
-        }
-      ]
+      fetchedData: {}
+    }
+  },
+  computed: {
+    month () {
+      if (this.fetchedData.Periodical) {
+        return formatDate(new Date(this.fetchedData.Periodical.AddTime), 'MM')
+      }
+    },
+    bg () {
+      if (this.fetchedData.Periodical) {
+        return 'http://jindi.1juke.cn' + this.fetchedData.Periodical.CoverImg
+      }
+    },
+    links () {
+      if (this.fetchedData.ArticleList) {
+        return this.fetchedData.ArticleList
+      }
     }
   },
   watch: {
     '$route' (to, from) {
       this.id = to.params.id
+      this.getMagazineInner()
     }
   },
   created () {
     this.id = this.$route.params.id
+    this.getMagazineInner()
+  },
+  methods: {
+    getMagazineInner () {
+      api.getMagazineInner(this.id)
+      .then(({res, index}) => {
+        if (res.data.IsSuccess) {
+          let fetchedData = res.data.Data
+          this.fetchedData = fetchedData
+        } else {
+          window.$alert(res.data.Message)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+    goDetail (e) {
+      let id = e.currentTarget.dataset.id
+      this.$router.push({
+        name: 'magazinedetail',
+        params: {
+          id
+        }
+      })
+    }
   }
 }
 </script>
@@ -124,6 +138,10 @@ export default {
         color:$text-color;
         margin: p2r(50) p2r(40);
         font-weight: 600;
+        .txt{
+          color:$text-color;
+          font-weight: 600;
+        }
         &:before{
           content:'';
           display: block;
