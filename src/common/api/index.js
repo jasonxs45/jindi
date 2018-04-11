@@ -1,7 +1,7 @@
 import axios from 'axios'
 import qs from 'qs'
-// let openid = store.global.state.openid
-let openid = '131313'
+import bind from './bind'
+let openid = ''
 const BASE_URL = '/Mobile-PostAPI'
 const MOCK_URL = 'https://www.easy-mock.com/mock/5abd9851597f2f6d4d73ae18/mock/'
 axios.defaults.retry = 4
@@ -22,7 +22,7 @@ axios.interceptors.response.use(undefined, function axiosRetryInterceptor (err) 
   // Create new promise to handle exponential backoff
   let backoff = new Promise((resolve) => {
       setTimeout(() => {
-          resolve()
+        resolve()
       }, config.retryDelay || 1)
   })
   // Return the promise in which recalls axios to retry the request
@@ -31,6 +31,7 @@ axios.interceptors.response.use(undefined, function axiosRetryInterceptor (err) 
   })
 })
 let api = {
+  bind,
   // 模拟数据
   mock (opt) {
     return axios.post(
@@ -51,6 +52,22 @@ let api = {
       BASE_URL,
       qs.stringify(opt)
     )
+  },
+  // 全局查询方法
+  globalQuery (opt) {
+    Object.assign(opt, { openid })
+    let index = window.$loading('加载中')
+    return axios.post(
+      BASE_URL,
+      qs.stringify(opt)
+    ).then(res => {
+      return new Promise((resolve, reject) => {
+        if (res.status === 200) {
+          window.$close(index)
+          resolve({res, index})
+        }
+      })
+    })
   },
   // 公用请求
   // 获取微信昵称头像等

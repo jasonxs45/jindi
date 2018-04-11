@@ -82,12 +82,12 @@ export default {
   methods: {
     changeHandler (e) {
       this.inputVal = e.target.value
-      this.$refs.input.value = e.target.value
+      // this.$refs.input.value = e.target.value
       this.$emit('change', e.target.value)
     },
     inputHandler (e) {
       this.inputVal = e.target.value
-      this.$refs.input.value = e.target.value
+      // this.$refs.input.value = e.target.value
       this.$emit('input', e.target ? e.target.value : e)
     }
   }

@@ -1,9 +1,11 @@
 <template>
   <div class="magazine-inner">
-    <img
-      :src="bg"
-      class="bg"
-    />
+    <div class="bg">
+      <Fitimg
+        :src="bg"
+      />
+      <div class="cover"></div>
+    </div>
     <div class="panel">
       <Split type="line" />
       <h3 class="title"><span class="num">{{month}}</span>月刊</h3>
@@ -27,7 +29,8 @@
 </template>
 <script>
 import {
-  Split
+  Split,
+  Fitimg
 } from 'components'
 import api from 'common/api'
 import {
@@ -36,7 +39,8 @@ import {
 export default {
   name: 'MagazineInner',
   components: {
-    Split
+    Split,
+    Fitimg
   },
   data () {
     return {
@@ -107,6 +111,21 @@ export default {
   .bg{
     width:100%;
     height: 100%;
+    position: relative;
+    .fit-img{
+      width:100%;
+      height: 100%;
+      filter: blur(10px);
+    }
+    .cover{
+      position: absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      background: rgba(0,0,0,.4);
+      backdrop-filter: blur(10px);
+    }
   }
   .panel{
     position: absolute;

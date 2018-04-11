@@ -35,12 +35,13 @@
                 class="radio"
                 type="radio"
                 name="house"
+                :disabled="item.Binded"
                 :value="item.ID"
                 @change="radioHandler"
               />
               <flexbox>
                 <flexbox-item class="house-name">
-                  {{item.StageName}}{{item.Building}}栋{{item.Unit}}单元{{item.HouseNo}}
+                  {{item.StageName}}{{item.Building}}栋{{item.Unit}}单元{{item.HouseNo}}{{item.Binded?'【已绑定】':''}}
                 </flexbox-item>
                 <flexbox-item class="owner-name">
                   {{item.Owner}}
@@ -79,14 +80,17 @@
         <div class="rights-wrapper">
           <h3 class="title">业主权益</h3>
           <div class="details">
-            <p>业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益</p>
-            <p>业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益</p>
-            <p>业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益</p>
-            <p>业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益</p>
-            <p>业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益</p>
-            <p>业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益</p>
-            <p>业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益</p>
-            <p>业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益业主权益</p>
+            <dl>
+              <dd>1.及时获取金地的最新资讯；</dd>
+              <dd>2.了解金地热销楼盘信息；</dd>
+              <dd>3.可通过金地微信推荐其他人购房而获取丰厚奖励；</dd>
+              <dd>4.可在微信上快速报修（保修期内的楼盘业主报修，须通过金地微信上的“在线报修”才可报修）；</dd>
+              <dd>5.可在金地微信上提交自己的投诉和建议，并可发送图片；</dd>
+              <dd>6.可查询金地商业、写字楼、产业园区的出租信息；</dd>
+              <dd>7.可参加金地举办的各种线上线下精彩活动；</dd>
+              <dd>8.可在金地微信上发布二手房租售信息；</dd>
+              <dd>9.可通过“社区市场”发布二手物品信息。</dd>
+            </dl>
           </div>
         </div>
         <Btn text="我知道了" type="base" size="lar"/>
@@ -209,6 +213,7 @@ export default {
       this.getHouses()
     },
     submitHandler () {
+      let _self = this
       if (!this.houseid) {
         window.$alert('请选择房源')
         return
@@ -229,7 +234,16 @@ export default {
       api.query(opt).then(res => {
         window.$close(index)
         if (res.data.IsSuccess) {
-          window.$alert('绑定成功！')
+          let index = window.$alert({
+            title: '恭喜您！',
+            content: '绑定成功！',
+            yes () {
+              window.$close(index)
+              _self.$router.push({
+                name: 'usercenter'
+              })
+            }
+          })
         } else {
           window.$alert(res.data.Message)
         }
@@ -253,14 +267,14 @@ export default {
   padding: p2r(30);
   .bind-owner-wrapper {
     width: 100%;
-    height: 88%;
+    height: 90%;
     border-radius: 4px;
     box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
     padding-top: p2r(40);
     padding-bottom: p2r(40);
     background: #fff;
     .part1 {
-      height: p2r(800);
+      height: p2r(760);
       .title {
         font-size: p2r(28);
         color: $primary-color;
@@ -389,13 +403,13 @@ export default {
       .title{
         text-align: center;
         color:$primary-color;
-        font-size: p2r(30);
+        font-size: p2r(32);
         height: p2r(100);
         line-height: p2r(100);
       }
       .details{
-        line-height: 1.7;
-        font-size: p2r(26);
+        line-height: 2.2;
+        font-size: p2r(28);
         color:$text-color;
         height: calc(100% - 3rem);
         overflow-y: auto;

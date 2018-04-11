@@ -12,22 +12,11 @@ const ActivityList = r => require.ensure([], () => r(require('pages/ActivityList
 const ActivityDetail = r => require.ensure([], () => r(require('pages/ActivityDetail')), 'ActivityDetail')
 
 const RepairUser = r => require.ensure([], () => r(require('pages/RepairUser')), 'RepairUser')
-const RepairUserUntreated = r => require.ensure([], () => r(require('pages/repairuser/Untreated')), 'RepairUserUntreated')
-const RepairUserTreated = r => require.ensure([], () => r(require('pages/repairuser/Treated')), 'RepairUserTreated')
-const RepairUserFinished = r => require.ensure([], () => r(require('pages/repairuser/Finished')), 'RepairUserFinished')
-const RepairUserFailed = r => require.ensure([], () => r(require('pages/repairuser/Failed')), 'RepairUserFailed')
 const RepairSubmit = r => require.ensure([], () => r(require('pages/RepairSubmit')), 'RepairSubmit')
 
 const RepairEngineer = r => require.ensure([], () => r(require('pages/RepairEngineer')), 'RepairEngineer')
-const RepairEngineerUntreated = r => require.ensure([], () => r(require('pages/repairengineer/Untreated')), 'RepairEngineerUntreated')
-const RepairEngineerTreated = r => require.ensure([], () => r(require('pages/repairengineer/Treated')), 'RepairEngineerTreated')
-const RepairEngineerFinished = r => require.ensure([], () => r(require('pages/repairengineer/Finished')), 'RepairEngineerFinished')
-const RepairEngineerCanceled = r => require.ensure([], () => r(require('pages/repairengineer/Canceled')), 'RepairEngineerCanceled')
-// const OrderList = r => require.ensure([], () => r(require('components/orderlist')), 'OrderList')
+
 const AdviseUser = r => require.ensure([], () => r(require('pages/AdviseUser')), 'AdviseUser')
-const AdviseUserUntreated = r => require.ensure([], () => r(require('pages/adviseuser/Untreated')), 'AdviseUserUntreated')
-const AdviseUserTreated = r => require.ensure([], () => r(require('pages/adviseuser/Treated')), 'AdviseUserTreated')
-const AdviseUserFinished = r => require.ensure([], () => r(require('pages/adviseuser/Finished')), 'AdviseUserFinished')
 const AdviseSubmit = r => require.ensure([], () => r(require('pages/AdviseSubmit')), 'AdviseSubmit')
 
 const NewsCenter = r => require.ensure([], () => r(require('pages/NewsCenter')), 'NewsCenter')
@@ -51,7 +40,10 @@ export default [
   {
     path: '/',
     name: 'home',
-    component: Home
+    component: Home,
+    meta: {
+      title: '首页'
+    }
   },
   {
     path: '/auth',
@@ -66,179 +58,201 @@ export default [
   {
     path: '/usercenter',
     name: 'usercenter',
-    component: Usercenter
+    component: Usercenter,
+    meta: {
+      title: '个人中心'
+    }
   },
   {
     path: '/tradeprogress',
     name: 'tradeprogress',
-    component: TradeProgress
+    component: TradeProgress,
+    meta: {
+      title: '购房进度'
+    }
   },
   {
     path: '/bind',
     name: 'bind',
-    component: Bind
+    component: Bind,
+    meta: {
+      title: '用户绑定'
+    }
   },
   {
     path: '/bind/bindowner',
     name: 'bindowner',
-    component: BindOwner
+    component: BindOwner,
+    meta: {
+      title: '业主绑定'
+    }
   },
   {
     path: '/bind/bindrelative',
     name: 'bindrelative',
-    component: BindRelative
+    component: BindRelative,
+    meta: {
+      title: '家属绑定'
+    }
   },
   {
     path: '/bind/bindrenter',
     name: 'bindrenter',
-    component: BindRenter
+    component: BindRenter,
+    meta: {
+      title: '租户绑定'
+    }
   },
   {
     path: '/bind/bindsecond',
     name: 'bindsecond',
-    component: BindSecond
+    component: BindSecond,
+    meta: {
+      title: '二手业主绑定'
+    }
   },
   {
     path: '/bind/bindownerconfirm/type/:typeid/member/:memberid',
     name: 'bindownerconfirm',
-    component: BindOwnerConfirm
+    component: BindOwnerConfirm,
+    meta: {
+      title: '业主审核'
+    }
   },
   {
     path: '/activitylist',
     name: 'activitylist',
-    component: ActivityList
+    component: ActivityList,
+    meta: {
+      title: '社区活动'
+    }
   },
   {
     path: '/activitydetail/:id',
     name: 'activitydetail',
-    component: ActivityDetail
+    component: ActivityDetail,
+    meta: {
+      title: '详情'
+    }
   },
   {
     path: '/repairuser',
     name: 'repairuser',
     component: RepairUser,
-    redirect: '/repairuser/list/untreated',
-    children: [
-      {
-        path: 'list/untreated',
-        component: RepairUserUntreated
-      },
-      {
-        path: 'list/treated',
-        component: RepairUserTreated
-      },
-      {
-        path: 'list/finished',
-        component: RepairUserFinished
-      },
-      {
-        path: 'list/failed',
-        component: RepairUserFailed
-      }
-    ]
+    meta: {
+      title: '业主报修'
+    }
   },
   {
     path: '/repairsubmit',
     name: 'repairsubmit',
-    component: RepairSubmit
+    component: RepairSubmit,
+    meta: {
+      title: '提交报修'
+    }
   },
   {
     path: '/repairengineer',
     name: 'repairengineer',
     component: RepairEngineer,
-    redirect: '/repairengineer/list/untreated',
-    children: [
-      {
-        path: 'list/untreated',
-        component: RepairEngineerUntreated
-      },
-      {
-        path: 'list/treated',
-        component: RepairEngineerTreated
-      },
-      {
-        path: 'list/finished',
-        component: RepairEngineerFinished
-      },
-      {
-        path: 'list/canceled',
-        component: RepairEngineerCanceled
-      }
-    ]
+    meta: {
+      title: '业主报修'
+    }
   },
   {
     path: '/adviseuser',
     name: 'adviseuser',
     component: AdviseUser,
-    redirect: '/adviseuser/list/untreated',
-    children: [
-      {
-        path: 'list/untreated',
-        component: AdviseUserUntreated
-      },
-      {
-        path: 'list/treated',
-        component: AdviseUserTreated
-      },
-      {
-        path: 'list/finished',
-        component: AdviseUserFinished
-      }
-    ]
+    meta: {
+      title: '投诉建议'
+    }
   },
   {
     path: '/advisesubmit',
     name: 'advisesubmit',
-    component: AdviseSubmit
+    component: AdviseSubmit,
+    meta: {
+      title: '提交投诉建议'
+    }
   },
   {
     path: '/newscenter',
     name: 'newscenter',
-    component: NewsCenter
+    component: NewsCenter,
+    meta: {
+      title: '新闻中心'
+    }
   },
   {
     path: '/newsdetail/:id',
     name: 'newsdetail',
-    component: NewsDetail
+    component: NewsDetail,
+    meta: {
+      title: '详情'
+    }
   },
   {
     path: '/magazine',
     name: 'magazine',
-    component: Magazine
+    component: Magazine,
+    meta: {
+      title: '社区期刊'
+    }
   },
   {
     path: '/magazineinner/:id',
     name: 'magazineinner',
-    component: MagazineInner
+    component: MagazineInner,
+    meta: {
+      title: '列表'
+    }
   },
   {
     path: '/magazinedetail/:id',
     name: 'magazinedetail',
-    component: MagazineDetail
+    component: MagazineDetail,
+    meta: {
+      title: '详情'
+    }
   },
   {
     path: '/projectprogress',
     name: 'projectprogress',
-    component: ProjectProgress
+    component: ProjectProgress,
+    meta: {
+      title: '工程进度'
+    }
   },
   {
     path: '/monthlyprogress/:id',
     name: 'monthlyprogress',
-    component: MonthlyProgress
+    component: MonthlyProgress,
+    meta: {
+      title: '工程进度'
+    }
   },
   {
     path: '/progressdetail/:id',
     name: 'progressdetail',
-    component: ProgressDetail
+    component: ProgressDetail,
+    meta: {
+      title: '详情'
+    }
   },
   {
     path: '/investigate/:id',
     name: 'investigate',
-    component: Investigate
+    component: Investigate,
+    meta: {
+      title: '问卷调查'
+    }
   },
   {
     path: '/messagecenter',
     name: 'messagecenter',
-    component: MessageCenter
+    component: MessageCenter,
+    meta: {
+      title: '消息中心'
+    }
   }
 ]

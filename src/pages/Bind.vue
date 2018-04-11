@@ -48,7 +48,6 @@ export default {
     Icon
   },
   created () {
-    window.document.title = '业主绑定'
   }
 }
 </script>

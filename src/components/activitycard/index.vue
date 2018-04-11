@@ -82,7 +82,7 @@ export default {
   }
   .img-wrapper{
     width:100%;
-    height:p2r(320);
+    height:p2r(276);
     overflow: hidden;
     text-align: center;
     img{

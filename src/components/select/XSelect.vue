@@ -48,11 +48,13 @@ export default {
       value: ''
     }
   },
-  created () {
+  mounted () {
     let _self = this
-    window.document.addEventListener('click', () => {
-      _self.showOptions = false
-    }, false)
+    document.querySelector('#app').addEventListener('click', _self.closeSelect, false)
+  },
+  destroyed () {
+    let _self = this
+    document.querySelector('#app').removeEventListener('click', _self.closeSelect)
   },
   updated () {
     if (!this.$children) return
@@ -64,6 +66,9 @@ export default {
   methods: {
     toggleSelect () {
       this.showOptions = !this.showOptions
+    },
+    closeSelect () {
+      this.showOptions = false
     },
     changeHandler (value) {
       this.value = value

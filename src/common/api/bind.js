@@ -1,6 +1,6 @@
+import api from './index'
 let bind = {
-  HouseOwerBind ({HouseID, Name, IDCardLast4}) {
-    let index = window.$loading()
+  houseOwerBind ({HouseID, Name, IDCardLast4}) {
     let opt = {
       Act: 'MemberGetMyInfo',
       Data: JSON.stringify({
@@ -9,14 +9,7 @@ let bind = {
         IDCardLast4
       })
     }
-    return this.query(opt).then(res => {
-      return new Promise((resolve, reject) => {
-        if (res.status === 200) {
-          window.$close(index)
-          resolve({res, index})
-        }
-      })
-    })
+    return api.globalQuery(opt)
   }
 }
 export default bind

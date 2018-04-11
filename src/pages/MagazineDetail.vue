@@ -64,10 +64,14 @@ export default {
   .content{
     padding-top: p2r(40);
     color: $text-sub-color;
-    line-height: 1.5 !important;
+    line-height: 2 !important;
     font-size: p2r(26) !important;
     text-indent: 0 !important;
     font-family: 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', arial, sans-serif !important;
+    padding: {
+      top: p2r(40);
+      bottom: p2r(40);
+    }
   }
 }
 </style>

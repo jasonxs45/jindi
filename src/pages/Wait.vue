@@ -23,7 +23,7 @@ export default {
     padding-top: p2r(300);
     text-align: center;
     font-size: p2r(26);
-    color:$thr-color;
+    color:$text-sub-color;
     font-weight: 200;
   }
   .logo1,

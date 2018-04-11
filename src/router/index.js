@@ -9,18 +9,11 @@ let routes = pageRoutes
 const router = new Router({
   routes
 })
-let index = null
 router.beforeEach((to, from, next) => {
-  wxConf.init()
-  if (window.$loading) {
-    index = window.$loading('加载中')
-  }
+  window.document.title = to.meta.title || '金地'
+  // wxConf.init()
   next()
 })
 router.afterEach((to, from) => {
-  index && window.$close(index)
-})
-router.afterEach((to, from) => {
-  window.$closeAll()
 })
 export default router

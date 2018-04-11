@@ -28,8 +28,7 @@ import {
 } from 'components'
 import {
   NAME_REG,
-  TEL_REG,
-  ID_REG
+  TEL_REG
 } from 'common/data'
 import api from 'common/api'
 import wx from 'weixin-js-sdk'
@@ -142,10 +141,10 @@ export default {
         window.$alert('身份证号码不能为空')
         return
       }
-      if (!this.form.id.match(ID_REG)) {
-        window.$alert('请填写正确格式的身份证号码')
-        return
-      }
+      // if (!this.form.id.match(ID_REG)) {
+      //   window.$alert('请填写正确格式的身份证号码')
+      //   return
+      // }
       if (!this.form.tel) {
         window.$alert('手机号码不能为空')
         return

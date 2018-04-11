@@ -78,6 +78,7 @@ export default {
   },
   methods: {
     getMyhouse () {
+      let _self = this
       let index = window.$loading()
       let opt = {
         Act: 'HouseGetMyList'
@@ -85,13 +86,25 @@ export default {
       api.query(opt).then(res => {
         window.$close(index)
         if (res.data.IsSuccess) {
-          let houseList = res.data.Data
-          this.houseList = houseList.map(item => {
-            return {
-              label: item.ProjectName + '--' + item.Building + '栋' + item.Unit + '单元' + item.HouseNo,
-              value: item.ID
-            }
-          })
+          if (res.data.Data.length < 1) {
+            let index = window.$alert({
+              content: '您还未绑定房源，<br/>请先去绑定房源',
+              yes () {
+                window.$close(index)
+                _self.$router.push({
+                  name: 'bind'
+                })
+              }
+            })
+          } else {
+            let houseList = res.data.Data
+            this.houseList = houseList.map(item => {
+              return {
+                label: item.ProjectName + '--' + item.Building + '栋' + item.Unit + '单元' + item.HouseNo,
+                value: item.ID
+              }
+            })
+          }
         } else {
           window.$alert(res.data.Message)
         }
