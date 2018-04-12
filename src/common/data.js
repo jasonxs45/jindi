@@ -16,7 +16,7 @@ let entries = [
     link: '/wait'
   },
   {
-    name: '我的活动',
+    name: '社区活动',
     icon: 'activity',
     link: '/activitylist'
   },
@@ -34,6 +34,16 @@ let entries = [
     name: '投诉建议',
     icon: 'suggest',
     link: '/wait'
+  },
+  {
+    name: '我的房源',
+    icon: 'user',
+    link: '/myhouses'
+  },
+  {
+    name: '个人中心',
+    icon: 'user',
+    link: '/usercenter'
   }
 ]
 // 报修单的数据结构

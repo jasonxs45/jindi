@@ -20,6 +20,7 @@ export default {
 .nodata{
  text-align: center;
  color:$thr-color;
+ padding-top: p2r(50);
  .iconfont{
    font-size: p2r(56);
  }

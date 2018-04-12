@@ -117,7 +117,7 @@
           freeModeMomentumBounce: false,
           effect: 'slide'
         },
-        entries,
+        entries: entries.filter(item => item.name !== '社区活动' && item.name !== '我的房源'),
         newslist: [],
         activityList: []
       }

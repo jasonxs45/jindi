@@ -1,5 +1,8 @@
 const Home = r => require.ensure([], () => r(require('pages/Home')), 'Home')
 const Usercenter = r => require.ensure([], () => r(require('pages/Usercenter')), 'Usercenter')
+const MyHouses = r => require.ensure([], () => r(require('pages/MyHouses')), 'MyHouses')
+const HouseMember = r => require.ensure([], () => r(require('pages/HouseMember')), 'HouseMember')
+
 const TradeProgress = r => require.ensure([], () => r(require('pages/TradeProgress')), 'TradeProgress')
 const Bind = r => require.ensure([], () => r(require('pages/Bind')), 'Bind')
 const BindOwner = r => require.ensure([], () => r(require('pages/bind/BindOwner')), 'BindOwner')
@@ -61,6 +64,22 @@ export default [
     component: Usercenter,
     meta: {
       title: '个人中心'
+    }
+  },
+  {
+    path: '/myhouses',
+    name: 'myhouses',
+    component: MyHouses,
+    meta: {
+      title: '我的房源'
+    }
+  },
+  {
+    path: '/housemember/:id',
+    name: 'housemember',
+    component: HouseMember,
+    meta: {
+      title: '我的房源'
     }
   },
   {

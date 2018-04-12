@@ -49,7 +49,7 @@ export default {
   },
   data () {
     return {
-      entries
+      entries: entries.filter(item => item.name !== '个人中心')
     }
   },
   methods: {

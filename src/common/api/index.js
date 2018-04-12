@@ -1,6 +1,7 @@
 import axios from 'axios'
 import qs from 'qs'
 import bind from './bind'
+import myHouse from './myHouse'
 let openid = ''
 const BASE_URL = '/Mobile-PostAPI'
 const MOCK_URL = 'https://www.easy-mock.com/mock/5abd9851597f2f6d4d73ae18/mock/'
@@ -32,6 +33,7 @@ axios.interceptors.response.use(undefined, function axiosRetryInterceptor (err) 
 })
 let api = {
   bind,
+  myHouse,
   // 模拟数据
   mock (opt) {
     return axios.post(
