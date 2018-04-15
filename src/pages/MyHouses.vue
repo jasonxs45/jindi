@@ -12,7 +12,6 @@
           :class="item.classType"
           :data-id="item.ID"
           class="house-item"
-          @click="goMembers"
         >
           <div class="top">
             <div class="project">
@@ -25,7 +24,7 @@
             <span class="sign-time">签约时间：{{item.SignTime}}</span>
             <span class="repair-time">报修期止：{{item.Warranty}}</span>
           </div>
-          <Btn type="base" text="房源解绑" @click.stop="unBindMe(item.ID)"/>
+          <Btn type="base" text="成员列表" @click.stop="goMembers(item.ID)"/>
         </div>
       </template>
     </div>
@@ -91,8 +90,7 @@ export default {
         console.log(err)
       })
     },
-    goMembers (e) {
-      let id = e.currentTarget.dataset.id
+    goMembers (id) {
       this.$router.push({
         name: 'housemember',
         params: {

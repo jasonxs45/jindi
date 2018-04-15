@@ -30,7 +30,7 @@
             <Avatar :src="item.HeadImgUrl"/>
             <span class="name">{{item.Name}}</span>
             <span class="tag" :class="item.classType">{{item.OwnerType}}</span>
-            <Btn v-if="house.BindType === 3 && item.BindType !== 3" type="base" text="房源解绑" @click.stop="unBind(item.ID)"/>
+            <Btn v-if="house.BindType === 3 || house.BindType === item.BindType" type="base" text="房源解绑" @click.stop="unBind(house.BindType, item.BindType, item.ID)"/>
           </div>
         </div>
       </template>
@@ -109,17 +109,36 @@ export default {
         console.log(err)
       })
     },
-    unBind (memberid) {
+    unBind (type1, type2, memberid) {
+      let _self = this
       api.myHouse.unBind(this.house.ID, memberid)
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
-          window.$alert('解绑成功')
           this.memberList.splice(
             this.memberList.findIndex(item => item.ID === memberid),
             1
           )
+          let idx = window.$alert({
+            content: '解绑成功',
+            yes () {
+              window.$close(idx)
+              if (type1 === type2) {
+                _self.$router.push({
+                  name: 'usercenter'
+                })
+              }
+            }
+          })
         } else {
-          window.$alert(res.data.Message)
+          let idx = window.$alert({
+            content: res.data.Message,
+            yes () {
+              window.$close(idx)
+              _self.$router.push({
+                name: 'usercenter'
+              })
+            }
+          })
         }
       })
       .catch(err => {
@@ -172,11 +191,11 @@ export default {
           font-size: p2r(28);
           color:#fff;
           margin-top: p2r(20);
+          font-weight: 200;
         }
       }
       .bottom{
         color:#fff;
-        font-weight: 200;
         margin-top: p2r(40);
         padding: 0 p2r(30);
         font-size: 0;
@@ -185,6 +204,7 @@ export default {
           display: inline-block;
           vertical-align: top;
           font-size: p2r(24);
+          font-weight: 200;
           width:50%;
           text-align: left;
         }

@@ -4,6 +4,9 @@ const MyHouses = r => require.ensure([], () => r(require('pages/MyHouses')), 'My
 const HouseMember = r => require.ensure([], () => r(require('pages/HouseMember')), 'HouseMember')
 
 const TradeProgress = r => require.ensure([], () => r(require('pages/TradeProgress')), 'TradeProgress')
+const Contract = r => require.ensure([], () => r(require('pages/tradeprogress/Contract')), 'Contract')
+const Lincense = r => require.ensure([], () => r(require('pages/tradeprogress/Lincense')), 'Lincense')
+
 const Bind = r => require.ensure([], () => r(require('pages/Bind')), 'Bind')
 const BindOwner = r => require.ensure([], () => r(require('pages/bind/BindOwner')), 'BindOwner')
 const BindRelative = r => require.ensure([], () => r(require('pages/bind/BindRelative')), 'BindRelative')
@@ -88,7 +91,20 @@ export default [
     component: TradeProgress,
     meta: {
       title: '购房进度'
-    }
+    },
+    redirect: '/tradeprogress/contract',
+    children: [
+      {
+        path: 'contract',
+        name: 'contract',
+        component: Contract
+      },
+      {
+        path: 'lincense',
+        name: 'lincense',
+        component: Lincense
+      }
+    ]
   },
   {
     path: '/bind',
