@@ -55,9 +55,11 @@ export default {
       }
     },
     bg () {
+      let bg = ''
       if (this.fetchedData.Periodical) {
-        return 'http://jindi.1juke.cn' + this.fetchedData.Periodical.CoverImg
+        bg = 'http://jindi.1juke.cn' + this.fetchedData.Periodical.CoverImg
       }
+      return bg
     },
     links () {
       if (this.fetchedData.ArticleList) {

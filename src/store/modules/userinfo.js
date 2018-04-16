@@ -37,7 +37,7 @@ const mutations = {
     state.avatar = res.HeadImgUrl
     state.nickname = res.NickName
     state.state = res.Identity
-    state.house = res.House.StageName + res.House.Building + '栋' + res.House.Unit + '单元' + res.House.HouseNo
+    state.house = res.Identity === 0 ? '尚未绑定房源信息' : res.House.StageName + res.House.Building + '栋' + res.House.Unit + '单元' + res.House.HouseNo
   }
 }
 

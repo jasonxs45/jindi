@@ -9,7 +9,7 @@
         <span class="text">{{userInfo.nickname}}</span>
         <span class="mark">{{userInfo.markMap[userInfo.state]}}</span>
       </div>
-      <div class="state-info">{{userInfo.state === 0?'尚未绑定房源信息':userInfo.house}}</div>
+      <div class="state-info">{{userInfo.house}}</div>
     </flexbox-item>
   </flexbox>
 <div class="tag-area" v-if="tagText">

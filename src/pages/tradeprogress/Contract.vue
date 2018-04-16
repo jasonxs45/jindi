@@ -123,7 +123,7 @@ export default {
       this.activeSwipeIndex = this.swiper.activeIndex
     },
     goBind () {
-      this.$router.push('bind')
+      this.$router.push('/bind')
     }
   }
 }

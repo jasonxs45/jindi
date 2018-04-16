@@ -97,12 +97,18 @@ export default [
       {
         path: 'contract',
         name: 'contract',
-        component: Contract
+        component: Contract,
+        meta: {
+          title: '合同进度'
+        }
       },
       {
         path: 'lincense',
         name: 'lincense',
-        component: Lincense
+        component: Lincense,
+        meta: {
+          title: '产证进度'
+        }
       }
     ]
   },

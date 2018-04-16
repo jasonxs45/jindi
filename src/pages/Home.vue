@@ -49,7 +49,7 @@
     </flexbox>
     <Split />
     <div class="activity-board">
-      <statisctitle text="社区活动">
+      <statisctitle text="金地·美好生活家">
         <router-link tag="div" to="/activitylist" slot="more">
           <span class="text">更多</span><Icon name="arrow-right1"/>
         </router-link>

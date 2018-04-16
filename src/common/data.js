@@ -1,29 +1,29 @@
 /* eslint-disable no-unused-vars */
 let entries = [
   {
+    name: '我的房源',
+    icon: 'user',
+    link: '/myhouses'
+  },
+  {
+    name: '个人中心',
+    icon: 'user',
+    link: '/usercenter'
+  },
+  {
+    name: '合同查询',
+    icon: 'graph',
+    link: '/tradeprogress'
+  },
+  {
     name: '工程进度',
     icon: 'msg',
     link: '/projectprogress'
   },
   {
-    name: '购房进度',
-    icon: 'graph',
-    link: '/tradeprogress'
-  },
-  {
     name: '业主报修',
     icon: 'repair',
     link: '/wait'
-  },
-  {
-    name: '社区活动',
-    icon: 'activity',
-    link: '/activitylist'
-  },
-  {
-    name: '社区期刊',
-    icon: 'books',
-    link: '/magazine'
   },
   // {
   //   name: '在线客服',
@@ -36,14 +36,14 @@ let entries = [
     link: '/wait'
   },
   {
-    name: '我的房源',
-    icon: 'user',
-    link: '/myhouses'
+    name: '社区活动',
+    icon: 'activity',
+    link: '/activitylist'
   },
   {
-    name: '个人中心',
-    icon: 'user',
-    link: '/usercenter'
+    name: '金地家书',
+    icon: 'books',
+    link: '/magazine'
   }
 ]
 // 报修单的数据结构
