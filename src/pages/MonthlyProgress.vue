@@ -55,7 +55,7 @@ export default {
   },
   methods: {
     getMonthlyList () {
-      api.getMonthlyProgress(this.id)
+      api.projectprogress.monthlist(this.id)
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
           this.fetchedList = res.data.Data

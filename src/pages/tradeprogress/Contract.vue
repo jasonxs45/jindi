@@ -108,7 +108,7 @@ export default {
   },
   methods: {
     getProgress () {
-      api.getTradeProgress()
+      api.tradeprogress.list()
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
           this.fetchedData = res.data.Data.DocumentSrch

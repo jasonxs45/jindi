@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     getMagazineList () {
-      api.getMagazineList()
+      api.magazine.list()
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
           let fetchedList = res.data.Data

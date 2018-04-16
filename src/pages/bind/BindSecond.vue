@@ -95,12 +95,8 @@ export default {
   },
   methods: {
     getItem () {
-      let index = window.$loading()
-      let opt = {
-        Act: 'StageGetList'
-      }
-      api.query(opt).then(res => {
-        window.$close(index)
+      api.bind.getStageList()
+      .then(({res, index}) => {
         if (res.data.IsSuccess) {
           let [...items] = res.data.Data
           this.items = items.map(item => {
@@ -161,22 +157,18 @@ export default {
         window.$alert('请上传房产证及身份证正反面照片')
         return
       }
-      let index = window.$loading()
       let opt = {
-        Act: 'HouseSecendApply',
-        Data: JSON.stringify({
-          StageID: this.form.project.value,
-          Building: this.form.building,
-          Unit: this.form.unit,
-          HouseNo: this.form.houseid,
-          Name: this.form.name,
-          Tel: this.form.tel,
-          Images: this.uploadedImgs.join(','),
-          CertNumber: this.form.id
-        })
+        StageID: this.form.project.value,
+        Building: this.form.building,
+        Unit: this.form.unit,
+        HouseNo: this.form.houseid,
+        Name: this.form.name,
+        Tel: this.form.tel,
+        Images: this.uploadedImgs.join(','),
+        CertNumber: this.form.id
       }
-      api.query(opt).then(res => {
-        window.$close(index)
+      api.bind.secondApply(opt)
+      .then(({res, index}) => {
         if (res.data.IsSuccess) {
           window.$alert('提交成功，请等待工作人员审核！')
         } else {

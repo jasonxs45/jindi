@@ -149,12 +149,8 @@ export default {
   },
   methods: {
     getItem () {
-      let index = window.$loading()
-      let opt = {
-        Act: 'ProjectGetList'
-      }
-      api.query(opt).then(res => {
-        window.$close(index)
+      api.bind.getProjectList()
+      .then(({res, index}) => {
         if (res.data.IsSuccess) {
           let [...items] = res.data.Data
           this.items = items.map(item => {
@@ -171,16 +167,8 @@ export default {
       })
     },
     getHouses () {
-      let index = window.$loading()
-      let opt = {
-        Act: 'HouseGetOwerList',
-        Data: JSON.stringify({
-          ProjectID: this.selectedItem.value,
-          Name: this.ownerName
-        })
-      }
-      api.query(opt).then(res => {
-        window.$close(index)
+      api.bind.getOwnerHouseList(this.selectedItem.value, this.ownerName)
+      .then(({res, index}) => {
         if (res.data.IsSuccess) {
           let [...houses] = res.data.Data
           this.houses = houses
@@ -222,16 +210,8 @@ export default {
         window.$alert('请正确填写身份证后四位')
         return
       }
-      let index = window.$loading()
-      let opt = {
-        Act: 'HouseOwerBind',
-        Data: JSON.stringify({
-          HouseID: this.houseid,
-          Name: this.ownerName,
-          IDCardLast4: this.checkStr
-        })
-      }
-      api.query(opt).then(res => {
+      api.bind.houseOwerBind(this.houseid, this.ownerName, this.checkStr)
+      .then(({res, index}) => {
         window.$close(index)
         if (res.data.IsSuccess) {
           let index = window.$alert({
@@ -305,7 +285,7 @@ export default {
             height: p2r(88);
             line-height: p2r(88);
             border-radius: 4px;
-            padding: 0 p2r(40);
+            padding: 0 p2r(20);
             color: #eda697;
             background: lighten($primary-color, 38%);
             transition: color, background 0.2s;

@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     getMonthlyDetail () {
-      api.getProgressDetail(this.id)
+      api.projectprogress.detail(this.id)
       .then(({res, index}) => {
         window.$close(index)
         if (res.data.IsSuccess) {

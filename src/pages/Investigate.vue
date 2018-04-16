@@ -92,7 +92,7 @@ export default {
   },
   methods: {
     getInvestigate () {
-      api.getInvestigate(this.id)
+      api.investigate.list(this.id)
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
           let questions = res.data.Data
@@ -145,6 +145,7 @@ export default {
       }
     },
     saveAnswer () {
+      let _self = this
       this.gatherAnswer()
       for (let i = 0; i < this.myAnswer.length; i++) {
         if (!this.myAnswer[i].Result) {
@@ -152,10 +153,18 @@ export default {
           return
         }
       }
-      api.saveInvestigate(this.myAnswer)
+      api.investigate.save(this.myAnswer)
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
-          window.$alert('提交成功')
+          let index = window.$alert({
+            content: '提交成功',
+            yes () {
+              window.$close(index)
+              _self.$router.push({
+                name: 'usercenter'
+              })
+            }
+          })
         } else {
           window.$alert(res.data.Message)
         }

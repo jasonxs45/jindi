@@ -79,7 +79,7 @@ export default {
   },
   methods: {
     getMagazineInner () {
-      api.getMagazineInner(this.id)
+      api.magazine.inner(this.id)
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
           let fetchedData = res.data.Data

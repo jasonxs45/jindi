@@ -149,7 +149,7 @@
     },
     methods: {
       getActivityList () {
-        api.getActivityList()
+        api.activity.list()
         .then(({res, index}) => {
           if (res.data.IsSuccess) {
             this.activityList = res.data.Data
@@ -166,7 +166,7 @@
         })
       },
       getNewsList () {
-        api.getNewsList()
+        api.news.list()
         .then(({res, index}) => {
           if (res.data.IsSuccess) {
             this.newslist = res.data.Data

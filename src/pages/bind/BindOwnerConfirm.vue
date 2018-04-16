@@ -5,7 +5,7 @@
       <div class="sub-title">绑定居住房源，获得物业专属服务权益</div>
     </div>
     <div class="content">
-      <p class="tip title"><b>{{member.NickName}}</b>要以【{{typeid === 2 ? '家属' : typeid === 1 ? '租户' : ''}}】身份注册会员，以下是注册信息，请确认是否属实。如果审核通过，用户将以业主等同身份享受您所在物业的服务！</p>
+      <p class="tip title"><b v-if="member">{{member.NickName}}</b>要以【{{typeid === 2 ? '家属' : typeid === 1 ? '租户' : ''}}】身份注册会员，以下是注册信息，请确认是否属实。如果审核通过，用户将以业主等同身份享受您所在物业的服务！</p>
       <p class="tip">* 请选择房源</p>
       <x-select
         v-model="selectedItem"
@@ -79,12 +79,8 @@ export default {
   methods: {
     getMyhouse () {
       let _self = this
-      let index = window.$loading()
-      let opt = {
-        Act: 'HouseGetMyList'
-      }
-      api.query(opt).then(res => {
-        window.$close(index)
+      api.bind.getMyHouse()
+      .then(({res, index}) => {
         if (res.data.IsSuccess) {
           if (res.data.Data.length < 1) {
             let index = window.$alert({
@@ -113,15 +109,8 @@ export default {
       })
     },
     getApplier () {
-      let index = window.$loading()
-      let opt = {
-        Act: 'MemberGetInfo',
-        Data: JSON.stringify({
-          ID: this.memberid
-        })
-      }
-      api.query(opt).then(res => {
-        window.$close(index)
+      api.bind.getApplier(this.memberid)
+      .then(({res, index}) => {
         if (res.data.IsSuccess) {
           this.member = res.data.Data
           if (this.member) {
@@ -139,19 +128,24 @@ export default {
       })
     },
     getPass () {
-      let index = window.$loading()
+      let _self = this
       let opt = {
-        Act: 'HouseRelationBind',
-        Data: JSON.stringify({
-          HouseID: this.selectedItem.value,
-          MemberID: this.memberid,
-          Type: this.typeid
-        })
+        HouseID: this.selectedItem.value,
+        MemberID: this.memberid,
+        Type: this.typeid
       }
-      api.query(opt).then(res => {
-        window.$close(index)
+      api.bind.getPass(opt)
+      .then(({res, index}) => {
         if (res.data.IsSuccess) {
-          window.$alert('已审核通过！')
+          let index = window.$alert({
+            content: '已审核通过！',
+            yes () {
+              window.$close(index)
+              _self.$router.push({
+                name: 'usercenter'
+              })
+            }
+          })
         } else {
           window.$alert(res.data.Message)
         }

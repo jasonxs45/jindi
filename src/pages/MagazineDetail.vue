@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     getMagazineDetail () {
-      api.getMagazineDetail(this.id)
+      api.magazine.detail(this.id)
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
           this.detail = res.data.Data

@@ -87,7 +87,8 @@ export default {
   },
   methods: {
     getList () {
-      api.getNewsList().then(({res, index}) => {
+      api.news.list()
+      .then(({res, index}) => {
         if (res.data.IsSuccess) {
           this.newslist = res.data.Data
           this.newslist.forEach(item => {

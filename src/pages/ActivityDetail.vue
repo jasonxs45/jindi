@@ -131,10 +131,9 @@ export default {
   },
   methods: {
     getActivityInfo () {
-      let index = window.$loading()
       let id = this.id
-      api.getActivityDetail(id).then(res => {
-        window.$close(index)
+      api.activity.detail(id)
+      .then(({res, index}) => {
         if (res.data.IsSuccess) {
           let activity = res.data.Data
           activity.Img = 'http://jindi.1juke.cn' + activity.Img
@@ -161,15 +160,8 @@ export default {
       }
     },
     directSignIn () {
-      let index = window.$loading()
-      let opt = {
-        Act: 'ActivityApply',
-        Data: JSON.stringify({
-          ID: this.activityId
-        })
-      }
-      api.query(opt).then(res => {
-        window.$close(index)
+      api.activity.apply(this.activityId)
+      .then(res => {
         if (res.data.IsSuccess) {
           window.$alert({
             title: '恭喜您！',
@@ -193,16 +185,8 @@ export default {
         }
         this.selectedOptions.push(obj)
       }
-      let index = window.$loading()
-      let opt = {
-        Act: 'ActivityApply',
-        Data: JSON.stringify({
-          ID: this.activityId,
-          Options: JSON.stringify(this.selectedOptions)
-        })
-      }
-      api.query(opt).then(res => {
-        window.$close(index)
+      api.applyActivity(this.activityId, JSON.stringify(this.selectedOptions))
+      .then(res => {
         if (res.data.IsSuccess) {
           window.$alert({
             title: '恭喜您！',

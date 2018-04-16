@@ -11,7 +11,7 @@
         <Fitimg :src="'http://jindi.1juke.cn'+item.Logo"/>
       </flexbox-item>
       <flexbox-item class="text">
-        <h3 class="name">{{item.Name}}</h3>
+        <h3 class="name">{{item.ProjectName}}【{{item.ShortName}}】</h3>
         <p class="updatetime">更新时间：{{item.Ext}}</p>
       </flexbox-item>
     </flexbox>
@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     getProjectList () {
-      api.getProjectProgress()
+      api.projectprogress.projectlist()
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
           this.fetchedList = res.data.Data

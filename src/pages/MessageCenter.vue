@@ -1,6 +1,10 @@
 <template>
   <div class="message-center">
+    <div v-if="fetchedList.length<=0" class="no-data-guide">
+      <nodata>暂无信息</nodata>
+    </div>
     <div
+      v-else
       v-for="(item, index1) in fetchedList"
       :key="'item-'+index1+Math.random().toString(36).substr(2)"
       class="card"
@@ -30,12 +34,18 @@
   </div>
 </template>
 <script>
+import {
+  Nodata
+} from 'components'
 import api from 'common/api'
 export default {
   name: 'MessageCenter',
+  components: {
+    Nodata
+  },
   data () {
     return {
-      fetchedList: null
+      fetchedList: []
     }
   },
   created () {
@@ -43,7 +53,7 @@ export default {
   },
   methods: {
     getMyMessage () {
-      api.getMyMessage()
+      api.message.list()
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
           this.fetchedList = res.data.Data

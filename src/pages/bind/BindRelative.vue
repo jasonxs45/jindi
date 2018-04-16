@@ -64,7 +64,7 @@ export default {
   },
   methods: {
     getMemberInfo () {
-      api.getMemberInfo()
+      api.bind.getMemberInfo()
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
           this.user = res.data.Data
@@ -99,17 +99,8 @@ export default {
     },
     getRegist () {
       // let _self = this
-      let index = window.$loading()
-      let opt = {
-        Act: 'MemberRegister',
-        Data: JSON.stringify({
-          Name: this.form.name,
-          Tel: this.form.tel,
-          IDCard: this.form.id
-        })
-      }
-      api.query(opt).then(res => {
-        window.$close(index)
+      api.bind.memberRegist(this.form.name, this.form.tel, this.form.id)
+      .then(({res, index}) => {
         if (res.data.IsSuccess) {
           this.memberid = res.data.Data.ID
           this.changeShare()

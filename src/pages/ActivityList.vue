@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     getList () {
-      api.getActivityList().then(({res, index}) => {
+      api.activity.list().then(({res, index}) => {
         if (res.data.IsSuccess) {
           this.activityList = res.data.Data
         } else {
