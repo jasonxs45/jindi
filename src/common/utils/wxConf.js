@@ -15,7 +15,7 @@ let wxConf = {
   init (cb) {
     let ua = navigator.userAgent.toLowerCase()
     if (!(/micromessenger/i).test(ua)) {
-      // alert('请使用微信浏览器访问，否则部分功能可能无法使用！')
+      alert('请使用微信浏览器访问，否则部分功能可能无法使用！')
     }
     let _self = this
     api.getAuth().then((res) => {

@@ -19,6 +19,23 @@ import {
   Nodata
 } from 'components'
 import api from 'common/api'
+import {
+  formatDate
+} from 'common/utils/date'
+const CLASS_MAP = {
+  activity: {
+    title: '社区活动',
+    S_Class: 1
+  },
+  signup: {
+    title: '预约签约',
+    S_Class: 2
+  },
+  accept: {
+    title: '预约收房',
+    S_Class: 3
+  }
+}
 export default {
   name: 'ActivityList',
   components: {
@@ -27,7 +44,8 @@ export default {
   },
   data () {
     return {
-      activityList: []
+      activityList: [],
+      currentView: ''
     }
   },
   computed: {
@@ -37,20 +55,42 @@ export default {
           id: item.ID,
           img: item.Img,
           title: item.Name,
-          applyDateRange: item.ApplyStart + '-' + item.ApplyEnd,
-          playDateRange: item.PlayStart + '-' + item.PlayEnd,
+          applyDateRange: formatDate(new Date(item.ApplyStart), 'yyyy/MM/dd') + '-' + formatDate(new Date(item.ApplyEnd), 'yyyy/MM/dd'),
+          playDateRange: formatDate(new Date(item.PlayStart), 'yyyy/MM/dd') + '-' + formatDate(new Date(item.PlayEnd), 'yyyy/MM/dd'),
           readNum: item.ViewCount,
           state: item.IsOver ? 1 : 0
         }
       })
     }
   },
+  watch: {
+    '$route' (to, from) {
+      this.currentView = to.params.classtype
+      if (CLASS_MAP[this.currentView]) {
+        window.document.title = CLASS_MAP[this.currentView].title || '金地'
+        this.getList()
+      } else {
+        this.$router.push({
+          name: 'pagenotfound'
+        })
+      }
+    }
+  },
   created () {
-    this.getList()
+    this.currentView = this.$route.params.classtype
+    if (CLASS_MAP[this.currentView]) {
+      window.document.title = CLASS_MAP[this.currentView].title || '金地'
+      this.getList()
+    } else {
+      this.$router.push({
+        name: 'pagenotfound'
+      })
+    }
   },
   methods: {
     getList () {
-      api.activity.list().then(({res, index}) => {
+      api.activity.list(CLASS_MAP[this.currentView].S_Class)
+      .then(({res, index}) => {
         if (res.data.IsSuccess) {
           this.activityList = res.data.Data
         } else {

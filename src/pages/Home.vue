@@ -50,7 +50,7 @@
     <Split />
     <div class="activity-board">
       <statisctitle text="金地·美好生活家">
-        <router-link tag="div" to="/activitylist" slot="more">
+        <router-link tag="div" to="/activitylist/activity" slot="more">
           <span class="text">更多</span><Icon name="arrow-right1"/>
         </router-link>
       </statisctitle>
@@ -117,7 +117,14 @@
           freeModeMomentumBounce: false,
           effect: 'slide'
         },
-        entries: entries.filter(item => item.name !== '社区活动' && item.name !== '我的房源'),
+        entries: entries.filter(
+          item => item.name === '个人中心' ||
+                  item.name === '合同查询' ||
+                  item.name === '工程进度' ||
+                  item.name === '业主报修' ||
+                  item.name === '投诉建议' ||
+                  item.name === '金地家书'
+        ),
         newslist: [],
         activityList: []
       }
@@ -129,8 +136,8 @@
             id: item.ID,
             img: item.Img,
             title: item.Name,
-            applyDateRange: item.ApplyStart + ' - ' + item.ApplyEnd,
-            playDateRange: item.PlayStart + ' - ' + item.PlayEnd,
+            applyDateRange: formatDate(new Date(item.ApplyStart), 'yyyy/MM/dd') + '-' + formatDate(new Date(item.ApplyEnd), 'yyyy/MM/dd'),
+            playDateRange: formatDate(new Date(item.PlayStart), 'yyyy/MM/dd') + '-' + formatDate(new Date(item.PlayEnd), 'yyyy/MM/dd'),
             readNum: item.ViewCount,
             state: item.IsOver ? 1 : 0
           }

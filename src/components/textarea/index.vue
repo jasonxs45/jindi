@@ -3,6 +3,9 @@
     <textarea
       :placeholder="placeholder"
       :name="name"
+      :value="value"
+      :disabled="disabled"
+      :readonly="readonly"
       @input="inputHandler"
       @change="changeHandler"
       class="textarea"
@@ -19,6 +22,15 @@ export default {
     },
     name: {
       type: String
+    },
+    value: {
+      type: String
+    },
+    disabled: {
+      type: Boolean
+    },
+    readonly: {
+      type: Boolean
     }
   },
   methods: {

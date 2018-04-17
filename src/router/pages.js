@@ -3,6 +3,9 @@ const Usercenter = r => require.ensure([], () => r(require('pages/Usercenter')),
 const MyHouses = r => require.ensure([], () => r(require('pages/MyHouses')), 'MyHouses')
 const HouseMember = r => require.ensure([], () => r(require('pages/HouseMember')), 'HouseMember')
 
+const MyPoints = r => require.ensure([], () => r(require('pages/MyPoints')), 'MyPoints')
+const Modify = r => require.ensure([], () => r(require('pages/Modify')), 'Modify')
+
 const TradeProgress = r => require.ensure([], () => r(require('pages/TradeProgress')), 'TradeProgress')
 const Contract = r => require.ensure([], () => r(require('pages/tradeprogress/Contract')), 'Contract')
 const Lincense = r => require.ensure([], () => r(require('pages/tradeprogress/Lincense')), 'Lincense')
@@ -40,7 +43,7 @@ const Investigate = r => require.ensure([], () => r(require('pages/Investigate')
 
 const MessageCenter = r => require.ensure([], () => r(require('pages/MessageCenter')), 'MessageCenter')
 
-const Auth = r => require.ensure([], () => r(require('pages/Auth')), 'Auth')
+const PageNotFound = r => require.ensure([], () => r(require('pages/PageNotFound')), 'PageNotFound')
 const Wait = r => require.ensure([], () => r(require('pages/Wait')), 'Wait')
 export default [
   {
@@ -52,9 +55,9 @@ export default [
     }
   },
   {
-    path: '/auth',
-    name: 'auth',
-    component: Auth
+    path: '*',
+    name: 'pagenotfound',
+    component: PageNotFound
   },
   {
     path: '/wait',
@@ -82,7 +85,23 @@ export default [
     name: 'housemember',
     component: HouseMember,
     meta: {
-      title: '我的房源'
+      title: '成员列表'
+    }
+  },
+  {
+    path: '/mypoints',
+    name: 'mypoints',
+    component: MyPoints,
+    meta: {
+      title: '我的积分'
+    }
+  },
+  {
+    path: '/modify',
+    name: 'modify',
+    component: Modify,
+    meta: {
+      title: '修改资料'
     }
   },
   {
@@ -161,7 +180,7 @@ export default [
     }
   },
   {
-    path: '/activitylist',
+    path: '/activitylist/:classtype',
     name: 'activitylist',
     component: ActivityList,
     meta: {

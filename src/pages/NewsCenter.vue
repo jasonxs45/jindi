@@ -130,6 +130,7 @@ export default {
 .news-center{
   .news-list{
     .item{
+      @include _1px();
       .thumb{
         flex: 0 0 p2r(300);
         height: p2r(200);

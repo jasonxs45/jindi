@@ -6,6 +6,11 @@ let entries = [
     link: '/myhouses'
   },
   {
+    name: '我的积分',
+    icon: 'coin',
+    link: '/mypoints'
+  },
+  {
     name: '个人中心',
     icon: 'user',
     link: '/usercenter'
@@ -25,11 +30,11 @@ let entries = [
     icon: 'repair',
     link: '/wait'
   },
-  // {
-  //   name: '在线客服',
-  //   icon: 'msg',
-  //   link: '/service'
-  // },
+  {
+    name: '新闻中心',
+    icon: 'news',
+    link: '/newscenter'
+  },
   {
     name: '投诉建议',
     icon: 'suggest',
@@ -38,12 +43,27 @@ let entries = [
   {
     name: '社区活动',
     icon: 'activity',
-    link: '/activitylist'
+    link: '/activitylist/activity'
+  },
+  {
+    name: '预约签约',
+    icon: 'signup',
+    link: '/activitylist/signup'
+  },
+  {
+    name: '预约收房',
+    icon: 'key',
+    link: '/activitylist/accept'
   },
   {
     name: '金地家书',
     icon: 'books',
     link: '/magazine'
+  },
+  {
+    name: '修改资料',
+    icon: 'set',
+    link: '/modify'
   }
 ]
 // 报修单的数据结构

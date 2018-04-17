@@ -62,9 +62,7 @@ import 'common/scss/layer.scss'
   w.$close = index => {
     layer.close(index)
   }
-  w.$closeAll = () => {
-    layer.closeAll()
-  }
+  w.$closeAll = layer.closeAll
 })(window)
 Vue.config.productionTip = false
 

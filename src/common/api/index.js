@@ -9,6 +9,7 @@ import projectprogress from './projectprogress'
 import investigate from './investigate'
 import tradeprogress from './tradeprogress'
 import message from './message'
+import mypoints from './mypoints'
 let openid = ''
 const BASE_URL = '/Mobile-PostAPI'
 const MOCK_URL = 'https://www.easy-mock.com/mock/5abd9851597f2f6d4d73ae18/mock/'
@@ -93,6 +94,7 @@ let api = {
   projectprogress,
   investigate,
   tradeprogress,
-  message
+  message,
+  mypoints
 }
 export default api

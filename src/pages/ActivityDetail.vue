@@ -10,7 +10,7 @@
           <flexbox-item class="state" :class="!usedActivity.IsOver?'':'timeout'">{{usedActivity.state === 1?'进行中':'已过期'}}</flexbox-item>
         </flexbox>
         <p class="desc">
-          {{usedActivity.Explain}}
+          {{usedActivity.Desc}}
         </p>
         <flexbox class="date">
           <flexbox-item class="icon">
@@ -52,35 +52,36 @@
       <transition name="fade">
         <div class="bg" v-show="showPanel" @click="toggleMask"></div>
       </transition>
-      <transition name="slide-up">
-        <div class="panel"  v-show="showPanel">
-          <div class="panel-wrapper">
-            <dl
-              v-for="(item, index) in usedActivity.Options"
-              :key="'usedActivity-'+index"
-              class="choosing-item"
-            >
-              <dt class="title">{{item.title}}</dt>
-              <dd class="content">
-                <label
-                  v-for="(tag, index) in item.keys"
-                  :key="'choosingtag-'+index+Math.random().toString(36).substr(2)"
-                  class="radio-wrapper"
+        <transition name="slide-up">
+          <div class="panel" v-show="showPanel">
+              <div class="panel-wrapper">
+                <dl
+                  v-for="(item, index) in usedActivity.Options"
+                  :key="'usedActivity-'+index"
+                  class="choosing-item"
                 >
-                  <input
-                    type="radio"
-                    :name="item.title"
-                    :value="tag"
-                    class="radio"
-                  >
-                  <span class="text">{{tag}}</span>
-                </label>
-              </dd>
-            </dl>
+                  <dt class="title">{{item.title}}</dt>
+                  <dd class="content">
+                    <label
+                      v-for="(tag, index1) in item.keys"
+                      :key="'choosingtag-'+index1+Math.random().toString(36).substr(2)"
+                      class="radio-wrapper"
+                    >
+                      <input
+                        v-model="selectedOptions[index]"
+                        type="radio"
+                        :name="item.title"
+                        :value="{title: item.title, value: tag}"
+                        class="radio"
+                      >
+                      <span class="text">{{tag}}</span>
+                    </label>
+                  </dd>
+                </dl>
+              </div>
+            <Btn type="primary" size="lar" text="确定" @click="optionSignIn"/>
           </div>
-          <Btn type="primary" size="lar" text="确定" @click="optionSignIn"/>
-        </div>
-      </transition>
+        </transition>
     </div>
   </div>
 </template>
@@ -138,8 +139,8 @@ export default {
           let activity = res.data.Data
           activity.Img = 'http://jindi.1juke.cn' + activity.Img
           activity.Content = activity.Content.replace(/src="\/UploadFiles\//g, 'src="http://jindi.1juke.cn/UploadFiles/')
-          activity.PlayStart = formatDate(new Date(activity.PlayStart), 'yyyy/MM/dd hh:mm')
-          activity.PlayEnd = formatDate(new Date(activity.PlayEnd), 'yyyy/MM/dd hh:mm')
+          activity.PlayStart = formatDate(new Date(activity.PlayStart), 'yyyy/MM/dd')
+          activity.PlayEnd = formatDate(new Date(activity.PlayEnd), 'yyyy/MM/dd')
           activity.state = activity.IsOver ? 0 : 1
           if (activity.Options) {
             activity.Options = JSON.parse(activity.Options)
@@ -153,7 +154,7 @@ export default {
       })
     },
     btnClick () {
-      if (this.usedActivity.Options) {
+      if (this.usedActivity.Options.length) {
         this.toggleMask()
       } else {
         this.directSignIn()
@@ -161,7 +162,7 @@ export default {
     },
     directSignIn () {
       api.activity.apply(this.activityId)
-      .then(res => {
+      .then(({res, index}) => {
         if (res.data.IsSuccess) {
           window.$alert({
             title: '恭喜您！',
@@ -175,25 +176,38 @@ export default {
       })
     },
     optionSignIn () {
-      this.selectedOptions = []
-      for (let i = 0; i < this.usedActivity.Options.length; i++) {
-        let title = this.usedActivity.Options[i].title
-        let value = document.querySelector(`input[name="${title}"]:checked`).value
-        let obj = {
-          title,
-          value
-        }
-        this.selectedOptions.push(obj)
+      if (this.selectedOptions.length < 1) {
+        window.$alert('请选择品类')
+        return
       }
-      api.applyActivity(this.activityId, JSON.stringify(this.selectedOptions))
-      .then(res => {
+      let _self = this
+      let a = new Set(this.usedActivity.Options.map(item => item.title))
+      let b = new Set(this.selectedOptions.map(item => item.title))
+      let differenceABSet = new Set([...a].filter(x => !b.has(x)))
+      let differenceABArray = Array.from(differenceABSet)
+      if (differenceABArray.length > 0) {
+        window.$alert(`请选择品类'${differenceABArray[0]}'`)
+        return
+      }
+      api.activity.apply(this.activityId, JSON.stringify(this.selectedOptions))
+      .then(({res, index}) => {
         if (res.data.IsSuccess) {
           window.$alert({
             title: '恭喜您！',
-            content: '报名成功！'
+            content: '报名成功！',
+            yes () {
+              window.$closeAll()
+              _self.toggleMask()
+            }
           })
         } else {
-          window.$alert(res.data.Message)
+          window.$alert({
+            content: res.data.Message,
+            yes () {
+              window.$closeAll()
+              _self.toggleMask()
+            }
+          })
         }
       }).catch(err => {
         console.log(err)
@@ -225,7 +239,7 @@ export default {
       }
     }
     .details{
-      padding:p2r(40) p2r($base-padding);
+      padding:p2r($base-padding) p2r($base-padding) p2r(40);
       .oneline{
         margin: p2r(15) 0;
       }
@@ -347,7 +361,8 @@ export default {
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         .choosing-item{
-          margin-top: p2r(80);
+          margin-top: p2r(40);
+          margin-bottom: p2r(40);
           overflow: hidden;
           &:first-child{
             margin-top: 0;
@@ -359,7 +374,7 @@ export default {
           }
           .content{
             margin: {
-              top:p2r(40);
+              top:p2r(20);
               left: p2r(-30);
               right: p2r(-30);
             }
@@ -384,7 +399,7 @@ export default {
                 display: block;
                 width:100%;
                 height: 100%;
-                border-radius: 25px;
+                border-radius: 4px;
                 border:1px solid lighten($primary-color, 15%);
                 line-height: p2r(58);
                 text-align: center;

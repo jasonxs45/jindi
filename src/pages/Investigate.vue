@@ -15,6 +15,8 @@
             <XTextarea
               v-if="item.Type==='填空'"
               placeholder="说点什么吧。。。"
+              :value="item.MyAnswer[0]"
+              :disabled="readonly"
               :name="'q'+index1"
             />
             <template v-else>
@@ -28,6 +30,8 @@
                     :type="item.Type==='多选'?'checkbox':'radio'"
                     :name="'q'+index1"
                     :value="opt"
+                    :checked="opt === item.MyAnswer[index]"
+                    :disabled="readonly"
                     class="radio"
                   >
                   <p class="option">{{opt}}</p>
@@ -64,6 +68,7 @@ export default {
   data () {
     return {
       id: null,
+      readonly: null,
       questions: {},
       myAnswer:[]
     }
@@ -96,8 +101,10 @@ export default {
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
           let questions = res.data.Data
+          this.readonly = questions.Joined
           questions.List.forEach(item => {
             item.Answer = item.Answer.split('|')
+            item.MyAnswer = item.MyAnswer.split('|')
           })
           this.questions = questions
         } else {
@@ -239,10 +246,14 @@ export default {
                 left:0;
                 opacity: 0;
                 &:checked + .option{
+                  color: $text-sub-color !important;
                   &:before{
                     content: "\e60f";
                     color:$primary-color;
                   }
+                }
+                &:disabled + .option{
+                  color:$btn-disable-color;
                 }
               }
               .option{

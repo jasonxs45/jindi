@@ -8,8 +8,9 @@
     </div>
     <div class="panel">
       <Split type="line" />
-      <h3 class="title"><span class="num">{{month}}</span>月刊</h3>
-      <div class="links">
+      <h3 class="title">{{title}}</h3>
+      <nodata v-if="links.length<1">暂无内容</nodata>
+      <div v-else class="links">
         <div
           v-for="(item, index) in links"
           :key="'link-'+index"
@@ -30,17 +31,16 @@
 <script>
 import {
   Split,
-  Fitimg
+  Fitimg,
+  Nodata
 } from 'components'
 import api from 'common/api'
-import {
-  formatDate
-} from 'common/utils/date'
 export default {
   name: 'MagazineInner',
   components: {
     Split,
-    Fitimg
+    Fitimg,
+    Nodata
   },
   data () {
     return {
@@ -49,9 +49,9 @@ export default {
     }
   },
   computed: {
-    month () {
+    title () {
       if (this.fetchedData.Periodical) {
-        return formatDate(new Date(this.fetchedData.Periodical.AddTime), 'MM')
+        return this.fetchedData.Periodical.PeriodicalNum
       }
     },
     bg () {
@@ -62,9 +62,7 @@ export default {
       return bg
     },
     links () {
-      if (this.fetchedData.ArticleList) {
-        return this.fetchedData.ArticleList
-      }
+      return this.fetchedData.ArticleList || []
     }
   },
   watch: {
@@ -140,10 +138,8 @@ export default {
     .title{
       font-size: p2r(40);
       color:$primary-color;
-      line-height: 1.5;
-      .num{
-        font-size: p2r(96);
-      }
+      font-weight: 600;
+      margin-top: p2r(20);
     }
     .links{
       width:100%;

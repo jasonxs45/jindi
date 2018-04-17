@@ -21,7 +21,7 @@ let activity = {
     return api.globalQuery(opt)
   },
   // 活动报名
-  aplly (ID, Options) {
+  apply (ID, Options) {
     let opt = {
       Act: 'ActivityApply',
       Data: JSON.stringify({
