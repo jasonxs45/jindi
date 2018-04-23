@@ -19,6 +19,7 @@ const BindOwnerConfirm = r => require.ensure([], () => r(require('pages/bind/Bin
 
 const ActivityList = r => require.ensure([], () => r(require('pages/ActivityList')), 'ActivityList')
 const ActivityDetail = r => require.ensure([], () => r(require('pages/ActivityDetail')), 'ActivityDetail')
+const QRCodeCheck = r => require.ensure([], () => r(require('pages/QRCodeCheck')), 'QRCodeCheck')
 
 const RepairUser = r => require.ensure([], () => r(require('pages/RepairUser')), 'RepairUser')
 const RepairSubmit = r => require.ensure([], () => r(require('pages/RepairSubmit')), 'RepairSubmit')
@@ -42,6 +43,7 @@ const ProgressDetail = r => require.ensure([], () => r(require('pages/ProgressDe
 const Investigate = r => require.ensure([], () => r(require('pages/Investigate')), 'Investigate')
 
 const MessageCenter = r => require.ensure([], () => r(require('pages/MessageCenter')), 'MessageCenter')
+const ProjectMap = r => require.ensure([], () => r(require('pages/ProjectMap')), 'ProjectMap')
 
 const PageNotFound = r => require.ensure([], () => r(require('pages/PageNotFound')), 'PageNotFound')
 const Wait = r => require.ensure([], () => r(require('pages/Wait')), 'Wait')
@@ -188,6 +190,14 @@ export default [
     }
   },
   {
+    path: '/qrcodecheck/:id',
+    name: 'qrcodecheck',
+    component: QRCodeCheck,
+    meta: {
+      title: '活动签到'
+    }
+  },
+  {
     path: '/activitydetail/:id',
     name: 'activitydetail',
     component: ActivityDetail,
@@ -313,6 +323,14 @@ export default [
     component: MessageCenter,
     meta: {
       title: '消息中心'
+    }
+  },
+  {
+    path: '/projectmap',
+    name: 'projectmap',
+    component: ProjectMap,
+    meta: {
+      title: '项目地图'
     }
   }
 ]

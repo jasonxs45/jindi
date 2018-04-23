@@ -2,6 +2,7 @@
   <div class="magazine">
     <h2 class="title">社区期刊</h2>
     <p class="desc">{{desc}}</p>
+    <div v-if="fetchedList.length>0" class="date">{{this.fetchedList[activeSwipeIndex].AddTime}}</div>
     <div class="swiper">
       <swiper :options="swiperOption" ref="mySwiper" @slideChange="swipeChangeHandler">
         <!-- slides -->
@@ -24,6 +25,9 @@ import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import {
   Fitimg
 } from 'components'
+import {
+  formatDate
+} from 'common/utils/date'
 import api from 'common/api'
 export default {
   name: 'Magazine',
@@ -79,6 +83,7 @@ export default {
           let fetchedList = res.data.Data
           fetchedList.forEach(item => {
             item.CoverImg = 'http://jindi.1juke.cn' + item.CoverImg
+            item.AddTime = formatDate(new Date(item.AddTime), 'MM')
           })
           this.fetchedList = fetchedList
         } else {
@@ -110,33 +115,46 @@ export default {
 .magazine{
   width: 100vw;
   height: 100vh;
+  position: relative;
   background: url('../../static/images/magabg.png') center bottom/contain no-repeat;
   .title{
     padding-top: p2r(100);
     padding-left: p2r(156);
     font-size: p2r(72);
     color:$primary-color;
+    font-weight: bold;
   }
   .desc{
     width:p2r(440);
-    font-size: p2r(24);
+    font-size: p2r(26);
     color:$primary-color;
-    line-height: 1.7;
+    line-height: 1.4;
     padding-top: p2r(20);
     margin-left: p2r(156);
   }
+  .date{
+    position: absolute;
+    z-index: -1;
+    font-weight: bolder;
+    font-size: p2r(460);
+    line-height: 1;
+    top: p2r(-90);
+    left: p2r(-90);
+    color: $text-color;
+    opacity: .05;
+  }
   .swiper{
     width:100%;
-    height: p2r(800);
+    height: p2r(900);
     position: absolute;
     bottom: 0;
     .swiper-container{
       width:100%;
       height: 100%;
-      padding-top: p2r(40);
+      padding-top: p2r(20);
       .swiper-slide{
-        width:p2r(440) !important;
-        height:p2r(700) !important;
+        width:p2r(500) !important;
+        height:p2r(795) !important;
         transform: scale(.9);
         transition: transform .3s;
         &.swiper-slide-active{
@@ -144,14 +162,13 @@ export default {
         }
         .tit{
           font-size: p2r(30);
-          color: $primary-color;
+          color: $text-color;
           margin: p2r(30) 0;
-          text-shadow: 1px 1px 1px lighten($primary-color, 20%);
         }
         .fit-img{
           display: block;
           width:100%;
-          height: p2r(600);
+          height: p2r(682);
           background: #fff;
           padding: p2r(20);
           box-shadow: 0 8px 20px 0 rgba(0,0,0,.2);

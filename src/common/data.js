@@ -46,12 +46,17 @@ let entries = [
     link: '/activitylist/activity'
   },
   {
-    name: '预约签约',
+    name: '我的活动',
+    icon: 'activity',
+    link: '/activitylist/mine'
+  },
+  {
+    name: '预约保养',
     icon: 'signup',
     link: '/activitylist/signup'
   },
   {
-    name: '预约收房',
+    name: '开放交付',
     icon: 'key',
     link: '/activitylist/accept'
   },

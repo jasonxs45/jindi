@@ -21,6 +21,7 @@
         <flexbox
           :key="'news-item'+index+Math.random().toString(36).substr(2)"
           :data-id="item.ID"
+          :data-link="item.Url"
           class="item"
           @click="newsDetail"
         >
@@ -105,12 +106,16 @@ export default {
       console.log(this.swiper.activeIndex)
     },
     newsDetail (e) {
-      this.$router.push({
-        name: 'newsdetail',
-        params: {
-          id: e.currentTarget.dataset.id
-        }
-      })
+      if (!e.currentTarget.dataset.link) {
+        this.$router.push({
+          name: 'newsdetail',
+          params: {
+            id: e.currentTarget.dataset.id
+          }
+        })
+      } else {
+        window.location.href = e.currentTarget.dataset.link
+      }
     }
   }
 }

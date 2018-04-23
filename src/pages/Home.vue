@@ -30,7 +30,7 @@
     <Split />
     <flexbox class="notice-board">
       <flexbox-item class="head">
-        <img src="static/images/notice-board.png" alt="" />
+        <img src="static/images/notice-board.png" alt="" @click="goNewsCenter"/>
       </flexbox-item>
       <flexbox-item>
         <flexbox
@@ -188,6 +188,11 @@
       },
       swipeChangeHandler () {
         console.log(this.swiper.activeIndex)
+      },
+      goNewsCenter () {
+        this.$router.push({
+          name: 'newscenter'
+        })
       },
       goNewsDetail (e) {
         let id = e.currentTarget.dataset.id

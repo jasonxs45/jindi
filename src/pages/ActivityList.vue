@@ -28,12 +28,16 @@ const CLASS_MAP = {
     S_Class: 1
   },
   signup: {
-    title: '预约签约',
+    title: '预约保养',
     S_Class: 2
   },
   accept: {
-    title: '预约收房',
+    title: '开放交互',
     S_Class: 3
+  },
+  mine: {
+    title: '我的活动',
+    S_Class: -1
   }
 }
 export default {

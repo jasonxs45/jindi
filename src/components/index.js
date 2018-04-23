@@ -19,6 +19,7 @@ import OrderList from './orderlist'
 import Nodata from './nodata'
 import Getmore from './getmore'
 import {ImgRow, ImgCell} from './imgrow'
+import AreaPicker from './areapicker'
 
 export {
   Container,
@@ -45,5 +46,6 @@ export {
   Nodata,
   Getmore,
   ImgRow,
-  ImgCell
+  ImgCell,
+  AreaPicker
 }

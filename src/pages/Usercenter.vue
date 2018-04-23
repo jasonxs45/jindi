@@ -49,7 +49,11 @@ export default {
   },
   data () {
     return {
-      entries: entries.filter(item => item.name !== '个人中心')
+      entries: entries.filter(item => {
+        return item.name !== '个人中心' &&
+               item.name !== '社区活动' &&
+               item.name !== '修改资料'
+      })
     }
   },
   methods: {
