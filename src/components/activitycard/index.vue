@@ -1,16 +1,25 @@
 <template>
   <div class="activity-card" @click="clickHandler">
-    <div class="img-wrapper">
-      <Fitimg :src="img" alt="" />
-    </div>
     <div class="card-content">
       <flexbox class="oneline">
         <flexbox-item class="title">{{title}}</flexbox-item>
         <flexbox-item class="state" :class="state === 0?'':'timeout'">{{state === 0?'进行中':'已过期'}}</flexbox-item>
       </flexbox>
+      <div class="img-wrapper">
+        <Fitimg :src="img" alt="" />
+      </div>
       <flexbox class="oneline">
-        <flexbox-item class="date">{{playDateRange}}</flexbox-item>
-        <flexbox-item v-if="readNum" class="read-num">{{readNum}}人查看</flexbox-item>
+        <flexbox-item class="fh">活动时间：</flexbox-item>
+        <flexbox-item class="fb">{{playDateRange}}</flexbox-item>
+        <flexbox-item v-if="readNum||readNum === 0" class="read-num">{{readNum}}人查看</flexbox-item>
+      </flexbox>
+      <flexbox class="oneline" v-if="local">
+        <flexbox-item class="fh">报名地址：</flexbox-item>
+        <flexbox-item class="fb">{{local}}</flexbox-item>
+      </flexbox>
+      <flexbox class="oneline" v-if="condition">
+        <flexbox-item class="fh">参与条件：</flexbox-item>
+        <flexbox-item class="fb">{{condition}}</flexbox-item>
       </flexbox>
     </div>
   </div>
@@ -50,6 +59,12 @@ export default {
     applyDateRange: {
       type: String
     },
+    local: {
+      type: String
+    },
+    condition: {
+      type: String
+    },
     readNum: {
       type: [String, Number]
     }
@@ -85,15 +100,20 @@ export default {
     height:p2r(276);
     overflow: hidden;
     text-align: center;
-    img{
-      border-top-left-radius: 4px;
-      border-top-right-radius: 4px;
-    }
   }
   .card-content{
     padding:p2r(20);
     .oneline{
       margin: p2r(15) 0;
+      position: relative;
+      color: $text-sub-color;
+      .fh,.fb{
+        font-weight: 200;
+      }
+      .fh{
+        flex: 0 0 p2r(120);
+        width: p2r(120);
+      }
     }
     .title{
       font-size: p2r(28);
@@ -112,8 +132,9 @@ export default {
       font-size: p2r(24);
       color:$thr-color;
       font-weight: 200;
-      flex:0 0 p2r(180);
       text-align: right;
+      position: absolute;
+      right: 0;
     }
     .state{
       font-size: p2r(20);

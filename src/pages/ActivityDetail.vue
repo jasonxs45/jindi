@@ -55,29 +55,39 @@
         <transition name="slide-up">
           <div class="panel" v-show="showPanel">
               <div class="panel-wrapper">
-                <dl
-                  v-for="(item, index) in usedActivity.Options"
-                  :key="'usedActivity-'+index"
-                  class="choosing-item"
-                >
-                  <dt class="title">{{item.title}}</dt>
+                <dl class="choosing-item" v-if="usedActivity.Options" >
+                  <dt class="title">{{usedActivity.Options.title}}</dt>
                   <dd class="content">
                     <label
-                      v-for="(tag, index1) in item.keys"
-                      :key="'choosingtag-'+index1+Math.random().toString(36).substr(2)"
+                      v-for="(item, index) in usedActivity.Options.items"
+                      :key="'choosingtag-'+index+Math.random().toString(36).substr(2)"
                       class="radio-wrapper"
                     >
                       <input
-                        v-model="selectedOptions[index]"
+                        v-model="selectedItem"
                         type="radio"
-                        :name="item.title"
-                        :value="{title: item.title, value: tag}"
+                        name="item"
+                        :value="item.name"
                         class="radio"
                       >
-                      <span class="text">{{tag}}</span>
+                      <span class="text">{{item.name}}</span>
                     </label>
                   </dd>
                 </dl>
+                <flexbox class="controller">
+                  <flexbox-item class="title">参与人数</flexbox-item>
+                  <flexbox-item class="cells">
+                    <span class="cell">
+                      <Icon name="minus" />
+                    </span>
+                    <span class="cell">
+                      <input type="tel" class="input">
+                    </span>
+                    <span class="cell">
+                      <Icon name="plus" />
+                    </span>
+                  </flexbox-item>
+                </flexbox>
               </div>
             <Btn type="primary" size="lar" text="确定" @click="optionSignIn"/>
           </div>
@@ -109,7 +119,7 @@ export default {
       activity: {},
       activityId: null,
       showPanel: false,
-      selectedOptions: []
+      selectedItem: ''
     }
   },
   computed: {
@@ -154,7 +164,7 @@ export default {
       })
     },
     btnClick () {
-      if (this.usedActivity.Options.length) {
+      if (this.usedActivity.NeedMoreInfo) {
         this.toggleMask()
       } else {
         this.directSignIn()
@@ -355,22 +365,22 @@ export default {
       border-top-right-radius: 4px;
       bottom:0;
       z-index:$zindex-notification;
-      padding:p2r(80) p2r(30) 0;
+      padding:p2r(60) p2r(30) 0;
       .panel-wrapper{
         height: p2r(640);
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
+        .title{
+          font-size: p2r(28);
+          color:$text-sub-color;
+          font-weight: 600;
+        }
         .choosing-item{
           margin-top: p2r(40);
           margin-bottom: p2r(40);
           overflow: hidden;
           &:first-child{
             margin-top: 0;
-          }
-          .title{
-            font-size: p2r(28);
-            color:$text-sub-color;
-            font-weight: 600;
           }
           .content{
             margin: {
@@ -404,6 +414,42 @@ export default {
                 line-height: p2r(58);
                 text-align: center;
                 font-weight: 200;
+              }
+            }
+          }
+        }
+        .controller {
+          .title{
+            line-height: p2r(40);
+          }
+          .cells{
+            text-align: right;
+            font-size: 0;
+            .cell{
+              display: inline-block;
+              vertical-align: middle;
+              height: p2r(40);
+              .input,
+              .iconfont{
+                display: block;
+                height: 100%;
+                text-align: center;
+                line-height: p2r(40);
+                font-size: p2r(24);
+                border-radius: 4px;
+              }
+              .iconfont{
+                width: p2r(40);
+                color:#fff;
+                background: $primary-color;
+              }
+              .input{
+                margin:0 p2r(10);
+                width:p2r(80);
+                color:$primary-color;
+                border:1px solid $primary-color;
+                outline: none;
+                -webkit-appearance: none;
               }
             }
           }

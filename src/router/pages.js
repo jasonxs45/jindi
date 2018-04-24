@@ -4,7 +4,7 @@ const MyHouses = r => require.ensure([], () => r(require('pages/MyHouses')), 'My
 const HouseMember = r => require.ensure([], () => r(require('pages/HouseMember')), 'HouseMember')
 
 const MyPoints = r => require.ensure([], () => r(require('pages/MyPoints')), 'MyPoints')
-const Modify = r => require.ensure([], () => r(require('pages/Modify')), 'Modify')
+const MyInfo = r => require.ensure([], () => r(require('pages/MyInfo')), 'MyInfo')
 
 const TradeProgress = r => require.ensure([], () => r(require('pages/TradeProgress')), 'TradeProgress')
 const Contract = r => require.ensure([], () => r(require('pages/tradeprogress/Contract')), 'Contract')
@@ -99,9 +99,9 @@ export default [
     }
   },
   {
-    path: '/modify',
-    name: 'modify',
-    component: Modify,
+    path: '/myinfo',
+    name: 'myinfo',
+    component: MyInfo,
     meta: {
       title: '修改资料'
     }

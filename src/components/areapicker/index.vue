@@ -1,10 +1,10 @@
 <template>
 <div class="area-picker">
-  <XInput
+  <input
     readonly
     placeholder="请选择地区"
     :value="value"
-    @click.native="toggleAreaPicker"
+    @click="toggleAreaPicker"
     class="input"
   />
   <transition name="fade">
@@ -20,7 +20,7 @@
       class="area-picker-wrapper"
     >
       <div class="header">
-        <h4 class="title">选择地址</h4>
+        <h4 class="title">选择地区</h4>
         <Icon name="close" @on-click="toggleAreaPicker"/>
       </div>
       <div class="selected-area">
@@ -60,7 +60,10 @@
                   class="radio"
                   @change="radioChangeHandler"
                 />
-                <span class="text">{{value}}</span>
+                <span class="text">
+                  {{value}}
+                  <Icon name="checked"/>
+                </span>
               </label>
             </p>
           </swiper-slide>
@@ -72,7 +75,6 @@
 </template>
 <script>
 import Icon from '../icon'
-import XInput from '../input'
 import { pcaa } from 'area-data'
 import 'swiper/dist/css/swiper.css'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
@@ -81,8 +83,12 @@ export default {
   components: {
     swiper,
     swiperSlide,
-    Icon,
-    XInput
+    Icon
+  },
+  props: {
+    border: {
+      type: Boolean
+    }
   },
   data () {
     return {
@@ -175,6 +181,16 @@ export default {
     width: 100%;
     height: p2r(90);
     line-height: p2r(90);
+    padding:0 p2r(30);
+    background: none;
+    -webkit-appearance: none;
+    outline: none;
+    color:$text-color;
+    font-size: p2r(28);
+    &::-webkit-input-placeholder{
+      color:lighten($text-sub-color, 20%);
+      font-weight: 200;
+    }
   }
   .bg{
     width:100%;
@@ -274,7 +290,9 @@ export default {
             border: none;
             &:checked + .text{
               color: $primary-color;
-              @include _1px($primary-color);
+              .iconfont{
+                opacity: 1;
+              }
             }
           }
           .text{
@@ -282,6 +300,9 @@ export default {
             margin:0 p2r(20);
             padding: p2r(20) 0;
             height: 100%;
+            .iconfont{
+              opacity: 0;
+            }
           }
         }
       }

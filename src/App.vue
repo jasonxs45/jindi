@@ -75,4 +75,10 @@ export default {
 .slide-up-enter, .slide-up-leave-to {
   transform: translateY(100%);
 }
+.slide-in-right-enter-active, .slide-in-right-leave-active{
+  transition: transform .2s;
+}
+.slide-in-right-enter, .slide-in-right-leave-to{
+  transform: translateX(100%);
+}
 </style>

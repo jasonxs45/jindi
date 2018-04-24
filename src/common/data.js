@@ -66,9 +66,9 @@ let entries = [
     link: '/magazine'
   },
   {
-    name: '修改资料',
+    name: '我的资料',
     icon: 'set',
-    link: '/modify'
+    link: '/myinfo'
   }
 ]
 // 报修单的数据结构
