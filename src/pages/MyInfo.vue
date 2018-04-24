@@ -39,6 +39,7 @@
             placeholder="完善收货地址"
             class="input"
             @click="toggoleShowArea"
+            @focus="focus"
           />
           <Icon name="arrow-right1"/>
         </flexbox-item>
@@ -50,6 +51,13 @@
       text="确认修改"
       class="submit"
       @click="submitHandler"
+    />
+    <Btn
+      type="default"
+      size="lar"
+      text="返回"
+      class="back"
+      @click="goBack"
     />
     <transition name="slide-in-right">
       <div v-show="showAreaPage" class="area-pick-page">
@@ -128,6 +136,12 @@ export default {
     this.getInfo()
   },
   methods: {
+    focus (e) {
+      e.target.blur()
+    },
+    goBack () {
+      this.$router.go(-1)
+    },
     getArea (val) {
       this.pickedArea = val
     },
@@ -135,6 +149,10 @@ export default {
       this.showAreaPage = !this.showAreaPage
     },
     changeArea () {
+      if (!this.desc) {
+        window.$alert('请填写详细地址')
+        return
+      }
       this.address = this.pickedArea + this.desc
       this.showAreaPage = false
     },
@@ -185,7 +203,7 @@ export default {
   height: 100vh;
   .modify-wrapper{
     min-height: 100%;
-    padding: p2r($base-padding) p2r($base-padding) p2r(180);
+    padding: p2r($base-padding) p2r($base-padding) p2r(300);
   }
   .border{
     margin:p2r(30) 0;
@@ -250,7 +268,11 @@ export default {
   }
   .submit{
     position: relative;
-    margin-top: p2r(-150);
+    margin-top: p2r(-280);
+  }
+  .back{
+    position: relative;
+    margin-top: p2r(30);
   }
   .area-pick-page{
     position: fixed;

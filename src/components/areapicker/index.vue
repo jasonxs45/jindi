@@ -5,6 +5,7 @@
     placeholder="请选择地区"
     :value="value"
     @click="toggleAreaPicker"
+    @focus="focus"
     class="input"
   />
   <transition name="fade">
@@ -120,6 +121,9 @@ export default {
     }
   },
   methods: {
+    focus (e) {
+      e.target.blur()
+    },
     toggleAreaPicker () {
       this.showAreaPicker = !this.showAreaPicker
     },
