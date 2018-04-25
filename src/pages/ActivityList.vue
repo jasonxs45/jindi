@@ -9,6 +9,8 @@
       :title="item.title"
       :playDateRange="item.playDateRange"
       :read-num="item.readNum"
+      :local="item.local"
+      :condition="item.condition"
       :state="item.state"
     ></activitycard>
   </div>
@@ -62,6 +64,8 @@ export default {
           applyDateRange: formatDate(new Date(item.ApplyStart), 'yyyy/MM/dd') + '-' + formatDate(new Date(item.ApplyEnd), 'yyyy/MM/dd'),
           playDateRange: formatDate(new Date(item.PlayStart), 'yyyy/MM/dd') + '-' + formatDate(new Date(item.PlayEnd), 'yyyy/MM/dd'),
           readNum: item.ViewCount,
+          local: '',
+          condition: item.Explain,
           state: item.IsOver ? 1 : 0
         }
       })

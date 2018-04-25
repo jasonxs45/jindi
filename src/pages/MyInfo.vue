@@ -149,6 +149,10 @@ export default {
       this.showAreaPage = !this.showAreaPage
     },
     changeArea () {
+      if (!this.pickedArea) {
+        window.$alert('请选择地区')
+        return
+      }
       if (!this.desc) {
         window.$alert('请填写详细地址')
         return

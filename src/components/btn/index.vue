@@ -62,6 +62,7 @@ export default {
   &.disabled{
     background:$thr-color !important;
     color:$btn-disable-color !important;
+    box-shadow: 0 1px 5px 0 rgba(0,0,0,.4) !important;
   }
   &.base{
     background:#fff;

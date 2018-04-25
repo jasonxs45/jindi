@@ -7,7 +7,10 @@
       <div class="details">
         <flexbox class="oneline">
           <flexbox-item class="title">{{usedActivity.Name}}</flexbox-item>
-          <flexbox-item class="state" :class="!usedActivity.IsOver?'':'timeout'">{{usedActivity.state === 1?'进行中':'已过期'}}</flexbox-item>
+          <flexbox-item
+            class="state"
+            :class="(usedActivity.ApplyState.state === 1 || usedActivity.ApplyState.state === 2)?'timeout':''"
+          >{{usedActivity.ApplyState.state === 1?'未开始':usedActivity.ApplyState.state === 2?'已过期':'进行中'}}</flexbox-item>
         </flexbox>
         <p class="desc">
           {{usedActivity.Desc}}
@@ -42,57 +45,165 @@
     </div>
     <div class="btn-area">
       <Btn
+        v-if="usedActivity.ApplyState.state || usedActivity.ApplyState.state === 0"
         type="primary"
-        :text="usedActivity.IsOver?'报名截至时间已过':'我要报名'"
-        :disabled="usedActivity.IsOver?true:false"
+        :text="usedActivity.ApplyState.message"
+        :disabled="usedActivity.ApplyState.state !== 0 ? true:false"
         @click="btnClick"
       />
     </div>
     <div class="mask">
-      <transition name="fade">
-        <div class="bg" v-show="showPanel" @click="toggleMask"></div>
-      </transition>
-        <transition name="slide-up">
-          <div class="panel" v-show="showPanel">
-              <div class="panel-wrapper">
-                <dl class="choosing-item" v-if="usedActivity.Options" >
-                  <dt class="title">{{usedActivity.Options.title}}</dt>
-                  <dd class="content">
-                    <label
-                      v-for="(item, index) in usedActivity.Options.items"
-                      :key="'choosingtag-'+index+Math.random().toString(36).substr(2)"
-                      class="radio-wrapper"
+      <transition name="slide-in-right">
+        <div class="panel" v-show="showPanel">
+          <div class="panel-wrapper">
+            <!-- 场次 -->
+            <section v-if="usedActivity.Options" class="section round">
+              <dl class="choosing-item">
+                <dt class="title">{{usedActivity.Options.title}}</dt>
+                <dd class="content">
+                  <label
+                    v-for="(item, index) in usedActivity.Options.items"
+                    :key="'choosingtag-'+index+Math.random().toString(36).substr(2)"
+                    class="radio-wrapper"
+                  >
+                    <input
+                      v-model="extraInfos.selectedItem"
+                      type="radio"
+                      name="item"
+                      :value="item.name"
+                      class="radio"
                     >
-                      <input
-                        v-model="selectedItem"
-                        type="radio"
-                        name="item"
-                        :value="item.name"
-                        class="radio"
-                      >
-                      <span class="text">{{item.name}}</span>
-                    </label>
-                  </dd>
-                </dl>
-                <flexbox class="controller">
-                  <flexbox-item class="title">参与人数</flexbox-item>
-                  <flexbox-item class="cells">
-                    <span class="cell">
-                      <Icon name="minus" />
-                    </span>
-                    <span class="cell">
-                      <input type="tel" class="input">
-                    </span>
-                    <span class="cell">
-                      <Icon name="plus" />
-                    </span>
-                  </flexbox-item>
-                </flexbox>
-              </div>
-            <Btn type="primary" size="lar" text="确定" @click="optionSignIn"/>
+                    <span class="text">{{item.name}}</span>
+                  </label>
+                </dd>
+              </dl>
+            </section>
+            <!-- 参与人数 -->
+            <section v-if="usedActivity.MaxNum>1||usedActivity.NeedInfo" class="section participant">
+              <flexbox class="controller">
+                <flexbox-item class="title">参与人数</flexbox-item>
+                <flexbox-item class="cells">
+                  <button
+                    v-if="usedActivity.MaxNum > 1"
+                    :disabled="extraInfos.participant.length <= 1"
+                    class="cell minus"
+                    @click="decrePartyCount"
+                  >
+                    <Icon name="minus" />
+                  </button>
+                  <span class="cell span">
+                    <input
+                      v-model="extraInfos.participant.length"
+                      readonly
+                      type="tel"
+                      class="input"
+                      @focus="'event.target.blur()'"
+                    >
+                  </span>
+                  <button
+                    v-if="usedActivity.MaxNum > 1"
+                    :disabled="extraInfos.participant.length >= usedActivity.MaxNum"
+                    class="cell plus"
+                    @click="increPartyCount"
+                  >
+                    <Icon name="plus" />
+                  </button>
+                </flexbox-item>
+              </flexbox>
+              <dl
+                v-if="usedActivity.NeedInfo"
+                v-for="(item, index) in extraInfos.participant"
+                :key="'participant-'+index"
+                class="userinfo-input-group"
+              >
+                <dd class="input-wrapper">
+                  <XInput
+                    :placeholder="`请输入参与者${index + 1}的姓名`"
+                    v-model="extraInfos.participant[index].name"
+                  />
+                </dd>
+                <dd class="input-wrapper">
+                  <XInput
+                    :placeholder="`请输入参与者${index + 1}的身份证号码`"
+                    v-model="extraInfos.participant[index].id"
+                  />
+                </dd>
+              </dl>
+            </section>
+            <!-- 收货人资料 -->
+            <section v-if="usedActivity.NeedAddr" class="section address">
+              <dl>
+                <dt class="title">收货人资料</dt>
+                <dd class="input-wrapper">
+                  <XInput v-model="extraInfos.consignee.name" placeholder="填写收货人姓名"/>
+                </dd>
+                <dd class="input-wrapper">
+                  <XInput v-model="extraInfos.consignee.tel" placeholder="填写收货人电话"/>
+                </dd>
+                <dd class="input-wrapper">
+                  <XInput
+                    v-model="extraInfos.consignee.address"
+                    type="text"
+                    readonly
+                    placeholder="填写收货地址"
+                    class="input"
+                    @on-focus="focus"
+                  />
+                  <Icon name="arrow-right1"/>
+                </dd>
+              </dl>
+            </section>
           </div>
-        </transition>
+          <div class="btns">
+            <Btn type="primary" size="lar" text="确定" @click="optionSignIn"/>
+            <Btn type="default" size="lar" text="取消" @click="toggleMask"/>
+          </div>
+        </div>
+      </transition>
     </div>
+    <transition name="slide-in-right">
+      <div v-show="showAreaPage" class="area-pick-page">
+        <flexbox class="border">
+          <flexbox-item class="fh">
+            所在地区
+          </flexbox-item>
+          <flexbox-item class="fb">
+            <area-picker
+              border
+              class="area-pick"
+              @selected="getArea"
+            ></area-picker>
+          </flexbox-item>
+        </flexbox>
+        <flexbox class="border area">
+          <flexbox-item class="fh">
+            详细地址
+          </flexbox-item>
+          <flexbox-item class="fb">
+            <input
+              v-model="extraInfos.consignee.desc"
+              type="text"
+              placeholder="街道、楼牌号等"
+              class="input"
+            />
+          </flexbox-item>
+        </flexbox>
+        <div class="btns">
+          <Btn
+            type="primary"
+            size="lar"
+            text="确定"
+            @click="changeArea"
+          />
+          <Btn
+            type="default"
+            size="lar"
+            text="取消"
+            @click="toggoleShowArea"
+          />
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 <script>
@@ -100,26 +211,59 @@ import {
   Flexbox,
   FlexboxItem,
   Icon,
-  Btn
+  Btn,
+  XInput,
+  AreaPicker
 } from 'components'
 import api from 'common/api'
 import {
   formatDate
 } from 'common/utils/date'
+import {
+  NAME_REG,
+  TEL_REG,
+  ID_CHECK
+} from 'common/data'
 export default {
   name: 'ActivityDetail',
   components: {
     Flexbox,
     FlexboxItem,
     Icon,
-    Btn
+    Btn,
+    XInput,
+    AreaPicker
   },
   data () {
     return {
-      activity: {},
+      activity: {
+        ApplyState: {
+          state: null,
+          message: null
+        }
+      },
       activityId: null,
       showPanel: false,
-      selectedItem: ''
+      extraInfos: {
+        // 选择的场次 时间等等
+        selectedItem: '',
+        // 收货人资料
+        consignee: {
+          name: '',
+          tel: '',
+          address: '',
+          pickedArea: '',
+          detail: ''
+        },
+        //  参与人数
+        participant: [
+          {
+            name: '',
+            id: ''
+          }
+        ]
+      },
+      showAreaPage: false
     }
   },
   computed: {
@@ -141,6 +285,45 @@ export default {
     this.getActivityInfo()
   },
   methods: {
+    focus (e) {
+      e.target.blur()
+      this.toggoleShowArea()
+    },
+    goBack () {
+      this.$router.go(-1)
+    },
+    getArea (val) {
+      this.extraInfos.consignee.pickedArea = val
+    },
+    toggoleShowArea () {
+      this.showAreaPage = !this.showAreaPage
+    },
+    changeArea () {
+      if (!this.extraInfos.consignee.pickedArea) {
+        window.$alert('请选择地区')
+        return
+      }
+      if (!this.extraInfos.consignee.desc) {
+        window.$alert('请填写详细地址')
+        return
+      }
+      this.extraInfos.consignee.address = this.extraInfos.consignee.pickedArea + this.extraInfos.consignee.desc
+      this.showAreaPage = false
+    },
+    increPartyCount () {
+      if (this.extraInfos.participant.length >= this.usedActivity.MaxNum) {
+        return
+      }
+      this.extraInfos.participant.push({
+        name: '',
+        id: ''
+      })
+    },
+    decrePartyCount () {
+      if (this.extraInfos.participant.length > 1) {
+        this.extraInfos.participant.pop()
+      }
+    },
     getActivityInfo () {
       let id = this.id
       api.activity.detail(id)
@@ -156,6 +339,11 @@ export default {
             activity.Options = JSON.parse(activity.Options)
           }
           this.activity = activity
+          this.extraInfos.consignee = {
+            name: activity.UserInfo.Name,
+            tel: activity.UserInfo.Tel,
+            address: activity.UserInfo.Address
+          }
         } else {
           window.$alert(res.data.Message)
         }
@@ -186,20 +374,47 @@ export default {
       })
     },
     optionSignIn () {
-      if (this.selectedOptions.length < 1) {
-        window.$alert('请选择品类')
-        return
-      }
       let _self = this
-      let a = new Set(this.usedActivity.Options.map(item => item.title))
-      let b = new Set(this.selectedOptions.map(item => item.title))
-      let differenceABSet = new Set([...a].filter(x => !b.has(x)))
-      let differenceABArray = Array.from(differenceABSet)
-      if (differenceABArray.length > 0) {
-        window.$alert(`请选择品类'${differenceABArray[0]}'`)
-        return
+      if (this.usedActivity.Options) {
+        if (!this.extraInfos.selectedItem) {
+          window.$alert(`请选择${this.usedActivity.Options.title}！`)
+          return
+        }
       }
-      api.activity.apply(this.activityId, JSON.stringify(this.selectedOptions))
+      if (this.usedActivity.NeedInfo) {
+        let check = this.extraInfos.participant.every((item, index) => {
+          if (!item.name.match(NAME_REG)) {
+            window.$alert(`请填写参与者${index + 1}正确格式的姓名`)
+            return item.name.match(NAME_REG)
+          }
+          if (!ID_CHECK(item.id)) {
+            window.$alert(`请填写参与者${index + 1}正确的身份证号码`)
+            return ID_CHECK(item.id)
+          }
+          return true
+        })
+        if (!check) return
+      }
+      if (this.usedActivity.NeedAddr) {
+        if (!this.extraInfos.consignee.name.match(NAME_REG)) {
+          window.$alert(`请填写正确的收货人姓名`)
+          return
+        }
+        if (!this.extraInfos.consignee.tel.match(TEL_REG)) {
+          window.$alert(`请填写正确格式的电话号码`)
+          return
+        }
+        if (!this.extraInfos.consignee.address) {
+          window.$alert(`请填写收货地址`)
+          return
+        }
+      }
+      let ActivityID = this.activityId
+      let Options = this.extraInfos.selectedItem
+      let TotalNum = this.extraInfos.participant.length
+      let Info = JSON.stringify(this.extraInfos.participant)
+      let Address = JSON.stringify(this.extraInfos.consignee)
+      api.activity.apply(ActivityID, {Options, TotalNum, Info, Address})
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
           window.$alert({
@@ -237,6 +452,7 @@ export default {
   height: 100vh;
   padding-bottom: p2r(140);
   overflow: hidden;
+  position: relative;
   .activity-detail-wrapper{
     width:100%;
     height: 100%;
@@ -347,46 +563,68 @@ export default {
     z-index:1
   }
   .mask{
-    .bg{
-      position: fixed;
+    .panel{
+      position: absolute;
       width:100%;
       height: 100%;
-      background:rgba(0,0,0,.7);
-      top:0;
-      left:0;
-      z-index:$zindex-modal;
-    }
-    .panel{
-      position: fixed;
-      width:100%;
-      height: p2r(900);
-      background: rgba(255,255,255,1);
-      border-top-left-radius: 4px;
-      border-top-right-radius: 4px;
+      background: #fff;
       bottom:0;
       z-index:$zindex-notification;
-      padding:p2r(60) p2r(30) 0;
+      padding:0;
       .panel-wrapper{
-        height: p2r(640);
+        height: 100%;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
-        .title{
-          font-size: p2r(28);
-          color:$text-sub-color;
-          font-weight: 600;
+        padding: p2r(30) p2r(30) p2r(300);
+        .section{
+          padding: p2r(30) 0;
+          margin: p2r(30) 0;
+          &:first-child{
+            padding-top: 0;
+            margin-top: 0;
+          }
+          &:last-child{
+            background: #fff;
+          }
+          @include _1px();
+          .title{
+            font-size: p2r(28);
+            color:$text-sub-color;
+            font-weight: 600;
+          }
+          .userinfo-input-group{
+            margin-top: p2r(40);
+          }
+          .input-wrapper{
+            position: relative;
+            width:100%;
+            height: p2r(80);
+            line-height: p2r(80);
+            margin: p2r(30) 0;
+            .x-input{
+            }
+            .iconfont{
+              height: p2r(80);
+              line-height: p2r(80);
+              position: absolute;
+              right:p2r(30);
+              top:0;
+              font-size: p2r(24);
+              color: $thr-color;
+            }
+          }
         }
         .choosing-item{
-          margin-top: p2r(40);
-          margin-bottom: p2r(40);
           overflow: hidden;
           &:first-child{
             margin-top: 0;
           }
           .content{
             margin: {
-              top:p2r(20);
+              top:p2r(30);
               left: p2r(-30);
               right: p2r(-30);
+              bottom:p2r(30);
             }
             .radio-wrapper{
               display: inline-block;
@@ -420,34 +658,45 @@ export default {
         }
         .controller {
           .title{
-            line-height: p2r(40);
+            line-height: p2r(60);
           }
           .cells{
             text-align: right;
             font-size: 0;
             .cell{
               display: inline-block;
-              vertical-align: middle;
-              height: p2r(40);
+              vertical-align: top;
+              height: p2r(60);
+              outline: none;
+              -webkit-appearance: none;
+              border:none;
+              background: $primary-color;
+              border-radius: 4px;
+              &:disabled{
+                background: lighten($primary-color, 15%);
+              }
+              &.span{
+               background: none;
+              }
               .input,
               .iconfont{
                 display: block;
                 height: 100%;
                 text-align: center;
-                line-height: p2r(40);
+                line-height: p2r(60);
                 font-size: p2r(24);
-                border-radius: 4px;
               }
               .iconfont{
-                width: p2r(40);
+                width: p2r(60);
                 color:#fff;
-                background: $primary-color;
               }
               .input{
                 margin:0 p2r(10);
+                display: inline-block;
                 width:p2r(80);
-                color:$primary-color;
+                color:$text-color;
                 border:1px solid $primary-color;
+                border-radius: 4px;
                 outline: none;
                 -webkit-appearance: none;
               }
@@ -455,9 +704,80 @@ export default {
           }
         }
       }
-      .btn{
-        margin-top: p2r(30);
+      .btns{
+        position: absolute;
+        bottom: 0;
+        left:0;
+        width:100%;
+        background: #fff;
+        .btn{
+          margin: p2r(30) auto;
+        }
       }
+    }
+  }
+}
+.area-pick-page{
+  position: fixed;
+  width:100%;
+  height: 100%;
+  top:0;
+  left:0;
+  background: #fff;
+  z-index:$zindex-header;
+  padding: p2r($base-padding);
+  .border{
+    margin:p2r(30) 0;
+    position: relative;
+    @include _1px();
+    &:first-child{
+      margin-top: 0;
+    }
+    &.area{
+      .iconfont{
+        position: absolute;
+        right:0;
+        top:0;
+        height: p2r(90);
+        line-height: p2r(90);
+        font-size: p2r(24);
+        color: $thr-color;
+      }
+    }
+    .fh{
+      flex: 0 0 p2r(120);
+      width: p2r(120);
+      font-size: p2r(28);
+      font-weight: 200;
+      color: $text-sub-color;
+      height: p2r(90);
+      line-height: p2r(90);
+    }
+    .fb{
+      .input{
+        display: block;
+        width:100%;
+        height: 100%;
+        padding:0 p2r(30);
+        font-size: p2r(28);
+        background: none;
+        -webkit-appearance: none;
+        outline: none;
+        color:$text-color;
+        &::-webkit-input-placeholder{
+          color:lighten($text-sub-color, 20%);
+          font-weight: 200;
+        }
+      }
+    }
+  }
+  .btns{
+    position: absolute;
+    bottom: 0;
+    left:0;
+    width: 100%;
+    .btn{
+      margin: p2r(40) auto;
     }
   }
 }

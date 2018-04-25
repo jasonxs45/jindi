@@ -61,7 +61,8 @@ import {
 import api from 'common/api'
 import {
   NAME_REG,
-  TEL_REG
+  TEL_REG,
+  ID_CHECK
 } from 'common/data'
 export default {
   name: 'BindSecond',
@@ -129,24 +130,12 @@ export default {
         window.$alert('请输入房号')
         return
       }
-            if (!this.form.name) {
-        window.$alert('姓名不能为空')
-        return
-      }
       if (!this.form.name.match(NAME_REG)) {
         window.$alert('请填写正确格式的姓名')
         return
       }
-      if (!this.form.id) {
-        window.$alert('身份证号码不能为空')
-        return
-      }
-      // if (!this.form.id.match(ID_REG)) {
-      //   window.$alert('请填写正确格式的身份证号码')
-      //   return
-      // }
-      if (!this.form.tel) {
-        window.$alert('手机号码不能为空')
+      if (!ID_CHECK(this.form.id)) {
+        window.$alert('请填写正确的身份证号码')
         return
       }
       if (!this.form.tel.match(TEL_REG)) {
