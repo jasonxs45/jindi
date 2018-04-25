@@ -1,20 +1,22 @@
 <template>
   <div class="project-progress">
-    <flexbox
+    <div
       v-for="(item, index) in list"
       :key="'project-'+index"
       :data-id="item.ID"
       class="item"
       @click="goMonthlyList"
     >
-      <flexbox-item class="img">
+      <div class="img">
         <Fitimg :src="'http://jindi.1juke.cn'+item.Logo"/>
-      </flexbox-item>
-      <flexbox-item class="text">
-        <h3 class="name">{{item.ProjectName}}【{{item.ShortName}}】</h3>
-        <p class="updatetime">更新时间：{{item.Ext}}</p>
-      </flexbox-item>
-    </flexbox>
+      </div>
+      <div class="text">
+        <h3 class="name">
+          <span class="txt"> {{item.ProjectName}}【{{item.ShortName}}】</span>
+        </h3>
+        <p class="updatetime">更新时间<i>{{item.Ext}}</i></p>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -24,6 +26,9 @@ import {
   Fitimg
 } from 'components'
 import api from 'common/api'
+import {
+  formatDate
+} from 'common/utils/date'
 export default {
   name: 'ProjectProgress',
   components: {
@@ -33,7 +38,7 @@ export default {
   },
   data () {
     return {
-      fetchedList: null
+      fetchedList: []
     }
   },
   computed: {
@@ -49,7 +54,11 @@ export default {
       api.projectprogress.projectlist()
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
-          this.fetchedList = res.data.Data
+          let list = res.data.Data
+          list.forEach(item => {
+            item.Ext = formatDate(new Date(item.Ext), 'yy/MM')
+          })
+          this.fetchedList = list
         } else {
           window.$alert(res.Message)
         }
@@ -80,38 +89,74 @@ export default {
   padding: p2r($base-padding);
   background: $background-color;
   .item{
-    margin:p2r(30) 0;
-    padding: p2r(20);
+    width: 100%;
+    height: p2r(300);
+    margin:p2r(20) 0;
     border-radius: 4px;
     background: #fff;
+    position: relative;
     &:first-child{
       margin-top: 0;
     }
     .img{
-      flex: 0 0 p2r(180);
-      width:p2r(180);
+      width:100%;
+      height: 100%;
       .fit-img{
-        width:p2r(160);
-        height: p2r(160);
+        width:100%;
+        height: 100%;
         border-radius: 4px;
-        box-shadow: 0 0 2px 0 rgba(0,0,0,.2);
       }
     }
     .text{
-      position: relative;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top:0;
+      left:0;
+      background: rgba(0,0,0,.5);
+      border-radius: 4px;
+      text-align: center;
+      padding-top: p2r(120);
       .name{
-        font-size: p2r(30);
-        line-height: 1.7;
-        font-weight: 600;
+        font-size: p2r(38);
+        color:#fff;
+        display: flex;
+        align-items: center;
+        padding: 0 p2r(30);
+        &:before,
+        &:after{
+          content: '';
+          display: block;
+          flex: 1;
+          height: 1px;
+          @include _1px(#fff);
+        }
+        .txt{
+          display: block;
+          margin: 0 p2r(20)
+        }
       }
       .updatetime{
-        font-size: p2r(24);
-        color:$text-sub-color;
-        font-weight: 200;
-        line-height: 1.7;
         position: absolute;
-        left:0;
-        bottom:0;
+        top:0;
+        right: p2r(30);
+        width: p2r(140);
+        font-size: p2r(20);
+        color:$text-color;
+        font-weight: 200;
+        background: rgba(255,255,255, .8);
+        padding-bottom: p2r(15);
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+        padding-top: p2r(10);
+        i{
+          display: block;
+          font-style: normal;
+          font-size: p2r(32);
+          color:$primary-color;
+          margin-top: p2r(10);
+          font-weight: 600;
+        }
       }
     }
   }
