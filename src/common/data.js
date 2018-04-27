@@ -66,6 +66,11 @@ let entries = [
     link: '/magazine'
   },
   {
+    name: '服务指南',
+    icon: 'guide',
+    link: '/guide'
+  },
+  {
     name: '我的资料',
     icon: 'set',
     link: '/myinfo'

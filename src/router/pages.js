@@ -44,6 +44,7 @@ const Investigate = r => require.ensure([], () => r(require('pages/Investigate')
 
 const MessageCenter = r => require.ensure([], () => r(require('pages/MessageCenter')), 'MessageCenter')
 const ProjectMap = r => require.ensure([], () => r(require('pages/ProjectMap')), 'ProjectMap')
+const Guide = r => require.ensure([], () => r(require('pages/Guide')), 'Guide')
 
 const PageNotFound = r => require.ensure([], () => r(require('pages/PageNotFound')), 'PageNotFound')
 const Wait = r => require.ensure([], () => r(require('pages/Wait')), 'Wait')
@@ -332,5 +333,10 @@ export default [
     meta: {
       title: '项目地图'
     }
+  },
+  {
+    path: '/guide',
+    name: 'guide',
+    component: Guide
   }
 ]

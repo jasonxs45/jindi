@@ -1,9 +1,12 @@
 import api from './index'
 let projectprogress = {
   // 获取工程进度项目列表
-  projectlist () {
+  projectlist (keywords = '') {
     let opt = {
-      Act: 'ProgressGetProjectList'
+      Act: 'ProgressGetProjectList',
+      Data: JSON.stringify({
+        S_Title: keywords
+      })
     }
     return api.globalQuery(opt)
   },

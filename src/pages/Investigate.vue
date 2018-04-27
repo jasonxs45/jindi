@@ -7,7 +7,7 @@
       <div class="questions">
         <dl
           v-for="(item, index1) in questions.List"
-          :key="'question-'+index1+Math.random().toString(36).substr(2)"
+          :key="'question-'+index1"
           class="question"
         >
           <dt class="tit">{{item.Number}}、{{item.Question}}<span v-if="item.Type==='多选'" class="multiple-mark">【多选】</span></dt>
@@ -17,7 +17,9 @@
               placeholder="说点什么吧。。。"
               :value="item.MyAnswer[0]"
               :disabled="readonly"
-              :name="'q'+index1"
+              :name="'ques'+item.ID"
+              @input="gatherAnswer"
+              @change="gatherAnswer"
             />
             <template v-else>
               <div
@@ -28,13 +30,19 @@
                 <label class="radio-wrapper">
                   <input
                     :type="item.Type==='多选'?'checkbox':'radio'"
-                    :name="'q'+index1"
+                    :name="'ques'+item.ID"
                     :value="opt"
-                    :checked="opt === item.MyAnswer[index]"
+                    :checked="item.Type==='多选' ? item.MyAnswer[index] === opt : item.MyAnswer[0] === opt"
                     :disabled="readonly"
                     class="radio"
+                    @input="gatherAnswer"
+                    @change="gatherAnswer"
                   >
-                  <p class="option">{{opt}}</p>
+                  <p class="option">
+                    <Icon class="checked" :name="item.Type==='多选'?'checkbox-checked':'radio-check'"/>
+                    <Icon class="unchecked" :name="item.Type==='多选'?'checkbox':'radio'"/>
+                    <span class="text">{{opt}}{{item.MyAnswer[2]}}</span>
+                  </p>
                 </label>
               </div>
             </template>
@@ -55,6 +63,12 @@ import {
   XTextarea
 } from 'components'
 import api from 'common/api'
+let $ = str => {
+  return document.querySelector(str)
+}
+let $$ = str => {
+  return document.querySelectorAll(str)
+}
 export default {
   name: 'Investigate',
   components: {
@@ -70,7 +84,7 @@ export default {
       id: null,
       readonly: null,
       questions: {},
-      myAnswer:[]
+      myAnswer:{}
     }
   },
   computed: {
@@ -114,53 +128,51 @@ export default {
         console.log(err)
       })
     },
-    gatherAnswer () {
-      let $ = str => {
-        return document.querySelector(str)
-      }
-      let $$ = str => {
-        return document.querySelectorAll(str)
-      }
-      this.myAnswer = []
-      for (let i = 0; i < this.questions.List.length; i++) {
-        let question = this.questions.List[i]
-        let answer = {
-          QuestionID: question.ID,
-          Result: question.Type === '填空'
-                  ? $('[name="q' + i + '"]').value
-                  : question.Type === '单选'
-                  ? (() => {
-                    if ($('input[name="q' + i + '"]:checked')) {
-                      return $('input[name="q' + i + '"]:checked').value
-                    } else {
-                      return null
-                    }
-                    })()
-                  : (() => {
-                    if ($$('input[name="q' + i + '"]:checked').length > 0) {
-                      let str = []
-                      $$('input[name="q' + i + '"]:checked').forEach(item => {
-                        str.push(item.value)
-                      })
-                      return str.join('|')
-                    } else {
-                      return null
-                    }
-                    })()
+    gatherAnswer (e) {
+      if (e === event) {
+        let questionID = e.target.name.replace('ques', '')
+        if (e.target.type === 'radio') {
+          this.myAnswer[questionID] = $(`input[name=${e.target.name}]:checked`).value
         }
-        this.myAnswer.push(answer)
+        if (e.target.type === 'checkbox') {
+          this.myAnswer[questionID] = Array.from($$(`input[name=${e.target.name}]:checked`)).map(item => item.value).join('|')
+        }
+      } else {
+        let questionID = event.target.name.replace('ques', '')
+        this.myAnswer[questionID] = e
       }
     },
     saveAnswer () {
       let _self = this
-      this.gatherAnswer()
-      for (let i = 0; i < this.myAnswer.length; i++) {
-        if (!this.myAnswer[i].Result) {
+      if (this.questions.Joined) {
+        let index = window.$alert({
+          content: '您已提交过，请勿重复提交',
+          yes () {
+            window.$close(index)
+            _self.$router.push({
+              name: 'usercenter'
+            })
+          }
+        })
+        return
+      }
+      if (Object.keys(this.myAnswer).length < 1) {
+        window.$alert('请填写问卷')
+        return
+      }
+      let entries = Object.entries(this.myAnswer)
+      let submitArr = []
+      for (let i = 0; i < this.questions.List.length; i++) {
+        if (!entries[i]) {
           window.$alert('请填写第' + (i + 1) + '道题')
           return
         }
+        submitArr.push({
+          QuestionID: entries[i][0],
+          Result: entries[i][1]
+        })
       }
-      api.investigate.save(this.myAnswer)
+      api.investigate.save(submitArr)
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
           let index = window.$alert({
@@ -247,9 +259,14 @@ export default {
                 opacity: 0;
                 &:checked + .option{
                   color: $text-sub-color !important;
-                  &:before{
-                    content: "\e60f";
+                  .iconfont{
                     color:$primary-color;
+                    &.unchecked{
+                      display: none;
+                    }
+                    &.checked{
+                      display: inline-block;
+                    }
                   }
                 }
                 &:disabled + .option{
@@ -258,20 +275,22 @@ export default {
               }
               .option{
                 position: relative;
-                padding-left: p2r(40);
-                font-size: p2r(28);
+                font-size: 0;
                 color:$text-sub-color;
                 line-height: 1.4;
-                &:before{
-                  content: "\e612";
-                  display: block;
-                  width:p2r(30);
-                  height: p2r(30);
-                  position: absolute;
+                .iconfont{
+                  display: inline-block;
+                  width: p2r(40);
                   font-size: p2r(28);
-                  top:0;
-                  left:0;
-                  @extend .iconfont;
+                  &.checked{
+                    display: none;
+                  }
+                  &.ubchecked{
+                    display: inline-block;
+                  }
+                }
+                .text{
+                  font-size: p2r(28);
                 }
               }
             }

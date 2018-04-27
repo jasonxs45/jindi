@@ -8,6 +8,7 @@
     </div>
     <div class="panel">
       <Split type="line" />
+      <img src="static/images/i2.png" class="i2" alt="">
       <h3 class="title">{{title}}</h3>
       <nodata v-if="links.length<1">暂无内容</nodata>
       <div v-else class="links">
@@ -55,10 +56,10 @@ export default {
       }
     },
     bg () {
-      let bg = ''
-      if (this.fetchedData.Periodical) {
-        bg = 'http://jindi.1juke.cn' + this.fetchedData.Periodical.CoverImg
-      }
+      let bg = 'static/images/coverbg.png'
+      // if (this.fetchedData.Periodical) {
+      //   bg = 'http://jindi.1juke.cn' + this.fetchedData.Periodical.CoverImg
+      // }
       return bg
     },
     links () {
@@ -115,7 +116,7 @@ export default {
     .fit-img{
       width:100%;
       height: 100%;
-      filter: blur(10px);
+      // filter: blur(10px);
     }
     .cover{
       position: absolute;
@@ -123,8 +124,8 @@ export default {
       left:0;
       width:100%;
       height:100%;
-      background: rgba(0,0,0,.4);
-      backdrop-filter: blur(10px);
+      // background: rgba(0,0,0,.4);
+      // backdrop-filter: blur(10px);
     }
   }
   .panel{
@@ -135,11 +136,23 @@ export default {
     height: 82%;
     background: rgba(255,255,255,.9);
     padding:p2r($base-padding*2) p2r($base-padding);
+    .nodata{
+      margin-top: p2r(100);
+    }
+    .line{
+      & + .i2{
+        width: p2r(60);
+        height: p2r(60);
+        position: absolute;
+        top: p2r(97);
+        right: p2r(40);
+      }
+    }
     .title{
-      font-size: p2r(40);
+      font-size: p2r(44);
       color:$primary-color;
       font-weight: 600;
-      margin-top: p2r(20);
+      margin-top: p2r(40);
     }
     .links{
       width:100%;
@@ -154,7 +167,6 @@ export default {
         line-height: 1.5;
         color:$text-color;
         margin: p2r(50) p2r(40);
-        font-weight: 600;
         .txt{
           color:$text-color;
           font-weight: 600;

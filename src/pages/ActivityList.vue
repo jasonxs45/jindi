@@ -1,6 +1,9 @@
 <template>
   <div class="activity-list">
-    <nodata v-if="list.length<1">暂无活动信息</nodata>
+    <div v-if="list.length<1" class="nodata-box">
+      <nodata>暂无活动信息</nodata>
+      <Btn style="display:none" type="primary" text="社区活动" @click="goList"/>
+    </div>
     <activitycard
       v-for="(item, index) in list"
       :data-id="item.id"
@@ -18,7 +21,8 @@
 <script>
 import {
   Activitycard,
-  Nodata
+  Nodata,
+  Btn
 } from 'components'
 import api from 'common/api'
 import {
@@ -46,7 +50,8 @@ export default {
   name: 'ActivityList',
   components: {
     Activitycard,
-    Nodata
+    Nodata,
+    Btn
   },
   data () {
     return {
@@ -107,6 +112,14 @@ export default {
       }).catch(err => {
         console.log(err)
       })
+    },
+    goList () {
+      this.$router.replace({
+        name: 'activitylist',
+        params: {
+          classtype: 'activity'
+        }
+      })
     }
   }
 }
@@ -116,5 +129,12 @@ export default {
 @import "~common/scss/mixins.scss";
 .activity-list{
   padding: p2r($base-padding);
+  .nodata-box{
+    margin-top: p2r(200);
+    text-align: center;
+    .btn{
+      margin-top: p2r(40);
+    }
+  }
 }
 </style>

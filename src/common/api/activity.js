@@ -30,6 +30,15 @@ let activity = {
       })
     }
     return api.globalQuery(opt)
+  },
+  qrcodeCheck (ID) {
+    let opt = {
+      Act: 'ActivitySignin',
+      Data: JSON.stringify({
+        ID
+      })
+    }
+    return api.globalQuery(opt)
   }
 }
 export default activity
