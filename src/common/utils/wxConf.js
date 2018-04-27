@@ -40,6 +40,9 @@ let wxConf = {
       console.log(err)
     })
   },
+  openMap (opt) {
+    wx.openLocation(opt)
+  },
   wxUpload (limit, a) {
     /* 图片组 */
     let images = {

@@ -26,6 +26,7 @@
         v-for="(item, index) in list"
         :key="'item-'+index"
         class="item"
+        @click="goDetail(item.ID)"
       >
         <span class="text">{{item.Name}}</span>
         <Icon name="arrow-right1" />
@@ -100,6 +101,14 @@ export default {
       })
       .catch(err => {
         console.log(err)
+      })
+    },
+    goDetail (id) {
+      this.$router.push({
+        name: 'guidedetail',
+        params: {
+          id
+        }
       })
     }
   }

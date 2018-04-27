@@ -44,8 +44,9 @@ const Investigate = r => require.ensure([], () => r(require('pages/Investigate')
 
 const MessageCenter = r => require.ensure([], () => r(require('pages/MessageCenter')), 'MessageCenter')
 const ProjectMap = r => require.ensure([], () => r(require('pages/ProjectMap')), 'ProjectMap')
-const Guide = r => require.ensure([], () => r(require('pages/Guide')), 'Guide')
 
+const Guide = r => require.ensure([], () => r(require('pages/Guide')), 'Guide')
+const GuideDetail = r => require.ensure([], () => r(require('pages/GuideDetail')), 'GuideDetail')
 const PageNotFound = r => require.ensure([], () => r(require('pages/PageNotFound')), 'PageNotFound')
 const Wait = r => require.ensure([], () => r(require('pages/Wait')), 'Wait')
 export default [
@@ -337,6 +338,17 @@ export default [
   {
     path: '/guide',
     name: 'guide',
-    component: Guide
+    component: Guide,
+    meta: {
+      title: '服务指南'
+    }
+  },
+  {
+    path: '/guidedetail/:id',
+    name: 'guidedetail',
+    component: GuideDetail,
+    meta: {
+      title: '服务指南'
+    }
   }
 ]

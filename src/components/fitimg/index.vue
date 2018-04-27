@@ -1,6 +1,6 @@
 <template>
   <img
-    :src="src"
+    :src="src ? src : 'static/images/sample.png'"
     class="fit-img"
     @click="clickHandler"
   />
@@ -10,8 +10,7 @@ export default {
   name: 'FitImg',
   props: {
     src: {
-      type: String,
-      required: true
+      type: String
     }
   },
   methods: {

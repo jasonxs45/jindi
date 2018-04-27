@@ -13,6 +13,7 @@ import mypoints from './mypoints'
 import modify from './modify'
 import guide from './guide'
 let openid = ''
+const webRoot = 'http://jindi.1juke.cn'
 const BASE_URL = '/Mobile-PostAPI'
 const MOCK_URL = 'https://www.easy-mock.com/mock/5abd9851597f2f6d4d73ae18/mock/'
 axios.defaults.retry = 4
@@ -41,6 +42,7 @@ axios.interceptors.response.use(undefined, function axiosRetryInterceptor (err) 
   })
 })
 let api = {
+  webRoot,
   // 模拟数据
   mock (opt) {
     return axios.post(
