@@ -16,8 +16,8 @@
         </div>
       </label>
       <flexbox-item class="input-wrapper">
-        <XInput />
-        <Icon name="search"/>
+        <XInput v-model="name"/>
+        <Icon name="search" @on-click="search"/>
       </flexbox-item>
     </flexbox>
     <div class="content">
@@ -54,10 +54,6 @@ export default {
   },
   data () {
     return {
-      city: {
-        ID: '',
-        Value: '全部'
-      },
       cityList: [
         {
           ID: '',
@@ -68,8 +64,27 @@ export default {
     }
   },
   computed: {
+    name: {
+      set (val) {
+        this.$store.commit('GUIDE_NAME', val)
+      },
+      get () {
+        return this.$store.state.guide.name
+      }
+    },
+    city: {
+      set (val) {
+        this.$store.commit('GUIDE_CITY_NAME', val)
+      },
+      get () {
+        return this.$store.state.guide.city
+      }
+    },
     list () {
-      return this.allList.filter(item => this.city.ID ? item.TypeID === this.city.ID : true)
+      return this.allList.filter(item => {
+        return (this.city.ID ? item.TypeID === this.city.ID : true) &&
+               (this.name ? item.Name.includes(this.name) : true)
+      })
     }
   },
   created () {
@@ -102,6 +117,19 @@ export default {
       .catch(err => {
         console.log(err)
       })
+    },
+    search () {
+      // api.guide.allList(this.value, this.city.ID)
+      // .then(({res, index}) => {
+      //   if (res.data.IsSuccess) {
+      //     this.allList = res.data.Data
+      //   } else {
+      //     window.$alert(res.data.Message)
+      //   }
+      // })
+      // .catch(err => {
+      //   console.log(err)
+      // })
     },
     goDetail (id) {
       this.$router.push({

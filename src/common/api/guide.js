@@ -9,10 +9,13 @@ let guide = {
     return api.globalQuery(opt)
   },
   // 获取项目列表
-  allList () {
+  allList (name, typeName) {
     let opt = {
       Act: 'GuideGetList',
-      Data: JSON.stringify({})
+      Data: JSON.stringify({
+        S_Name: name,
+        S_TypeName: typeName
+      })
     }
     return api.globalQuery(opt)
   },

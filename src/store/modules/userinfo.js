@@ -1,3 +1,4 @@
+import types from '../mutation-types'
 import api from 'common/api'
 const state = {
   avatar: '',
@@ -13,7 +14,6 @@ const state = {
 }
 // getters
 const getters = {
-  userInfo: state => state
 }
 
 // actions
@@ -22,7 +22,7 @@ const actions = {
     api.getWeixinInfo()
     .then(({res, index}) => {
       if (res.data.IsSuccess) {
-        commit('getInfo', res.data.Data)
+        commit(types.USER_INFO, res.data.Data)
       } else {
         window.$alert(res.data.Message)
       }
@@ -33,7 +33,7 @@ const actions = {
 }
 // mutations
 const mutations = {
-  getInfo (state, res) {
+  [types.USER_INFO] (state, res) {
     state.avatar = res.HeadImgUrl
     state.nickname = res.NickName
     state.state = res.Identity

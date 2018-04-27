@@ -1,5 +1,7 @@
 import userInfo from './userinfo'
+import guide from './guide'
 let modules = {
-  userInfo
+  userInfo,
+  guide
 }
 export default modules
