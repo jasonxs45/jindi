@@ -11,7 +11,7 @@ const router = new Router({
 })
 router.beforeEach((to, from, next) => {
   window.document.title = to.meta.title || '金地'
-  wxConf.init()
+  // wxConf.init()
   next()
 })
 router.afterEach((to, from) => {

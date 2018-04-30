@@ -4,108 +4,60 @@
   </div>
 </template>
 <script>
+import BMap from 'common/utils/BMap'
 // 引入 ECharts 主模块
 let echarts = require('echarts/lib/echarts')
 // 引入地图
-require('echarts/lib/chart/map')
+require('echarts/extension/bmap/bmap')
 require('echarts/lib/chart/scatter')
-require('echarts/map/js/china')
-const geoCoordMap = {
-  '岳阳': [113.09, 29.37],
-  '长沙': [113, 28.21],
-  '衢州': [118.88, 28.97],
-  '廊坊': [116.7, 39.53],
-  '菏泽': [115.480656, 35.23375],
-  '合肥': [117.27, 31.86],
-  '武汉': [114.31, 30.52],
-  '大庆': [125.03, 46.58]
-}
-let convertData = data => {
-  let res = []
-  for (let i = 0; i < data.length; i++) {
-    let geoCoord = geoCoordMap[data[i].name]
-    if (geoCoord) {
-      res.push({
-        name: data[i].name,
-        value: geoCoord.concat(data[i].value)
-      })
-      // res.source.push(geoCoord.concat(data[i].value))
-    }
-  }
-  return res
-}
-let data = convertData([
-  {name: '长沙', value: 175},
-  {name: '衢州', value: 177},
-  {name: '廊坊', value: 193},
-  {name: '菏泽', value: 194},
-  {name: '合肥', value: 229},
-  {name: '武汉', value: 273},
-  {name: '大庆', value: 279}
-])
-console.log(data)
-const regions = [
-  {
-    name: '湖北',
-    silent: false,
-    label: {
-      show: true,
-      position: [10, 10]
-    },
-    itemStyle: {
-      areaColor: '#ea5532'
-    },
-    emphasis: {
-      label: {
-        color: '#fff'
-      },
-      itemStyle: {
-        areaColor: '#ea5532',
-        shadowBlur: 8,
-        shadowColor: 'rgba(255,255,255,1)'
-      }
-    }
-  },
-  {
-    name: '湖南',
-    silent: false,
-    label: {
-      show: true
-    },
-    itemStyle: {
-      areaColor: '#ea5532'
-    },
-    emphasis: {
-      label: {
-        color: '#fff'
-      },
-      itemStyle: {
-        areaColor: '#ea5532',
-        shadowBlur: 8,
-        shadowColor: 'rgba(255,255,255,1)'
-      }
-    }
-  },
-  {
-    name: '河南',
-    label: {
-      show: true
-    },
-    itemStyle: {
-      areaColor: '#ea5532'
-    },
-    emphasis: {
-      label: {
-        color: '#fff'
-      },
-      itemStyle: {
-        areaColor: '#ea5532',
-        shadowBlur: 8,
-        shadowColor: 'rgba(255,255,255,1)'
-      }
-    }
-  }
+let chinaCities = require('echarts/map/json/china-cities').features
+const cities = [
+  '北京',
+  '沈阳',
+  '天津',
+  '大连',
+  '西安',
+  '郑州',
+  '烟台',
+  '青岛',
+  '武汉',
+  '扬州',
+  '南京',
+  '常州',
+  '无锡',
+  '苏州',
+  '上海',
+  '杭州',
+  '绍兴',
+  '金华',
+  '宁波',
+  '长沙',
+  '广州',
+  '东莞',
+  '深圳',
+  '佛山',
+  '珠海',
+  '昆明'
 ]
+let data = []
+/* eslint-disable no-unused-vars */
+let usedCities = chinaCities.filter((item, index) => {
+  if (cities.join('|').includes(item.properties.name)) {
+    data.push({
+      name: item.properties.name,
+      value: item.properties.cp
+    })
+  }
+  return cities.join('|').includes(item.properties.name)
+})
+let effectData = data.filter(item => item.name === '郑州' || item.name === '武汉' || item.name === '长沙')
+effectData.forEach(item => {
+  item.value.push({
+    name: 'usercenter'
+  })
+})
+data = data.filter(item => item.name !== '郑州' && item.name !== '武汉' && item.name !== '长沙')
+const bmap = BMap.CONFIG
 export default {
   name: 'ProjectMap',
   data () {
@@ -113,46 +65,64 @@ export default {
       mapEchart: null
     }
   },
+  computed: {
+    map () {
+      return this.mapEchart ? this.mapEchart.getModel().getComponent('bmap').getBMap() : {}
+    }
+  },
   mounted () {
-    this.initMap()
+    BMap.init().then(res => {
+      this.initMap()
+      this.map.setMinZoom(5)
+      this.map.setMaxZoom(8)
+      let geolocationControl = new window.BMap.GeolocationControl({
+        anchor: window.BMAP_ANCHOR_BOTTOM_RIGHT
+      })
+      this.map.addControl(geolocationControl)
+    })
   },
   methods: {
     initMap () {
       let option = {
         tooltip: {
           trigger: 'item',
-          formatter (params) {
-            return params.name + ' : ' + params.value[2]
-          }
+          formatter: '{b}'
         },
-        geo: {
-          map: 'china',
-          roam: true,
-          scaleLimit: {
-            min: 1.2,
-            max: 4
-          },
-          label: {
-            emphasis: {
-              show: false
-            }
-          },
-          itemStyle: {
-            normal: {
-              areaColor: '#f7d9d2',
-              borderColor: '#fff'
-            },
-            emphasis: {
-              areaColor: '#f7d9d2'
-            }
-          },
-          regions
-        },
+        bmap,
         series: [
           {
-            type: 'effectScatter',
-            coordinateSystem: 'geo',
+            type: 'scatter',
+            coordinateSystem: 'bmap',
+            symbol: 'circle',
             symbolSize: 12,
+            label: {
+              normal: {
+                show: true,
+                formatter: '{b}',
+                color: '#ea5532',
+                position: 'right',
+                textStyle: {
+                  fontSize: 10
+                }
+              }
+            },
+            itemStyle: {
+              normal: {
+                color: '#ea5532',
+                shadowBlur: 10,
+                shadowColor: 'rgba(0,0,0,.2)'
+              },
+              emphasis: {
+                borderColor: '#fff',
+                borderWidth: 0.5
+              }
+            },
+            data
+          },
+          {
+            type: 'effectScatter',
+            coordinateSystem: 'bmap',
+            symbolSize: 18,
             showEffectOn: 'render',
             rippleEffect: {
               brushType: 'stroke'
@@ -161,32 +131,34 @@ export default {
               normal: {
                 show: true,
                 formatter: '{b}',
-                position: 'top',
-                textStyle: {
-                  color: '#333'
-                }
-              },
-              emphasis: {
-                show: false
+                color: '#ea5532',
+                position: 'top'
               }
             },
             itemStyle: {
               normal: {
-                color: 'rgba(30, 255, 0, .8)',
+                color: '#ea5532',
                 shadowBlur: 10,
-                shadowColor: '#333'
+                shadowColor: 'rgba(0,0,0,.5)'
               },
               emphasis: {
                 borderColor: '#fff',
                 borderWidth: 0.5
               }
             },
-            data
+            data: effectData
           }
         ]
       }
       this.mapEchart = echarts.init(this.$refs.map)
       this.mapEchart.setOption(option)
+      this.mapEchart.on('click', params => {
+        if (params.componentType === 'series') {
+          if (params.seriesType === 'effectScatter') {
+            this.$router.push(params.value[2])
+          }
+        }
+      })
     }
   }
 }
