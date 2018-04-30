@@ -123,7 +123,6 @@ export default {
     max-height:p2r(500);
     padding-bottom:p2r(10);
     background: lighten($primary-color, 38%);
-    border:1px solid lighten($primary-color, 18%);
     border-top:none;
     border-bottom-left-radius: p2r(50);
     border-bottom-right-radius: p2r(50);

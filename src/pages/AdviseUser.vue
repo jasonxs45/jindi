@@ -28,17 +28,17 @@ import {
   Flexbox,
   FlexboxItem
 } from 'components'
-let navs = [
+const navs = [
   {
-    path: '/adviseuser/list/untreated',
-    text: '未处理'
+    path: 'untreated',
+    text: '待处理'
   },
   {
-    path: '/adviseuser/list/treated',
+    path: 'treated',
     text: '处理中'
   },
   {
-    path: '/adviseuser/list/finished',
+    path: 'finished',
     text: '已完成'
   }
 ]
@@ -51,12 +51,30 @@ export default {
   },
   data () {
     return {
-      navs
+      navs,
+      stateType: ''
     }
+  },
+  watch: {
+    '$route' (to, from) {
+      this.stateType = to.params.state
+      this.handlerState()
+    }
+  },
+  created () {
+    this.stateType = this.$route.params.state
+    this.handlerState()
   },
   methods: {
     tagClick () {
       console.log('tag click')
+    },
+    handlerState () {
+      if (this.navs.every(item => item.path !== this.stateType)) {
+        this.$router.push({
+          name: 'pagenotfound'
+        })
+      }
     }
   }
 }

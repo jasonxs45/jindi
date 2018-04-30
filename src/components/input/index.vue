@@ -103,7 +103,6 @@ export default {
   position: relative;
   border-radius: p2r(80);
   background: lighten($primary-color, 38%);
-  border:1px solid lighten($primary-color, 18%);
   color:$text-color;
   font-size: p2r(28);
   .input{

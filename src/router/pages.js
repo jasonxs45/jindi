@@ -232,7 +232,7 @@ export default [
     }
   },
   {
-    path: '/adviseuser',
+    path: '/adviseuser/:state',
     name: 'adviseuser',
     component: AdviseUser,
     meta: {
