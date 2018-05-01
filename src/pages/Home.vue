@@ -7,7 +7,7 @@
           v-for="(item, index) in banners"
           :key="'banner-'+index"
         >
-          <img :src="item.src" alt="" />
+          <Fitimg :src="'http://jindi.1juke.cn'+item.Thumbnail" alt="" />
         </swiper-slide>
         <!-- Optional controls -->
         <div class="swiper-pagination"  slot="pagination"></div>
@@ -69,12 +69,13 @@
 </template>
 <script>
  import {
-   Icon,
-    Flexbox,
-    FlexboxItem,
-    Split,
-    Statisctitle,
-    Activitycard
+  Icon,
+  Fitimg,
+  Flexbox,
+  FlexboxItem,
+  Split,
+  Statisctitle,
+  Activitycard
   } from 'components'
   import 'swiper/dist/css/swiper.css'
   import { swiper, swiperSlide } from 'vue-awesome-swiper'
@@ -85,20 +86,11 @@
   import {
     entries
   } from 'common/data'
-  let fetchedBanners = [
-    {
-      src: 'static/images/banner1.png',
-      link:''
-    },
-    {
-      src: 'static/images/banner2.png',
-      link:''
-    }
-  ]
   export default {
     name: 'Home',
     components: {
       Icon,
+      Fitimg,
       Flexbox,
       FlexboxItem,
       Split,
@@ -109,7 +101,6 @@
     },
     data () {
       return {
-        banners: [],
         swiperOption: {
           pagination: {
             el: '.swiper-pagination'
@@ -130,6 +121,9 @@
       }
     },
     computed: {
+      banners () {
+        return this.newslist
+      },
       list () {
         return this.activityList.map(item => {
           return {
@@ -150,9 +144,6 @@
     created () {
       this.getActivityList()
       this.getNewsList()
-    },
-    mounted () {
-      this.banners = this.banners.concat(fetchedBanners)
     },
     methods: {
       getActivityList () {

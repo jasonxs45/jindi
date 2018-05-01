@@ -27,6 +27,7 @@ const RepairSubmit = r => require.ensure([], () => r(require('pages/RepairSubmit
 const RepairEngineer = r => require.ensure([], () => r(require('pages/RepairEngineer')), 'RepairEngineer')
 
 const AdviseUser = r => require.ensure([], () => r(require('pages/AdviseUser')), 'AdviseUser')
+const AdviseDetail = r => require.ensure([], () => r(require('pages/AdviseDetail')), 'AdviseDetail')
 const AdviseSubmit = r => require.ensure([], () => r(require('pages/AdviseSubmit')), 'AdviseSubmit')
 
 const NewsCenter = r => require.ensure([], () => r(require('pages/NewsCenter')), 'NewsCenter')
@@ -237,6 +238,14 @@ export default [
     component: AdviseUser,
     meta: {
       title: '投诉建议'
+    }
+  },
+  {
+    path: '/advisedetail/:id',
+    name: 'advisedetail',
+    component: AdviseDetail,
+    meta: {
+      title: '详情'
     }
   },
   {

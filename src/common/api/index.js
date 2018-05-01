@@ -12,6 +12,7 @@ import message from './message'
 import mypoints from './mypoints'
 import modify from './modify'
 import guide from './guide'
+import advise from './advise'
 let openid = ''
 const webRoot = 'http://jindi.1juke.cn'
 const BASE_URL = '/Mobile-PostAPI'
@@ -101,6 +102,7 @@ let api = {
   message,
   mypoints,
   modify,
-  guide
+  guide,
+  advise
 }
 export default api
