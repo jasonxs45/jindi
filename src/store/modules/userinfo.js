@@ -18,17 +18,19 @@ const getters = {
 
 // actions
 const actions = {
-  getInfoAsync ({ commit }) {
-    api.getWeixinInfo()
-    .then(({res, index}) => {
-      if (res.data.IsSuccess) {
-        commit(types.USER_INFO, res.data.Data)
-      } else {
-        window.$alert(res.data.Message)
-      }
-    }).catch(err => {
-      console.log(err)
-    })
+  getInfoAsync ({ state, commit }) {
+    if (!state.avatar) {
+      api.getWeixinInfo()
+      .then(({res, index}) => {
+        if (res.data.IsSuccess) {
+          commit(types.USER_INFO, res.data.Data)
+        } else {
+          window.$alert(res.data.Message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    }
   }
 }
 // mutations

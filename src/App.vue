@@ -81,4 +81,7 @@ export default {
 .slide-in-right-enter, .slide-in-right-leave-to{
   transform: translateX(100%);
 }
+.clearfix{
+  clear: both;
+}
 </style>

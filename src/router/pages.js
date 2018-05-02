@@ -235,10 +235,7 @@ export default [
   {
     path: '/adviseuser/:state',
     name: 'adviseuser',
-    component: AdviseUser,
-    meta: {
-      title: '投诉建议'
-    }
+    component: AdviseUser
   },
   {
     path: '/advisedetail/:id',

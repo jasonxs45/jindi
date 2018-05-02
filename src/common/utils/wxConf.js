@@ -43,6 +43,12 @@ let wxConf = {
   openMap (opt) {
     wx.openLocation(opt)
   },
+  previewImg ({current, urls}) {
+    wx.previewImage({
+      current,
+      urls
+    })
+  },
   wxUpload (limit, a) {
     /* 图片组 */
     let images = {

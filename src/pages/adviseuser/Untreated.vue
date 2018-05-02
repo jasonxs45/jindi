@@ -1,79 +1,148 @@
 <template>
-  <order-list
-    :dataArr="orders"
-    :showGetMore="showGetMore"
-    @get-more="getMoreHandler"
-  >
-      <div class="list">
-        <div
-          v-for="(item, index) in orders"
-          :key="'untreatedorder-'+index"
-          class="advise-card"
-        >
-          <div class="title">
-            <div class="date">
-              {{item.date}}
-            </div>
-            <div class="tag">
-              {{item.state}}
-            </div>
-          </div>
-          <div class="content"></div>
+  <div class="content">
+    <div v-if="(orders && orders.length < 1)|| !orders" class="no-data">
+      <img src="static/images/advisenodata.png" alt="" />
+    </div>
+    <div
+      v-for="(item, index) in orders"
+      :key="'untreatedorder-'+index"
+      class="advise-card"
+      :class="item.Type === '表扬' ? 'praise' : item.Type === '投诉' ? 'complain' : 'suggest'"
+      @click="goDetail"
+    >
+      <div class="title">
+        {{item.AddTime}}
+        <div class="tag">
+          {{item.Type}}
         </div>
       </div>
-  </order-list>
+      <div class="desc">
+        {{item.Content}}
+      </div>
+    </div>
+    <Getmore
+      v-if="orders && orders.length > 0"
+      :canClick="showGetMore"
+      @click="getList"
+    />
+  </div>
 </template>
 <script>
 import {
-  Container,
-  Row,
-  OrderList,
-  Repaircard
+  Getmore
 } from 'components'
-let orders = []
-for (let i = 0; i < 5; i++) {
-  let obj = {
-    state: 0,
-    id: Math.round(Math.random() * 9999),
-    title: '金地城二期E栋1303',
-    date: '2018/02/28 12:00',
-    desc: '主卧墙面-破裂；天花-漏水',
-    descDetail: '问题描述问题描述问题描述问题描述问题描述问题描述问题描述问题描述问题描述问题描述问题描述问题描述问题描述',
-    ownerPhoto: [
-      '/static/images/banner1.png',
-      '/static/images/banner2.png',
-      '/static/images/active1.png',
-      '/static/images/active1.png'
-    ]
-  }
-  orders.push(obj)
-}
+import api from 'common/api'
 export default {
-  name: 'AUUntreated',
+  name: 'Untreated',
   components: {
-    Container,
-    Row,
-    Repaircard,
-    OrderList
+    Getmore
   },
   data () {
     return {
-      orders,
-      show: false
+      orders: [],
+      state: 0,
+      page: 1,
+      pagesize: 2,
+      lastPage: false
     }
   },
   computed: {
     showGetMore () {
-      return this.show
+      return !this.lastPage
     }
   },
+  created () {
+    this.getList()
+  },
   methods: {
+    getList () {
+      api.advise.user.list(this.state, this.page, this.pagesize)
+      .then(({res, index}) => {
+        if (res.data.IsSuccess) {
+          let arr = res.data.Data.list
+          this.orders = this.orders.concat(arr)
+          this.lastPage = res.data.Data.lastpage
+          this.page += 1
+        } else {
+          window.$alert(res.data.Message)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
     getMoreHandler () {
-      console.log('get more')
       this.show = !this.show
+    },
+    goDetail () {
+      this.$router.push({
+        name: 'advisedetail',
+        params: {
+          id: 1
+        }
+      })
     }
   }
 }
 </script>
 <style lang="scss" scoped>
+@import "~common/scss/variables.scss";
+@import "~common/scss/mixins.scss";
+.content {
+  width: 100%;
+  height: calc(100% - 6.8266666rem);
+  padding: p2r($base-padding);
+  background: $background-color;
+  overflow: auto;
+  .advise-card{
+    background: #fff;
+    border-radius: 4px;
+    margin: p2r(30) 0;
+    overflow: hidden;
+    &:first-child{
+      margin-top: 0;
+    }
+    &.praise{
+      .title{
+        background: $warning-color;
+      }
+    }
+    &.complain{
+      .title{
+        background: $primary-color;
+      }
+    }
+    &.suggest{
+      .title{
+        background: $link-color;
+      }
+    }
+    .title{
+      padding: p2r(20) p2r(30);
+      color:#fff;
+      font-weight: 200;
+      .tag{
+        float: right;
+      }
+    }
+    .desc{
+      min-height: p2r(100);
+      padding: p2r(20) p2r(30);
+      line-height: 1.5;
+      font-size: p2r(24);
+      color: $text-sub-color;
+    }
+  }
+  .no-data{
+    width: p2r(300);
+    margin: p2r(50) auto 0;
+  }
+  .getmore{
+    font-size: p2r(24);
+    color: $thr-color;
+    .iconfont{
+      font-size: p2r(24);
+    }
+  }
+}
 </style>

@@ -128,6 +128,7 @@ export default {
     border-bottom-right-radius: p2r(50);
     overflow: auto;
     -webkit-overflow-scrolling: touch;
+    box-shadow: 0 1px 1px 0 rgba(0,0,0,.2);
   }
   .show-enter-active, .show-leave-active {
     transition: all .2s;

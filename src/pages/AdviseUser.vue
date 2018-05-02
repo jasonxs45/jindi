@@ -20,22 +20,31 @@
     </flexbox-item>
   </flexbox>
   <div class="content">
+    <div v-if="(adviseuser[stateType].orders && adviseuser[stateType].orders.length < 1)|| !adviseuser[stateType].orders" class="no-data">
+      <img src="static/images/advisenodata.png" alt="" />
+    </div>
     <div
-      v-for="(item, index) in orders"
+      v-for="(item, index) in adviseuser[stateType].orders"
       :key="'untreatedorder-'+index"
       class="advise-card"
-      :class="item.state === 0 ? 'praise' : item.state === 1 ? 'complain' : 'suggest'"
+      :class="item.Type === '表扬' ? 'praise' : item.Type === '投诉' ? 'complain' : 'suggest'"
+      @click="goDetail(item.ID)"
     >
       <div class="title">
-        {{item.date}}
+        {{item.AddTime}}
         <div class="tag">
-          {{item.state === 0 ? '表扬' : item.state === 1 ? '投诉' : '建议'}}
+          {{item.Type}}
         </div>
       </div>
       <div class="desc">
-        {{item.descDetail}}
+        {{item.Content}}
       </div>
     </div>
+    <Getmore
+      v-if="adviseuser[stateType].orders && adviseuser[stateType].orders.length > 0"
+      :canClick="!adviseuser[stateType].lastPage"
+      @click="list"
+    />
   </div>
 </div>
 </template>
@@ -44,49 +53,39 @@ import {
   Userinfo,
   Flexbox,
   FlexboxItem,
-  OrderList
+  Getmore
 } from 'components'
+import {mapState} from 'vuex'
 const navs = [
   {
     path: 'untreated',
-    text: '待处理'
+    text: '待受理'
   },
   {
     path: 'finished',
-    text: '已完成'
+    text: '已受理'
   }
 ]
-let orders = []
-for (let i = 0; i < 5; i++) {
-  let obj = {
-    state: Math.floor(Math.random() * 3),
-    id: Math.round(Math.random() * 9999),
-    title: '金地城二期E栋1303',
-    date: '2018/02/28 12:00',
-    desc: '主卧墙面-破裂；天花-漏水',
-    descDetail: '问题描述问题描述问题描述问题描述问题描述问题描述问题描述问题描述问题描述问题描述问题描述问题描述问题描述',
-    ownerPhoto: [
-      '/static/images/banner1.png',
-      '/static/images/banner2.png',
-      '/static/images/active1.png',
-      '/static/images/active1.png'
-    ]
-  }
-  orders.push(obj)
-}
 export default {
   name: 'AdviseUser',
   components: {
     Userinfo,
     Flexbox,
     FlexboxItem,
-    OrderList
+    Getmore
   },
   data () {
     return {
       navs,
-      stateType: '',
-      orders
+      stateType: ''
+    }
+  },
+  computed: {
+    ...mapState([
+      'adviseuser'
+    ]),
+    state () {
+      return this.stateType === 'untreated' ? 0 : 1
     }
   },
   watch: {
@@ -100,18 +99,36 @@ export default {
     this.stateChangeHandler()
   },
   methods: {
-    tagClick () {
-      console.log('tag click')
+    list () {
+      this.$store.dispatch('adviseuser/list', this.stateType)
     },
     stateChangeHandler () {
       if (this.navs.every(item => item.path !== this.stateType)) {
         this.$router.push({
           name: 'pagenotfound'
         })
+        return
       }
+      this.list(this.stateType)
+      // if (this.adviseuser[this.stateType].page < 1) {
+      //   this.list(this.stateType)
+      // }
+    },
+    tagClick () {
+      this.$router.push({
+        name: 'advisesubmit'
+      })
     },
     getMoreHandler () {
       this.show = !this.show
+    },
+    goDetail (id) {
+      this.$router.push({
+        name: 'advisedetail',
+        params: {
+          id
+        }
+      })
     }
   }
 }
@@ -201,10 +218,22 @@ export default {
         }
       }
       .desc{
+        min-height: p2r(100);
         padding: p2r(20) p2r(30);
         line-height: 1.5;
         font-size: p2r(24);
         color: $text-sub-color;
+      }
+    }
+    .no-data{
+      width: p2r(300);
+      margin: p2r(50) auto 0;
+    }
+    .getmore{
+      font-size: p2r(24);
+      color: $thr-color;
+      .iconfont{
+        font-size: p2r(24);
       }
     }
   }

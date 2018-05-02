@@ -103,8 +103,8 @@ export default {
         }
       }
       &.middle{
-        flex:0 0 p2r(330);
-        width: p2r(330);
+        flex:0 0 47%;
+        width: 47%;
         .icon{
           margin-top: p2r(30);
         }

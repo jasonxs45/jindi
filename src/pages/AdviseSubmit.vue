@@ -1,7 +1,7 @@
 <template>
 <div class="advise-submit">
   <div class="top">
-    <img src="/static/images/rstop.jpg" alt="" />
+    <img src="static/images/rstop.jpg" alt="" />
   </div>
   <div class="logo">
     <Icon name="info"/>
@@ -10,15 +10,28 @@
     <div class="panel">
       <h3 class="title">选择类别及小区</h3>
       <x-select
-        v-model="form.house"
-        :options="houses"
+        v-model="form.category"
         placeholder="请选择类别"
-      ></x-select>
+      >
+        <x-option
+          v-for="(item, index) in categories"
+          :key="'category-'+index"
+          :label="item"
+          :value="item"
+        ></x-option>
+      </x-select>
       <x-select
         v-model="form.house"
         :options="houses"
-        placeholder="请选择小区"
-      ></x-select>
+        placeholder="请选择房源"
+      >
+        <x-option
+          v-for="(item, index) in houses"
+          :key="'house-'+index"
+          :label="item.StageName+item.Building+'栋'+item.Unit+'单元'+item.HouseNo"
+          :value="item.ID"
+        ></x-option>
+      </x-select>
     </div>
     <div class="panel">
       <h3 class="title">填写详情</h3>
@@ -27,7 +40,7 @@
         placeholder="请输入您要填写的具体内容"
         class="desc"
       />
-      <p class="tips">* 上传照片（最多四张）</p>
+      <p class="tips">上传照片（最多四张）</p>
       <img-row
         :group="uploadedImgs"
         :canUpload="true"
@@ -53,15 +66,15 @@
     @click="submitHandler"
   />
   <div class="bottom">
-    <img src="/static/images/rsbot.jpg" alt="" srcset="">
+    <img src="static/images/rsbot.jpg" alt="" srcset="">
   </div>
 </div>
 </template>
 <script>
 import {
   Icon,
-  XInput,
   XSelect,
+  XOption,
   Flexbox,
   FlexboxItem,
   Split,
@@ -71,16 +84,13 @@ import {
   ImgRow,
   ImgCell
 } from 'components'
-import {
-  suc,
-  fail
-} from 'common/data'
+import api from 'common/api'
 export default {
   name: 'AdviseSubmit',
   components: {
     Icon,
-    XInput,
     XSelect,
+    XOption,
     Flexbox,
     FlexboxItem,
     Split,
@@ -92,13 +102,15 @@ export default {
   },
   data () {
     return {
-      houses: [],
-      uploadedImgs: [
-        '/static/images/banner2.png',
-        '/static/images/active1.png',
-        '/static/images/banner2.png'
+      categories: [
+        '表扬',
+        '投诉',
+        '建议'
       ],
+      houses: [],
+      uploadedImgs: [],
       form: {
+        category: '',
         house: '',
         desc: ''
       }
@@ -106,15 +118,66 @@ export default {
   },
   computed: {
   },
+  created () {
+    this.getHouses()
+  },
   methods: {
-    uploadImg (e) {
-      console.log('upload')
+    getHouses () {
+      api.myHouse.list()
+      .then(({res, index}) => {
+        if (res.data.IsSuccess) {
+          this.houses = res.data.Data
+        } else {
+          window.$alert(res.data.Message)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+    uploadImg (res) {
+      this.uploadedImgs.push(res)
     },
     submitHandler () {
-      // 提交
-      window.$alert({
-        className: 'rs-alertbox',
-        content: fail || suc
+      if (!this.form.category.value) {
+        window.$alert('请选择类别')
+        return
+      }
+      if (!this.form.house.value) {
+        window.$alert('请选择房源')
+        return
+      }
+      if (!this.form.desc) {
+        window.$alert('请填写具体内容')
+        return
+      }
+      let Type = this.form.category.value
+      let HouseID = this.form.house.value
+      let Content = this.form.desc
+      let Images = this.uploadedImgs.join(',')
+      let _self = this
+      api.advise.submit(Type, HouseID, Content, Images)
+      .then(({res, index}) => {
+        if (res.data.IsSuccess) {
+          let index = window.$alert({
+            title: '恭喜你',
+            content: '提交成功！',
+            yes () {
+              window.$close(index)
+              _self.$router.push({
+                name: 'adviseuser',
+                params: {
+                  state: 'untreated'
+                }
+              })
+            }
+          })
+        } else {
+          window.$alert(res.data.Message)
+        }
+      })
+      .catch(err => {
+        console.log(err)
       })
     }
   }
@@ -171,7 +234,7 @@ export default {
       display: block;
       width: p2r(20);
       height: p2r(120);
-      background: url('/static/images/chain.png') center/100% 100% no-repeat;
+      background: url('../../static/images/chain.png') center/100% 100% no-repeat;
       position: absolute;
       z-index: 2;
       bottom: p2r(-80);
@@ -195,7 +258,7 @@ export default {
     }
     .x-select{
       height: p2r(100);
-      margin-top: p2r(20);
+      margin-top: p2r(50);
     }
     .desc{
       margin-top: p2r(30);
