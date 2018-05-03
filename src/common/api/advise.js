@@ -1,18 +1,21 @@
 import api from './index'
+const ROLE = {
+  // 用户
+  user: 'SuggestGetMyHistory',
+  // 管理员
+  manager: 'SuggestGetMyManage'
+}
 let advise = {
-  user: {
-    // 获取活动列表
-    list (state, page = 1, pagesize = 2) {
-      let opt = {
-        Act: 'SuggestGetMyHistory',
-        Data: JSON.stringify({
-          state,
-          pagesize,
-          page
-        })
-      }
-      return api.globalQuery(opt)
+  list (role, state, page = 1, pagesize = 10) {
+    let opt = {
+      Act: ROLE[role],
+      Data: JSON.stringify({
+        state,
+        pagesize,
+        page
+      })
     }
+    return api.globalQuery(opt)
   },
   // 提交
   submit (Type, HouseID, Content, Images) {
@@ -31,6 +34,16 @@ let advise = {
   detail (ID) {
     let opt = {
       Act: 'SuggestGetInfo',
+      Data: JSON.stringify({
+        ID
+      })
+    }
+    return api.globalQuery(opt)
+  },
+  // 管理员受理
+  accept (ID) {
+    let opt = {
+      Act: 'SuggestAccept',
       Data: JSON.stringify({
         ID
       })

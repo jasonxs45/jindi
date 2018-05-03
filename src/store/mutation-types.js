@@ -7,9 +7,9 @@ export default {
   // 个人中心个人信息
   USER_INFO: 'USER_INFO',
   // 投诉建议
-  ADVISE_USER_LIST: 'ADVISE_USER_LIST',
-  // 投诉建议下拉刷新
-  ADVISE_USER_REFRESH: 'ADVISE_USER_REFRESH',
+  ADVISE_LIST: 'ADVISE_LIST',
   // 投诉建议下一页
-  ADVISE_USER_NEXT: 'ADVISE_USER_NEXT'
+  ADVISE_NEXT: 'ADVISE_NEXT',
+  // 投诉建议组件注销还原状态
+  ADVISE_DESTROY: 'ADVISE_DESTROY'
 }

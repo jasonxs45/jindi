@@ -1,9 +1,9 @@
 import userInfo from './userinfo'
 import guide from './guide'
-import adviseuser from './adviseuser'
+import advise from './advise'
 let modules = {
   userInfo,
   guide,
-  adviseuser
+  advise
 }
 export default modules

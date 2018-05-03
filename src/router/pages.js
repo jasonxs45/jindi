@@ -27,6 +27,7 @@ const RepairSubmit = r => require.ensure([], () => r(require('pages/RepairSubmit
 const RepairEngineer = r => require.ensure([], () => r(require('pages/RepairEngineer')), 'RepairEngineer')
 
 const AdviseUser = r => require.ensure([], () => r(require('pages/AdviseUser')), 'AdviseUser')
+const AdviseManager = r => require.ensure([], () => r(require('pages/AdviseManager')), 'AdviseManager')
 const AdviseDetail = r => require.ensure([], () => r(require('pages/AdviseDetail')), 'AdviseDetail')
 const AdviseSubmit = r => require.ensure([], () => r(require('pages/AdviseSubmit')), 'AdviseSubmit')
 
@@ -51,6 +52,7 @@ const GuideDetail = r => require.ensure([], () => r(require('pages/GuideDetail')
 const PageNotFound = r => require.ensure([], () => r(require('pages/PageNotFound')), 'PageNotFound')
 const Wait = r => require.ensure([], () => r(require('pages/Wait')), 'Wait')
 export default [
+  // 主页
   {
     path: '/',
     name: 'home',
@@ -59,16 +61,19 @@ export default [
       title: '首页'
     }
   },
+  // 404
   {
     path: '*',
     name: 'pagenotfound',
     component: PageNotFound
   },
+  // 建设中
   {
     path: '/wait',
     name: 'wait',
     component: Wait
   },
+  // 个人中心
   {
     path: '/usercenter',
     name: 'usercenter',
@@ -77,6 +82,7 @@ export default [
       title: '个人中心'
     }
   },
+  // 我的房源
   {
     path: '/myhouses',
     name: 'myhouses',
@@ -85,6 +91,7 @@ export default [
       title: '我的房源'
     }
   },
+  // 房源成员列表
   {
     path: '/housemember/:id',
     name: 'housemember',
@@ -93,6 +100,7 @@ export default [
       title: '成员列表'
     }
   },
+  // 我的积分
   {
     path: '/mypoints',
     name: 'mypoints',
@@ -101,6 +109,7 @@ export default [
       title: '我的积分'
     }
   },
+  // 我的资料
   {
     path: '/myinfo',
     name: 'myinfo',
@@ -109,6 +118,7 @@ export default [
       title: '修改资料'
     }
   },
+  // 购房进度
   {
     path: '/tradeprogress',
     name: 'tradeprogress',
@@ -136,6 +146,7 @@ export default [
       }
     ]
   },
+  // 绑定入口
   {
     path: '/bind',
     name: 'bind',
@@ -144,6 +155,7 @@ export default [
       title: '用户绑定'
     }
   },
+  // 业主绑定
   {
     path: '/bind/bindowner',
     name: 'bindowner',
@@ -152,6 +164,7 @@ export default [
       title: '业主绑定'
     }
   },
+  // 家属绑定
   {
     path: '/bind/bindrelative',
     name: 'bindrelative',
@@ -160,6 +173,7 @@ export default [
       title: '家属绑定'
     }
   },
+  // 租户绑定
   {
     path: '/bind/bindrenter',
     name: 'bindrenter',
@@ -168,6 +182,7 @@ export default [
       title: '租户绑定'
     }
   },
+  // 二手业主
   {
     path: '/bind/bindsecond',
     name: 'bindsecond',
@@ -176,6 +191,7 @@ export default [
       title: '二手业主绑定'
     }
   },
+  // 业主审核
   {
     path: '/bind/bindownerconfirm/type/:typeid/member/:memberid',
     name: 'bindownerconfirm',
@@ -184,6 +200,7 @@ export default [
       title: '业主审核'
     }
   },
+  // 活动 交付  收房列表
   {
     path: '/activitylist/:classtype',
     name: 'activitylist',
@@ -192,6 +209,7 @@ export default [
       title: '社区活动'
     }
   },
+  // 活动报名二维码
   {
     path: '/qrcodecheck/:id',
     name: 'qrcodecheck',
@@ -200,6 +218,7 @@ export default [
       title: '活动签到'
     }
   },
+  // 活动详情
   {
     path: '/activitydetail/:id',
     name: 'activitydetail',
@@ -208,6 +227,7 @@ export default [
       title: '详情'
     }
   },
+  // 报修用户
   {
     path: '/repairuser',
     name: 'repairuser',
@@ -216,6 +236,7 @@ export default [
       title: '业主报修'
     }
   },
+  // 报修提交
   {
     path: '/repairsubmit',
     name: 'repairsubmit',
@@ -224,6 +245,7 @@ export default [
       title: '提交报修'
     }
   },
+  // 报修工程师
   {
     path: '/repairengineer',
     name: 'repairengineer',
@@ -232,19 +254,28 @@ export default [
       title: '业主报修'
     }
   },
+  // 投诉建议用户列表
   {
     path: '/adviseuser/:state',
     name: 'adviseuser',
     component: AdviseUser
   },
+  // 投诉建议用户详情
   {
-    path: '/advisedetail/:id',
+    path: '/advisedetail/:role/:id',
     name: 'advisedetail',
     component: AdviseDetail,
     meta: {
       title: '详情'
     }
   },
+  // 投诉建议管理员
+  {
+    path: '/advisemanager/:state',
+    name: 'advisemanager',
+    component: AdviseManager
+  },
+  // 投诉建议提交
   {
     path: '/advisesubmit',
     name: 'advisesubmit',
@@ -253,6 +284,7 @@ export default [
       title: '提交投诉建议'
     }
   },
+  // 新闻中心
   {
     path: '/newscenter',
     name: 'newscenter',
@@ -261,6 +293,7 @@ export default [
       title: '新闻中心'
     }
   },
+  // 新闻详情
   {
     path: '/newsdetail/:id',
     name: 'newsdetail',
@@ -269,6 +302,7 @@ export default [
       title: '详情'
     }
   },
+  // 金地家书列表
   {
     path: '/magazine',
     name: 'magazine',
@@ -277,6 +311,7 @@ export default [
       title: '社区期刊'
     }
   },
+  // 金地家书内页
   {
     path: '/magazineinner/:id',
     name: 'magazineinner',
@@ -285,6 +320,7 @@ export default [
       title: '列表'
     }
   },
+  // 金地家书详情页
   {
     path: '/magazinedetail/:id',
     name: 'magazinedetail',
@@ -293,6 +329,7 @@ export default [
       title: '详情'
     }
   },
+  // 工程进度项目列表
   {
     path: '/projectprogress',
     name: 'projectprogress',
@@ -301,6 +338,7 @@ export default [
       title: '工程进度'
     }
   },
+  // 工程进度月度列表
   {
     path: '/monthlyprogress/:id',
     name: 'monthlyprogress',
@@ -309,6 +347,7 @@ export default [
       title: '工程进度'
     }
   },
+  // 工程进度详情
   {
     path: '/progressdetail/:id',
     name: 'progressdetail',
@@ -317,6 +356,7 @@ export default [
       title: '详情'
     }
   },
+  // 问卷调查
   {
     path: '/investigate/:id',
     name: 'investigate',
@@ -325,6 +365,7 @@ export default [
       title: '问卷调查'
     }
   },
+  // 消息中心
   {
     path: '/messagecenter',
     name: 'messagecenter',
@@ -333,6 +374,7 @@ export default [
       title: '消息中心'
     }
   },
+  // 项目地图
   {
     path: '/projectmap',
     name: 'projectmap',
@@ -341,6 +383,7 @@ export default [
       title: '项目地图'
     }
   },
+  // 服务指南列表
   {
     path: '/guide',
     name: 'guide',
@@ -349,6 +392,7 @@ export default [
       title: '服务指南'
     }
   },
+  // 服务指南详情
   {
     path: '/guidedetail/:id',
     name: 'guidedetail',

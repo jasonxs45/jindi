@@ -1,10 +1,5 @@
 <template>
-<div class="advise-user">
-  <userinfo
-    type-class="rectangle"
-    tagText="新建留言"
-    @tagClick="tagClick"
-  ></userinfo>
+<div class="advise-manager">
   <flexbox class="links">
     <flexbox-item
       v-for="(item, index) in navs"
@@ -20,11 +15,11 @@
     </flexbox-item>
   </flexbox>
   <div class="content">
-    <div v-if="(user[stateType].orders && user[stateType].orders.length < 1)|| !user[stateType].orders" class="no-data">
+    <div v-if="(manager[stateType].orders && manager[stateType].orders.length < 1)|| !manager[stateType].orders" class="no-data">
       <img src="static/images/advisenodata.png" alt="" />
     </div>
     <div
-      v-for="(item, index) in user[stateType].orders"
+      v-for="(item, index) in manager[stateType].orders"
       :key="'untreatedorder-'+index"
       class="advise-card"
       :class="item.Type === '表扬' ? 'praise' : item.Type === '投诉' ? 'complain' : 'suggest'"
@@ -41,8 +36,8 @@
       </div>
     </div>
     <Getmore
-      v-if="user[stateType].orders && user[stateType].orders.length > 0"
-      :canClick="!user[stateType].lastPage"
+      v-if="manager[stateType].orders && manager[stateType].orders.length > 0"
+      :canClick="!manager[stateType].lastPage"
       @click="list"
     />
   </div>
@@ -77,12 +72,12 @@ export default {
     return {
       navs,
       stateType: '',
-      role: 'user'
+      role: 'manager'
     }
   },
   computed: {
-    user () {
-      return this.$store.getters['advise/user']
+    manager () {
+      return this.$store.getters['advise/manager']
     },
     state () {
       return this.stateType === 'untreated' ? 0 : 1
@@ -119,7 +114,7 @@ export default {
         return
       }
       // this.list(this.stateType)
-      if (this.user[this.stateType].page < 1) {
+      if (this.manager[this.stateType].page < 1) {
         this.list(this.stateType)
       }
     },
@@ -135,7 +130,7 @@ export default {
       this.$router.push({
         name: 'advisedetail',
         params: {
-          role: 'user',
+          role: 'manager',
           id
         }
       })
@@ -146,13 +141,16 @@ export default {
 <style lang="scss" scoped>
 @import "~common/scss/variables.scss";
 @import "~common/scss/mixins.scss";
-.advise-user{
+.advise-manager{
   width: 100vw;
   height: 100vh;
+  background: $background-color;
   .links{
+    position: fixed;
+    width:100%;
     height:p2r(80);
     box-shadow: $box-shadow;
-    position: relative;
+    background: #fff;
     z-index: 1;
     .link{
       width:100%;
@@ -192,8 +190,7 @@ export default {
   }
   .content {
     width: 100%;
-    height: calc(100% - 6.8266666rem);
-    padding: p2r($base-padding);
+    padding:p2r(120) p2r($base-padding) p2r($base-padding);
     background: $background-color;
     overflow: auto;
     .advise-card{

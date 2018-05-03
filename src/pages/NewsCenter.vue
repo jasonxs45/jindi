@@ -94,6 +94,7 @@ export default {
           this.newslist = res.data.Data
           this.newslist.forEach(item => {
             item.Thumbnail = 'http://jindi.1juke.cn' + item.Thumbnail
+            item.Title = item.Title.length > 42 ? item.Title.substring(0, 42) + '...' : item.Title
           })
         } else {
           window.$alert(res.data.Message)
@@ -145,7 +146,7 @@ export default {
         }
       }
       .text{
-        padding:p2r(20) p2r(60) p2r(22) p2r(30);
+        padding:p2r(20) p2r(40) p2r(22) p2r(30);
         position: relative;
         .title{
           font-size: p2r(28);
