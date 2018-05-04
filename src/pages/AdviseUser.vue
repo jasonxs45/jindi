@@ -196,6 +196,7 @@ export default {
     padding: p2r($base-padding);
     background: $background-color;
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
     .advise-card{
       background: #fff;
       border-radius: 4px;

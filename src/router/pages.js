@@ -46,6 +46,7 @@ const Investigate = r => require.ensure([], () => r(require('pages/Investigate')
 
 const MessageCenter = r => require.ensure([], () => r(require('pages/MessageCenter')), 'MessageCenter')
 const ProjectMap = r => require.ensure([], () => r(require('pages/ProjectMap')), 'ProjectMap')
+const ProjectIntro = r => require.ensure([], () => r(require('pages/ProjectIntro')), 'ProjectIntro')
 
 const Guide = r => require.ensure([], () => r(require('pages/Guide')), 'Guide')
 const GuideDetail = r => require.ensure([], () => r(require('pages/GuideDetail')), 'GuideDetail')
@@ -258,7 +259,10 @@ export default [
   {
     path: '/adviseuser/:state',
     name: 'adviseuser',
-    component: AdviseUser
+    component: AdviseUser,
+    meta: {
+      title: '投诉建议'
+    }
   },
   // 投诉建议用户详情
   {
@@ -308,7 +312,7 @@ export default [
     name: 'magazine',
     component: Magazine,
     meta: {
-      title: '社区期刊'
+      title: '金地家书'
     }
   },
   // 金地家书内页
@@ -381,6 +385,15 @@ export default [
     component: ProjectMap,
     meta: {
       title: '项目地图'
+    }
+  },
+  // 项目介绍
+  {
+    path: '/projectintro/:name',
+    name: 'projectintro',
+    component: ProjectIntro,
+    meta: {
+      title: '项目介绍'
     }
   },
   // 服务指南列表

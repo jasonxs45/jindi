@@ -41,6 +41,9 @@ import {
   Nodata
 } from 'components'
 import api from 'common/api'
+import {
+  webRoot
+} from 'common/data'
 import wxConf from 'common/utils/wxConf'
 export default {
   name: 'GuideDetail',
@@ -90,7 +93,7 @@ export default {
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
           this.item = res.data.Data
-          this.item.Img = api.webRoot + this.item.Img
+          this.item.Img = webRoot + this.item.Img
         } else {
           window.$alert(res.data.Message)
         }

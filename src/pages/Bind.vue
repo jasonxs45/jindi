@@ -30,7 +30,7 @@
       </flexbox-item>
     </flexbox>
     <p class="tip">
-      请先选择您的身份进行绑定，绑定完成后方可<b>报修</b>、<b>查询进度</b>及参与<b>业主活动</b>
+      绑定房源可享受更多服务
     </p>
   </div>
 </template>

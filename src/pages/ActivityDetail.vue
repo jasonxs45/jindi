@@ -222,7 +222,8 @@ import {
 import {
   NAME_REG,
   TEL_REG,
-  ID_CHECK
+  ID_CHECK,
+  webRoot
 } from 'common/data'
 export default {
   name: 'ActivityDetail',
@@ -330,8 +331,8 @@ export default {
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
           let activity = res.data.Data
-          activity.Img = 'http://jindi.1juke.cn' + activity.Img
-          activity.Content = activity.Content.replace(/src="\/UploadFiles\//g, 'src="http://jindi.1juke.cn/UploadFiles/')
+          activity.Img = webRoot + activity.Img
+          activity.Content = activity.Content.replace(/src="\/Content\//g, `src="${webRoot}/Content/`)
           activity.PlayStart = formatDate(new Date(activity.PlayStart), 'yyyy/MM/dd')
           activity.PlayEnd = formatDate(new Date(activity.PlayEnd), 'yyyy/MM/dd')
           activity.state = activity.IsOver ? 0 : 1
@@ -475,6 +476,7 @@ export default {
         font-weight: 500;
         line-height: p2r(32);
         display: inline-block;
+        padding-right: p2r(20);
       }
       .desc{
         color:$thr-color;
@@ -510,10 +512,10 @@ export default {
         text-align: right;
       }
       .state{
-        font-size: p2r(20);
+        font-size: 10px;
         font-weight: 200;
-        height:p2r(32);
-        line-height: p2r(32);
+        height: 16px;
+        line-height: 16px;
         border-radius: 25px;
         background:$primary-color;
         color:#fff;
@@ -521,8 +523,8 @@ export default {
         text-align: center;
         flex:0 0 p2r(100);
         &.timeout{
-          background:$text-sub-color;
-          color:$thr-color;
+          background:$btn-disable-color;
+          color:$text-sub-color;
         }
       }
       .content-title{

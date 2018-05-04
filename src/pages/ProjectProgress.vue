@@ -16,7 +16,7 @@
         @click="goMonthlyList"
       >
         <div class="img">
-          <Fitimg :src="'http://jindi.1juke.cn'+item.Logo"/>
+          <Fitimg :src="item.Logo"/>
         </div>
         <div class="text">
           <h3 class="name">
@@ -42,6 +42,9 @@ import api from 'common/api'
 import {
   formatDate
 } from 'common/utils/date'
+import {
+  webRoot
+} from 'common/data'
 export default {
   name: 'ProjectProgress',
   components: {
@@ -75,6 +78,7 @@ export default {
           let list = res.data.Data
           list.forEach(item => {
             item.Ext = formatDate(new Date(item.Ext), 'yy/MM')
+            item.Logo = webRoot + item.Logo
           })
           this.fetchedList = list
         } else {

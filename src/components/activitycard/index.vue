@@ -1,7 +1,7 @@
 <template>
   <div class="activity-card" @click="clickHandler">
     <div class="card-content">
-      <flexbox class="oneline">
+      <flexbox class="oneline title-line">
         <flexbox-item class="title">{{title}}</flexbox-item>
         <flexbox-item class="state" :class="state === 0?'':'timeout'">{{state === 0?'进行中':'已过期'}}</flexbox-item>
       </flexbox>
@@ -104,11 +104,16 @@ export default {
   .card-content{
     padding:p2r(20);
     .oneline{
-      margin: p2r(15) 0;
+      margin: p2r(20) 0;
       position: relative;
       color: $text-sub-color;
+      &.title-line{
+        align-items: flex-start;
+        margin-top: 0;
+      }
       .fh,.fb{
         font-weight: 200;
+        line-height: 1.4;
       }
       .fh{
         flex: 0 0 p2r(120);
@@ -137,10 +142,10 @@ export default {
       right: 0;
     }
     .state{
-      font-size: p2r(20);
+      font-size: 10px;
       font-weight: 200;
-      height:p2r(32);
-      line-height: p2r(32);
+      height: 16px;
+      line-height: 16px;
       border-radius: 25px;
       background:$primary-color;
       color:#fff;
@@ -148,8 +153,8 @@ export default {
       text-align: center;
       flex:0 0 p2r(100);
       &.timeout{
-        background:$text-sub-color;
-        color:$thr-color;
+        background:$btn-disable-color;
+        color:$text-color;
       }
     }
   }

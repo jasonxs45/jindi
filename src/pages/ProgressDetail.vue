@@ -14,6 +14,9 @@ import api from 'common/api'
 import {
   formatDate
 } from 'common/utils/date'
+import {
+  webRoot
+} from 'common/data'
 export default {
   name: 'ProgressDetail',
   data () {
@@ -45,7 +48,7 @@ export default {
         if (res.data.IsSuccess) {
           this.fetchedDetail = res.data.Data
           this.fetchedDetail.AddTime = formatDate(new Date(this.fetchedDetail.AddTime.replace(/-/g, '/')), 'yyyy年MMM月')
-          this.fetchedDetail.Content = this.fetchedDetail.Content.replace(/src="\//g, 'src="http://jindi.1juke.cn/')
+          this.fetchedDetail.Content = this.fetchedDetail.Content.replace(/src="\//g, `src="${webRoot}/`)
         } else {
           window.$alert(res.Message)
         }

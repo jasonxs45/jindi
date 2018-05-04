@@ -7,7 +7,7 @@
           v-for="(item, index) in banners"
           :key="'banner-'+index"
         >
-          <Fitimg :src="'http://jindi.1juke.cn'+item.Thumbnail" alt="" />
+          <Fitimg :src="item.Thumbnail" alt="" />
         </swiper-slide>
         <!-- Optional controls -->
         <div class="swiper-pagination"  slot="pagination"></div>
@@ -58,7 +58,7 @@
         v-for="(item, index) in list"
         :data-id="item.id"
         :key="'activity-'+index"
-        :img="'http://jindi.1juke.cn'+item.img"
+        :img="item.img"
         :title="item.title"
         :playDateRange="item.playDateRange"
         :read-num="item.readNum"
@@ -69,13 +69,13 @@
 </template>
 <script>
  import {
-  Icon,
-  Fitimg,
-  Flexbox,
-  FlexboxItem,
-  Split,
-  Statisctitle,
-  Activitycard
+    Icon,
+    Fitimg,
+    Flexbox,
+    FlexboxItem,
+    Split,
+    Statisctitle,
+    Activitycard
   } from 'components'
   import 'swiper/dist/css/swiper.css'
   import { swiper, swiperSlide } from 'vue-awesome-swiper'
@@ -84,6 +84,7 @@
     formatDate
   } from 'common/utils/date'
   import {
+    webRoot,
     entries
   } from 'common/data'
   export default {
@@ -150,11 +151,12 @@
         api.activity.list()
         .then(({res, index}) => {
           if (res.data.IsSuccess) {
-            this.activityList = res.data.Data
-            this.activityList = this.activityList.splice(0, 2)
-            this.activityList.forEach(item => {
+            let activityList = res.data.Data
+            this.activityList = activityList.filter((item, index) => {
               item.PlayStart = formatDate(new Date(item.PlayStart), 'yyyy/MM/dd hh:mm')
               item.PlayEnd = formatDate(new Date(item.PlayEnd), 'yyyy/MM/dd hh:mm')
+              item.Img = webRoot + item.Img
+              return index < 2
             })
           } else {
             window.$alert(res.data.Message)
@@ -167,8 +169,11 @@
         api.news.list()
         .then(({res, index}) => {
           if (res.data.IsSuccess) {
-            this.newslist = res.data.Data
-            this.newslist = this.newslist.splice(0, 2)
+            let newslist = res.data.Data
+            this.newslist = newslist.filter((item, index) => {
+              item.Thumbnail = webRoot + item.Thumbnail
+              return index < 2
+            })
           } else {
             window.$alert(res.data.Message)
           }

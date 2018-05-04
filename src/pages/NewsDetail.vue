@@ -31,7 +31,7 @@ export default {
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
           this.detail = res.data.Data
-          this.detail.Content = this.detail.Content.replace(/src="\/UploadFiles\//g, 'src="http://jindi.1juke.cn/UploadFiles/')
+          this.detail.Content = this.detail.Content.replace(/src="\/UploadFiles\//g, `src="${webRoot}/UploadFiles/`)
         } else {
           window.$alert(res.data.Message)
         }

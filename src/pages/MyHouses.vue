@@ -1,33 +1,32 @@
 <template>
   <div class="myhouses">
-    <userinfo type-class="rectangle" :tagText="(list.length<1?'绑定':'添加')+'房源'" @tagClick="goBind"></userinfo>
-    <div class="content">
-      <nodata v-if="list.length<1">暂无房源</nodata>
-      <template
-        v-for="(item, index) in list"
-      >
-        <Split :key="'split-'+index+Math.random().toString(36).substr(2)"/>
-        <div
-          :key="'house-'+index+Math.random().toString(36).substr(2)"
-          :class="item.classType"
-          :data-id="item.ID"
-          class="house-item"
+    <div class="myhouses-wrapper">
+      <userinfo type-class="rectangle" :tagText="(list.length<1?'绑定':'添加')+'房源'" @tagClick="goBind"></userinfo>
+      <div class="content">
+        <nodata v-if="list.length<1">业主绑定房源可享受更多服务</nodata>
+        <template
+          v-for="(item, index) in list"
         >
-          <div class="top">
-            <div class="project">
-              <span class="name">{{item.ProjectName}}</span>
-              <span class="tag" :class="item.classType">{{item.OwnerType}}</span>
+          <Split :key="'split-'+index+Math.random().toString(36).substr(2)"/>
+          <div
+            :key="'house-'+index+Math.random().toString(36).substr(2)"
+            :class="item.classType"
+            :data-id="item.ID"
+            class="house-item"
+          >
+            <div class="top">
+              <div class="project">
+                <span class="name">{{item.ProjectName}}</span>
+                <span class="tag" :class="item.classType">{{item.OwnerType}}</span>
+              </div>
+              <p class="stage">{{item.StageName}}{{item.Building}}栋{{item.Unit}}单元{{item.HouseNo}}</p>
             </div>
-            <p class="stage">{{item.StageName}}{{item.Building}}栋{{item.Unit}}单元{{item.HouseNo}}</p>
+            <Btn type="base" text="成员列表" @click.stop="goMembers(item.ID)"/>
           </div>
-          <div class="bottom">
-            <span class="sign-time">签约时间：{{item.SignTime}}</span>
-            <span class="repair-time">报修期止：{{item.Warranty}}</span>
-          </div>
-          <Btn type="base" text="成员列表" @click.stop="goMembers(item.ID)"/>
-        </div>
-      </template>
+        </template>
+      </div>
     </div>
+    <img src="static/images/decrator.png" alt="" class="decrator">
   </div>
 </template>
 <script>
@@ -127,115 +126,119 @@ export default {
 @import "~common/scss/variables.scss";
 @import "~common/scss/mixins.scss";
 .myhouses{
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  .content{
-    width:100%;
-    height:calc(100% - 5.12rem);
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    .nodata{
-      margin-top: p2r(100);
-    }
-    .house-item{
+  .myhouses-wrapper{
+    min-height: 100vh;
+    padding-bottom: p2r(150);
+    .content{
+      width:100%;
       position: relative;
-      min-height: p2r(30);
-      padding: p2r($base-padding);
-      @include _1px();
-      &:before{
-        content: '';
-        display: block;
-        width:4px;
-        height: 100%;
-        position: absolute;
-        left:0;
-        top:0;
-        background: #ccc;
+      .nodata{
+        margin-top: p2r(100);
       }
-      &.owner{
-        &:before{
-          background: $warning-color
-        }
-      }
-      &.rela{
-        &:before{
-          background: $success-color
-        }
-      }
-      &.rent{
-        &:before{
-          background: $link-color
-        }
-      }
-      .top{
+      .house-item{
+        position: relative;
+        min-height: p2r(30);
+        padding: p2r($base-padding);
         @include _1px();
-        padding:0 0 p2r(20);
-        .project{
-          font-size: 0;
-          .name{
-            font-size: p2r(30);
-            font-weight: 600;
-            display: inline-block;
-            vertical-align: middle;
-          }
-          .tag{
-            font-size: p2r(20);
-            padding:.1rem .3rem;
-            background: #333;
-            border-radius:25px;
-            color:#fff;
-            font-weight: 200;
-            display: inline-block;
-            vertical-align: middle;
-            margin-left: p2r(10);
-            &.owner{
-              background: $warning-color
-            }
-            &.rela{
-              background: $success-color
-            }
-            &.rent{
-              background: $link-color
-            }
+        &:before{
+          content: '';
+          display: block;
+          width:4px;
+          height: 100%;
+          position: absolute;
+          left:0;
+          top:0;
+          background: #ccc;
+        }
+        &.owner{
+          &:before{
+            background: $warning-color
           }
         }
-        .stage{
-          font-size: p2r(24);
-          color: $text-sub-color;
+        &.rela{
+          &:before{
+            background: $success-color
+          }
+        }
+        &.rent{
+          &:before{
+            background: $link-color
+          }
+        }
+        .top{
+          padding:0 0 p2r(20);
+          .project{
+            font-size: 0;
+            margin-top: p2r(20);
+            .name{
+              font-size: p2r(30);
+              font-weight: 600;
+              display: inline-block;
+              vertical-align: middle;
+            }
+            .tag{
+              font-size: p2r(20);
+              padding:.1rem .3rem;
+              background: #333;
+              border-radius:25px;
+              color:#fff;
+              font-weight: 200;
+              display: inline-block;
+              vertical-align: middle;
+              margin-left: p2r(10);
+              &.owner{
+                background: $warning-color
+              }
+              &.rela{
+                background: $success-color
+              }
+              &.rent{
+                background: $link-color
+              }
+            }
+          }
+          .stage{
+            font-size: p2r(24);
+            color: $text-sub-color;
+            margin-top: p2r(20);
+          }
+        }
+        .bottom{
+          color:$thr-color;
+          font-weight: 200;
           margin-top: p2r(20);
+          font-size: 0;
+          .sign-time,
+          .repair-time{
+            display: inline-block;
+            vertical-align: top;
+            font-size: p2r(24);
+            width:50%;
+          }
+          .repair-time{
+            text-align: right;
+          }
         }
-      }
-      .bottom{
-        color:$thr-color;
-        font-weight: 200;
-        margin-top: p2r(20);
-        font-size: 0;
-        .sign-time,
-        .repair-time{
-          display: inline-block;
-          vertical-align: top;
+        .btn{
+          position: absolute;
+          width: p2r(140);
           font-size: p2r(24);
-          width:50%;
+          top:p2r($base-padding * 2);
+          right:p2r($base-padding);
+          border:1px solid #ddd;
+          height: p2r(60);
+          line-height: p2r(60);
+          padding:0;
+          border-radius: 4px;
+          color:$thr-color;
         }
-        .repair-time{
-          text-align: right;
-        }
-      }
-      .btn{
-        position: absolute;
-        width: p2r(140);
-        font-size: p2r(24);
-        top:p2r($base-padding);
-        right:p2r($base-padding);
-        border:1px solid #ddd;
-        height: p2r(60);
-        line-height: p2r(60);
-        padding:0;
-        border-radius: 4px;
-        color:$thr-color;
       }
     }
+  }
+  .decrator{
+    width:p2r(420);
+    display: block;
+    margin: p2r(-100) auto 0;
   }
 }
 </style>

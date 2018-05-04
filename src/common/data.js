@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+const webRoot = process.env.NODE_ENV === 'production' ? '' : 'http://jindi.1juke.cn'
 let entries = [
   {
     name: '我的房源',
@@ -38,7 +39,7 @@ let entries = [
   {
     name: '投诉建议',
     icon: 'suggest',
-    link: '/wait'
+    link: '/adviseuser/untreated'
   },
   {
     name: '社区活动',
@@ -296,21 +297,13 @@ const ID_CHECK = (idcard) => {
 }
 const ID_REG = /(^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$)|(^[1-9]\d{5}\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{2}[0-9Xx]$)/i
 const LAST_FOUR_REG = /\d{3}[0-9Xx]/i
-// 报修弹窗
-let suc = `<img src="/static/images/rssuc.png" class="icon"/>
-                  <h3 class="title">恭喜您</h3>
-                  <p class="text">您已成功提交报修，请耐心等待~<br/>工作人员将尽快处理</p>`
-let fail = `<img src="/static/images/rsfail.png" class="icon"/>
-                  <h3 class="title">对不起</h3>
-                  <p class="text">提交失败</p>`
 export {
+  webRoot,
   entries,
   posRoom,
   posLocation,
   NAME_REG,
   TEL_REG,
   ID_CHECK,
-  LAST_FOUR_REG,
-  suc,
-  fail
+  LAST_FOUR_REG
 }

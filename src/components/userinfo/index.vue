@@ -108,7 +108,6 @@ export default {
       text-align: center;
       border-radius: 20px;
       margin-left: p2r(20);
-      margin-top: p2r(5);
       font-weight: 200;
       padding:0 .2rem
     }

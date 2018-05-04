@@ -1,6 +1,6 @@
 <template>
   <div class="magazine">
-    <h2 class="title">社区期刊</h2>
+    <h2 class="title">金地家书</h2>
     <p class="desc">{{desc}}</p>
     <div v-if="fetchedList.length>0" class="date">{{this.fetchedList[activeSwipeIndex].AddTime}}</div>
     <div class="swiper">
@@ -28,6 +28,9 @@ import {
 import {
   formatDate
 } from 'common/utils/date'
+import {
+  webRoot
+} from 'common/data'
 import api from 'common/api'
 export default {
   name: 'Magazine',
@@ -82,7 +85,7 @@ export default {
         if (res.data.IsSuccess) {
           let fetchedList = res.data.Data
           fetchedList.forEach(item => {
-            item.CoverImg = 'http://jindi.1juke.cn' + item.CoverImg
+            item.CoverImg = webRoot + item.CoverImg
             item.AddTime = formatDate(new Date(item.AddTime), 'MM')
           })
           this.fetchedList = fetchedList
@@ -118,15 +121,15 @@ export default {
   position: relative;
   background: url('../../static/images/magabg.png') center bottom/contain no-repeat;
   .title{
-    padding-top: p2r(100);
+    padding-top: p2r(80);
     padding-left: p2r(156);
     font-size: p2r(72);
     color:$primary-color;
     font-weight: bold;
   }
   .desc{
-    width:p2r(440);
-    font-size: p2r(26);
+    width:p2r(480);
+    font-size: p2r(24);
     color:$primary-color;
     line-height: 1.4;
     padding-top: p2r(20);

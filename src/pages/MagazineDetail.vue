@@ -7,6 +7,9 @@
 </template>
 <script>
 import api from 'common/api'
+import {
+  webRoot
+} from 'common/data'
 export default {
   name: 'NewsDetail',
   data () {
@@ -31,7 +34,7 @@ export default {
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
           this.detail = res.data.Data
-          this.detail.Content = this.detail.Content.replace(/src="\/UploadFiles\//g, 'src="http://jindi.1juke.cn/UploadFiles/')
+          this.detail.Content = this.detail.Content.replace(/src="\/UploadFiles\//g, `src="${webRoot}/UploadFiles/`)
         } else {
           window.$alert(res.data.Message)
         }

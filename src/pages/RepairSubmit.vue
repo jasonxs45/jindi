@@ -128,9 +128,7 @@ import {
   posRoom,
   posLocation,
   NAME_REG,
-  TEL_REG,
-  suc,
-  fail
+  TEL_REG
 } from 'common/data'
 export default {
   name: 'RepairSubmit',
@@ -218,7 +216,7 @@ export default {
       // 提交
       window.$alert({
         className: 'rs-alertbox',
-        content: fail || suc
+        content: ''
       })
     }
   }

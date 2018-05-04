@@ -9,7 +9,7 @@
     >
       <h3 class="title">{{item.AddTime}}</h3>
       <div class="img">
-        <Fitimg :src="'http://jindi.1juke.cn'+item.Img" />
+        <Fitimg :src="item.Img" />
       </div>
       <p class="desc">{{item.Title}}</p>
     </div>
@@ -25,6 +25,9 @@ import api from 'common/api'
 import {
   formatDate
 } from 'common/utils/date'
+import {
+  webRoot
+} from 'common/data'
 export default {
   name: 'MonthlyProgress',
   components: {
@@ -61,6 +64,7 @@ export default {
           this.fetchedList = res.data.Data
           this.fetchedList.forEach(item => {
             item.AddTime = formatDate(new Date(item.AddTime.replace(/-/g, '/')), 'yyyy年MMM月')
+            item.Img = webRoot + item.Img
           })
         } else {
           window.$alert(res.Message)

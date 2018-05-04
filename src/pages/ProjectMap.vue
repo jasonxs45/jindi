@@ -5,6 +5,7 @@
 </template>
 <script>
 import BMap from 'common/utils/BMap'
+import {tounicode} from 'common/utils/unicode'
 // 引入 ECharts 主模块
 let echarts = require('echarts/lib/echarts')
 // 引入地图
@@ -52,9 +53,14 @@ let usedCities = chinaCities.filter((item, index) => {
 })
 let effectData = data.filter(item => item.name === '郑州' || item.name === '武汉' || item.name === '长沙')
 effectData.forEach(item => {
-  item.value.push({
-    name: 'usercenter'
-  })
+  if (item.name === '武汉') {
+    item.value.push({
+      name: 'projectintro',
+      params: {
+        name: tounicode(item.name)
+      }
+    })
+  }
 })
 data = data.filter(item => item.name !== '郑州' && item.name !== '武汉' && item.name !== '长沙')
 const bmap = BMap.CONFIG
@@ -155,7 +161,9 @@ export default {
       this.mapEchart.on('click', params => {
         if (params.componentType === 'series') {
           if (params.seriesType === 'effectScatter') {
-            this.$router.push(params.value[2])
+            if (params.name === '武汉') {
+              this.$router.push(params.value[2])
+            }
           }
         }
       })

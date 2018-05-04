@@ -62,7 +62,9 @@ import {
 } from 'components'
 import api from 'common/api'
 import wxConf from 'common/utils/wxConf'
-const webRoot = 'http://jindi.1juke.cn'
+import {
+  webRoot
+} from 'common/data'
 export default {
   name: 'AdviseDetail',
   components: {
@@ -267,7 +269,7 @@ export default {
   .btns{
     position: relative;
     margin-top: p2r(-180);
-    .back{
+    .btn{
       margin: p2r(20) auto;
     }
   }

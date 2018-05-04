@@ -49,6 +49,9 @@ import {
   FlexboxItem,
   Fitimg
 } from 'components'
+import {
+  webRoot
+} from 'common/data'
 import 'swiper/dist/css/swiper.css'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import api from 'common/api'
@@ -93,7 +96,7 @@ export default {
         if (res.data.IsSuccess) {
           this.newslist = res.data.Data
           this.newslist.forEach(item => {
-            item.Thumbnail = 'http://jindi.1juke.cn' + item.Thumbnail
+            item.Thumbnail = webRoot + item.Thumbnail
             item.Title = item.Title.length > 42 ? item.Title.substring(0, 42) + '...' : item.Title
           })
         } else {

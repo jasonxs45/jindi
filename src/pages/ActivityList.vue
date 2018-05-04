@@ -30,7 +30,7 @@ import {
 } from 'common/utils/date'
 const CLASS_MAP = {
   activity: {
-    title: '社区活动',
+    title: '关怀活动',
     S_Class: 1
   },
   signup: {

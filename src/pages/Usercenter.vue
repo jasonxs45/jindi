@@ -51,7 +51,11 @@ export default {
     return {
       entries: entries.filter(item => {
         return item.name !== '个人中心' &&
-               item.name !== '社区活动'
+               item.name !== '社区活动' &&
+               item.name !== '金地家书' &&
+               item.name !== '服务指南' &&
+               item.name !== '新闻中心' &&
+               item.name !== '工程进度'
       })
     }
   },
