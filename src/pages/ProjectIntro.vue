@@ -15,6 +15,9 @@ const items = {
     'static/images/wuhan2.jpg',
     'static/images/wuhan3.jpg',
     'static/images/wuhan4.jpg'
+  ],
+  '郑州': [
+    'static/images/zhengzhou1.jpg'
   ]
 }
 export default {

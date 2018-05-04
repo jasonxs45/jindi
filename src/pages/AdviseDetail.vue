@@ -88,7 +88,7 @@ export default {
       if (this.item.Images) {
         arr = this.item.Images.split(',')
         for (let i = 0; i < arr.length; i++) {
-          arr[i] = webRoot + arr[i]
+          arr[i] = webRoot === '' ? location.origin + arr[i] : webRoot + arr[i]
         }
       }
       return arr

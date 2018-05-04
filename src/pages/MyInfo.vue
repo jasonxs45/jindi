@@ -113,6 +113,10 @@ import {
   Btn
 } from 'components'
 import api from 'common/api'
+import {
+  NAME_REG,
+  TEL_REG
+} from 'common/data'
 export default {
   name: 'Modify',
   components: {
@@ -175,6 +179,18 @@ export default {
       })
     },
     submitHandler () {
+      if (!this.name.match(NAME_REG)) {
+        window.$alert('请填写正确格式的姓名')
+        return
+      }
+      if (!this.tel.match(TEL_REG)) {
+        window.$alert('请填写正确格式的手机号码')
+        return
+      }
+      if (!this.address) {
+        window.$alert('请完善收货地址')
+        return
+      }
       let _self = this
       api.modify.save(this.name, this.tel, this.address)
       .then(({res, index}) => {

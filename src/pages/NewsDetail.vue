@@ -7,6 +7,9 @@
 </template>
 <script>
 import api from 'common/api'
+import {
+  webRoot
+} from 'common/data'
 export default {
   name: 'NewsDetail',
   data () {

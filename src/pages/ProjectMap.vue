@@ -53,7 +53,7 @@ let usedCities = chinaCities.filter((item, index) => {
 })
 let effectData = data.filter(item => item.name === '郑州' || item.name === '武汉' || item.name === '长沙')
 effectData.forEach(item => {
-  if (item.name === '武汉') {
+  if (item.name !== '长沙') {
     item.value.push({
       name: 'projectintro',
       params: {
@@ -63,7 +63,75 @@ effectData.forEach(item => {
   }
 })
 data = data.filter(item => item.name !== '郑州' && item.name !== '武汉' && item.name !== '长沙')
-const bmap = BMap.CONFIG
+let bmap = BMap.CONFIG
+let series = [
+  {
+    type: 'scatter',
+    coordinateSystem: 'bmap',
+    symbol: 'circle',
+    symbolSize: 12,
+    label: {
+      normal: {
+        show: false,
+        formatter: '{b}',
+        color: '#ea5532',
+        position: 'right',
+        textStyle: {
+          fontSize: 10
+        }
+      }
+    },
+    itemStyle: {
+      normal: {
+        color: '#ea5532',
+        shadowBlur: 10,
+        shadowColor: 'rgba(0,0,0,.2)'
+      },
+      emphasis: {
+        borderColor: '#fff',
+        borderWidth: 0.5
+      }
+    },
+    data
+  },
+  {
+    type: 'effectScatter',
+    coordinateSystem: 'bmap',
+    symbolSize: 18,
+    showEffectOn: 'render',
+    rippleEffect: {
+      brushType: 'stroke'
+    },
+    label: {
+      normal: {
+        show: true,
+        formatter: '{b}',
+        color: '#ea5532',
+        position: 'top'
+      }
+    },
+    itemStyle: {
+      normal: {
+        color: '#ea5532',
+        shadowBlur: 10,
+        shadowColor: 'rgba(0,0,0,.5)'
+      },
+      emphasis: {
+        borderColor: '#fff',
+        borderWidth: 0.5
+      }
+    },
+    data: effectData
+  }
+]
+let option = {
+  tooltip: {
+    trigger: 'item',
+    formatter: '{b}'
+  },
+  bmap,
+  series
+}
 export default {
   name: 'ProjectMap',
   data () {
@@ -80,88 +148,31 @@ export default {
     BMap.init().then(res => {
       this.initMap()
       this.map.setMinZoom(5)
-      this.map.setMaxZoom(8)
+      this.map.setMaxZoom(10)
       let geolocationControl = new window.BMap.GeolocationControl({
         anchor: window.BMAP_ANCHOR_BOTTOM_RIGHT
       })
       this.map.addControl(geolocationControl)
+      this.map.addEventListener('zoomend', () => {
+        bmap.zoom = this.map.getZoom()
+        bmap.center = [this.map.getCenter().lng, this.map.getCenter().lat]
+        if (this.map.getZoom() > 7) {
+          series[0].label.normal.show = true
+        } else {
+          series[0].label.normal.show = false
+        }
+        this.mapEchart.setOption(option)
+      }, false)
     })
   },
   methods: {
     initMap () {
-      let option = {
-        tooltip: {
-          trigger: 'item',
-          formatter: '{b}'
-        },
-        bmap,
-        series: [
-          {
-            type: 'scatter',
-            coordinateSystem: 'bmap',
-            symbol: 'circle',
-            symbolSize: 12,
-            label: {
-              normal: {
-                show: true,
-                formatter: '{b}',
-                color: '#ea5532',
-                position: 'right',
-                textStyle: {
-                  fontSize: 10
-                }
-              }
-            },
-            itemStyle: {
-              normal: {
-                color: '#ea5532',
-                shadowBlur: 10,
-                shadowColor: 'rgba(0,0,0,.2)'
-              },
-              emphasis: {
-                borderColor: '#fff',
-                borderWidth: 0.5
-              }
-            },
-            data
-          },
-          {
-            type: 'effectScatter',
-            coordinateSystem: 'bmap',
-            symbolSize: 18,
-            showEffectOn: 'render',
-            rippleEffect: {
-              brushType: 'stroke'
-            },
-            label: {
-              normal: {
-                show: true,
-                formatter: '{b}',
-                color: '#ea5532',
-                position: 'top'
-              }
-            },
-            itemStyle: {
-              normal: {
-                color: '#ea5532',
-                shadowBlur: 10,
-                shadowColor: 'rgba(0,0,0,.5)'
-              },
-              emphasis: {
-                borderColor: '#fff',
-                borderWidth: 0.5
-              }
-            },
-            data: effectData
-          }
-        ]
-      }
       this.mapEchart = echarts.init(this.$refs.map)
       this.mapEchart.setOption(option)
       this.mapEchart.on('click', params => {
         if (params.componentType === 'series') {
           if (params.seriesType === 'effectScatter') {
-            if (params.name === '武汉') {
+            if (params.name !== '长沙') {
               this.$router.push(params.value[2])
             }
           }
