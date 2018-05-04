@@ -23,8 +23,9 @@ import 'common/scss/layer.scss'
   }
   w.$loading = text => {
     return layer.open({
+      className: 'jloading',
       type: 2,
-      content: text,
+      content: '<img class="gif" src="static/images/loading.gif"/>' + (`<p class="loadtext">${text}</p>` || ''),
       shadeClose: false
     })
   }

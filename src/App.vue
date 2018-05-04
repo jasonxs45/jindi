@@ -84,4 +84,18 @@ export default {
 .clearfix{
   clear: both;
 }
+.jloading{
+  .layui-m-layercont{
+    i{
+      display: none;
+    }
+    .gif{
+      width: 50px;
+      display: block;
+    }
+    .loadtext{
+      font-size: 12px;
+    }
+  }
+}
 </style>
