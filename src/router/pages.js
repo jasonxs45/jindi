@@ -125,7 +125,7 @@ export default [
     name: 'tradeprogress',
     component: TradeProgress,
     meta: {
-      title: '购房进度'
+      title: '合同/产证'
     },
     redirect: '/tradeprogress/contract',
     children: [
@@ -384,7 +384,7 @@ export default [
     name: 'projectmap',
     component: ProjectMap,
     meta: {
-      title: '项目地图'
+      title: '在售项目'
     }
   },
   // 项目介绍

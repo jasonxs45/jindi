@@ -133,10 +133,10 @@ export default {
       padding:p2r(14) 0 p2r(12) p2r(20);
       .text,
       .iconfont{
-        font-size: p2r(24);
+        font-size: p2r(28);
       }
       .iconfont{
-        font-size: p2r(20)
+        font-size: p2r(24)
       }
     }
   }

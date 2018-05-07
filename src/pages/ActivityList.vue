@@ -38,7 +38,7 @@ const CLASS_MAP = {
     S_Class: 2
   },
   accept: {
-    title: '开放交付',
+    title: '开放/交付',
     S_Class: 3
   },
   mine: {

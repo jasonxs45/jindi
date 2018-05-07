@@ -72,7 +72,7 @@
         <Btn v-if="step===2" type="primary" size="lar" text="确认绑定" @click="submitHandler"/>
       </div>
     </div>
-    <p class="see-rights">
+    <p class="see-rights" style="display:none">
       <span @click="toggleRights">查看业主权益</span>
     </p>
     <transition name="fade">

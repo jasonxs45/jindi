@@ -2,7 +2,7 @@
   <div class="activity-detail">
     <div class="activity-detail-wrapper">
       <div class="banner">
-        <img :src="usedActivity.Img" alt="" class="img" />
+        <Fitimg :src="usedActivity.Img" alt="" class="img" />
       </div>
       <div class="details">
         <flexbox class="oneline">
@@ -213,7 +213,8 @@ import {
   Icon,
   Btn,
   XInput,
-  AreaPicker
+  AreaPicker,
+  Fitimg
 } from 'components'
 import api from 'common/api'
 import {
@@ -233,7 +234,8 @@ export default {
     Icon,
     Btn,
     XInput,
-    AreaPicker
+    AreaPicker,
+    Fitimg
   },
   data () {
     return {
@@ -461,6 +463,7 @@ export default {
     -webkit-overflow-scrolling: touch;
     .banner{
       width:100%;
+      max-height: p2r(350);
       .img{
         max-width: 100%;
       }

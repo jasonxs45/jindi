@@ -142,10 +142,9 @@ export default {
       right: 0;
     }
     .state{
-      font-size: 10px;
+      font-size: p2r(20);
       font-weight: 200;
-      height: 16px;
-      line-height: 16px;
+      padding: p2r(5) 0;
       border-radius: 25px;
       background:$primary-color;
       color:#fff;
