@@ -48,7 +48,7 @@ export default {
 @import "~common/scss/mixins.scss";
 .textarea-wrapper{
   border-radius: 4px;
-  width:p2r(600);
+  width:inherit;
   height: p2r(200);
   display: inline-block;
   border:1px solid lighten($primary-color, 10%);

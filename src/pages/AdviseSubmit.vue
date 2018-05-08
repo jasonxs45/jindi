@@ -261,6 +261,7 @@ export default {
       margin-top: p2r(50);
     }
     .desc{
+      width:100%;
       margin-top: p2r(30);
       font-size: p2r(26);
     }

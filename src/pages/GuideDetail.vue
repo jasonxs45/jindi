@@ -168,6 +168,7 @@ export default {
         background: none;
       }
       .tel{
+        flex: 0 0 p2r(200);
         text-align: right;
         a {
           font-size: p2r(28)
