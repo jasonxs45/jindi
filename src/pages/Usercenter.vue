@@ -55,6 +55,8 @@ export default {
                item.name !== '金地家书' &&
                item.name !== '服务指南' &&
                item.name !== '新闻中心' &&
+               item.name !== '预约保养' &&
+               item.name !== '开放交付' &&
                item.name !== '工程进度'
       })
     }

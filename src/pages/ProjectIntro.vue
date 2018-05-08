@@ -18,6 +18,9 @@ const items = {
   ],
   '郑州': [
     'static/images/zhengzhou1.jpg'
+  ],
+  '长沙': [
+    'static/images/changsha1.jpg'
   ]
 }
 export default {

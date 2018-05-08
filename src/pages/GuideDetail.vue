@@ -93,7 +93,7 @@ export default {
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
           this.item = res.data.Data
-          this.item.Img = webRoot + this.item.Img
+          this.item.Img = !this.item.Img ? '' : webRoot + this.item.Img
         } else {
           window.$alert(res.data.Message)
         }
@@ -132,7 +132,7 @@ export default {
       top:0;
       width:100%;
       height: 100%;
-      background: rgba(0,0,0,.6);
+      background: rgba(0,0,0,.5);
       color:#fff;
       padding-top: p2r(70);
       .title{

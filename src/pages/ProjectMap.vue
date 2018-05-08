@@ -53,14 +53,12 @@ let usedCities = chinaCities.filter((item, index) => {
 })
 let effectData = data.filter(item => item.name === '郑州' || item.name === '武汉' || item.name === '长沙')
 effectData.forEach(item => {
-  if (item.name !== '长沙') {
-    item.value.push({
-      name: 'projectintro',
-      params: {
-        name: tounicode(item.name)
-      }
-    })
-  }
+  item.value.push({
+    name: 'projectintro',
+    params: {
+      name: tounicode(item.name)
+    }
+  })
 })
 data = data.filter(item => item.name !== '郑州' && item.name !== '武汉' && item.name !== '长沙')
 let bmap = BMap.CONFIG
@@ -172,9 +170,7 @@ export default {
       this.mapEchart.on('click', params => {
         if (params.componentType === 'series') {
           if (params.seriesType === 'effectScatter') {
-            if (params.name !== '长沙') {
-              this.$router.push(params.value[2])
-            }
+            this.$router.push(params.value[2])
           }
         }
       })

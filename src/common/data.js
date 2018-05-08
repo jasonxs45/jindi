@@ -39,7 +39,8 @@ let entries = [
   {
     name: '投诉建议',
     icon: 'suggest',
-    link: '/adviseuser/untreated'
+    // link: '/adviseuser/untreated',
+    link: '/advisesubmit'
   },
   {
     name: '社区活动',
