@@ -17,6 +17,37 @@ export default {
   name: 'TradeProgress',
   components: {
     Tabnav
+  },
+  computed: {
+    state () {
+      return this.$store.state.userInfo.state
+    }
+  },
+  watch: {
+    state (newVal, oldVal) {
+      if (newVal !== 3) {
+        this.checkIdentity()
+      }
+    }
+  },
+  created () {
+    this.checkIdentity()
+  },
+  methods: {
+    checkIdentity () {
+      if (this.$store.state.userInfo.state !== 3) {
+        let index = window.$alert({
+          title: '对不起',
+          content: '请先绑定业主身份！',
+          yes: () => {
+            window.$close(index)
+            this.$router.replace({
+              name: 'bindowner'
+            })
+          }
+        })
+      }
+    }
   }
 }
 </script>

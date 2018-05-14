@@ -1,3 +1,4 @@
+//  投诉建议模块 用户身份 管理员身份
 import types from '../mutation-types'
 import api from 'common/api'
 const state = {

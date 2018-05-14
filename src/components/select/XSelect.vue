@@ -5,7 +5,7 @@
     :readonly="true"
     :class="showOptions?'half':''"
     :value="value.label"
-    @click.native.stop="toggleSelect"
+    @click.stop="toggleSelect"
     @on-focus="focus"
   />
   <Icon class="icon" name="caret-down"/>
@@ -50,11 +50,11 @@ export default {
   },
   mounted () {
     let _self = this
-    document.querySelector('#app').addEventListener('click', _self.closeSelect, false)
+    window.addEventListener('click', _self.closeSelect, false)
   },
   destroyed () {
     let _self = this
-    document.querySelector('#app').removeEventListener('click', _self.closeSelect)
+    window.removeEventListener('click', _self.closeSelect)
   },
   updated () {
     if (!this.$children) return

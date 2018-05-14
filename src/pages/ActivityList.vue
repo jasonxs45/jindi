@@ -1,7 +1,7 @@
 <template>
   <div class="activity-list">
     <div v-if="list.length<1" class="nodata-box">
-      <nodata>暂无活动信息</nodata>
+      <nodata><p>对不起，<br/>您尚未参与任何活动</p></nodata>
       <Btn style="display:none" type="primary" text="社区活动" @click="goList"/>
     </div>
     <activitycard
@@ -130,7 +130,7 @@ export default {
 .activity-list{
   padding: p2r($base-padding);
   .nodata-box{
-    margin-top: p2r(200);
+    margin-top: p2r(260);
     text-align: center;
     .btn{
       margin-top: p2r(40);

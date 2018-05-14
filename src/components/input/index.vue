@@ -3,6 +3,7 @@
     class="x-input"
     @focusin="focusHandler"
     @focusout="blurHandler"
+    @click="clickHandler"
   >
     <input
       :type="htmlType"
@@ -89,6 +90,9 @@ export default {
       this.inputVal = e.target.value
       // this.$refs.input.value = e.target.value
       this.$emit('input', e.target ? e.target.value : e)
+    },
+    clickHandler (e) {
+      this.$emit('click', e)
     }
   }
 }

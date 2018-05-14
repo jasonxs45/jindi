@@ -11,16 +11,22 @@
       <h3 class="title">选择房源</h3>
       <x-select
         v-model="form.house"
-        :options="houses"
         placeholder="请选择您要报修的房源"
         class="select-house"
-      ></x-select>
+      >
+        <x-option
+          v-for="(item, index) in houses"
+          :key="'houses-'+index"
+          :label="item.houseFull"
+          :value="item.houseFull"
+        ></x-option>
+      </x-select>
     </div>
     <div class="panel">
       <h3 class="title">选择具体部位</h3>
       <flexbox class="selected-info">
         <flexbox-item class="head">报修部位：</flexbox-item>
-        <flexbox-item class="body">
+        <flexbox-item class="body" @click="openSelectBox">
           <div
             v-for="(item, index) in selectedTags"
             :key="'st-'+index"
@@ -108,6 +114,14 @@
   <div class="bottom">
     <img src="/static/images/rsbot.jpg" alt="" srcset="">
   </div>
+  <transition name="slide-in-right">
+    <div class="select-tag-box" v-show="selectingTag">
+      <div class="btns">
+        <Btn type="primary" size="lar" text="确定" />
+        <Btn type="default" size="lar" text="取消" @click="closeSelectBox" />
+      </div>
+    </div>
+  </transition>
 </div>
 </template>
 <script>
@@ -115,6 +129,7 @@ import {
   Icon,
   XInput,
   XSelect,
+  XOption,
   Flexbox,
   FlexboxItem,
   Split,
@@ -130,12 +145,14 @@ import {
   NAME_REG,
   TEL_REG
 } from 'common/data'
+import api from 'common/api'
 export default {
   name: 'RepairSubmit',
   components: {
     Icon,
     XInput,
     XSelect,
+    XOption,
     Flexbox,
     FlexboxItem,
     Split,
@@ -150,6 +167,7 @@ export default {
       houses: [],
       tagsState: 0,
       selectedTags: [],
+      selectingTag: false,
       uploadedImgs: [
         '/static/images/banner2.png',
         '/static/images/active1.png',
@@ -169,7 +187,30 @@ export default {
       if (this.tagsState > 0 && this.tagsState <= 1) return posLocation
     }
   },
+  created () {
+    this.getHouses()
+  },
   methods: {
+    getHouses () {
+      api.bind.getMyHouse()
+      .then(({res, index}) => {
+        if (res.data.IsSuccess) {
+          let houses = res.data.Data
+          houses.forEach(item => {
+            item.houseFull = `${item.ProjectName + item.Building}栋${item.Unit}单元${item.HouseNo}`
+          })
+          this.houses = houses
+        } else {
+          window.$alert(res.data.Message)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+    getParts () {
+      return this.$store.dispatch('repair/parts')
+    },
     changeHandler (e) {
       if (this.tagsState > 1) return
       this.tagsState += 1
@@ -218,6 +259,16 @@ export default {
         className: 'rs-alertbox',
         content: ''
       })
+    },
+    toggleShowSelectBox () {
+      this.selectingTag = !this.selectingTag
+    },
+    openSelectBox () {
+      this.selectingTag = true
+      this.getParts()
+    },
+    closeSelectBox () {
+      this.selectingTag = false
     }
   }
 }
@@ -412,6 +463,27 @@ export default {
   .bottom{
     text-align: center;
     margin:p2r(60) p2r(-$base-padding) p2r(-$base-padding);
+  }
+  .select-tag-box{
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height: 100%;
+    z-index: 2;
+    background: #fff;
+    padding-bottom: p2r(260);
+    .btns{
+      position: absolute;
+      width:100%;
+      height: p2r(260);
+      background: #fff;
+      left:0;
+      bottom:0;
+      .btn{
+        margin-top: p2r(20);
+      }
+    }
   }
 }
 </style>

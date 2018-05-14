@@ -85,6 +85,7 @@ import {
   ImgCell
 } from 'components'
 import api from 'common/api'
+import wx from 'weixin-js-sdk'
 export default {
   name: 'AdviseSubmit',
   components: {
@@ -117,11 +118,36 @@ export default {
     }
   },
   computed: {
+    state () {
+      return this.$store.state.userInfo.state
+    }
+  },
+  watch: {
+    state (newVal, oldVal) {
+      if (newVal !== 3) {
+        this.checkIdentity()
+      }
+    }
   },
   created () {
+    this.checkIdentity()
     this.getHouses()
   },
   methods: {
+    checkIdentity () {
+      if (this.$store.state.userInfo.state !== 3) {
+        let index = window.$alert({
+          title: '对不起',
+          content: '请先绑定业主身份！',
+          yes: () => {
+            window.$close(index)
+            this.$router.replace({
+              name: 'bindowner'
+            })
+          }
+        })
+      }
+    },
     getHouses () {
       api.myHouse.list()
       .then(({res, index}) => {
@@ -155,7 +181,7 @@ export default {
       let HouseID = this.form.house.value
       let Content = this.form.desc
       let Images = this.uploadedImgs.join(',')
-      let _self = this
+      // let _self = this
       api.advise.submit(Type, HouseID, Content, Images)
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
@@ -164,12 +190,13 @@ export default {
             content: '提交成功！',
             yes () {
               window.$close(index)
-              _self.$router.push({
-                name: 'adviseuser',
-                params: {
-                  state: 'untreated'
-                }
-              })
+              wx.closeWindow()
+              // _self.$router.push({
+              //   name: 'adviseuser',
+              //   params: {
+              //     state: 'untreated'
+              //   }
+              // })
             }
           })
         } else {

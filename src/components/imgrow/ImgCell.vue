@@ -9,7 +9,7 @@
       @click="deleteImg"
     >
       <Icon
-        name="close-fill"
+        name="close"
       />
     </div>
   </div>
@@ -57,14 +57,22 @@ export default {
   }
   .delete{
     position: absolute;
-    width:p2r(40);
-    height: p2r(40);
-    line-height: p2r(40);
+    width:p2r(36);
+    height: p2r(36);
     text-align: center;
     color:$primary-color;
     top:p2r(-15);
     right:p2r(5);
     z-index:1;
+    background: $primary-color;
+    border-radius: 50%;
+    color:#fff;
+    .iconfont{
+      font-size: p2r(20);
+      line-height: p2r(36);
+      vertical-align: top;
+      display: inline-block;
+    }
   }
 }
 </style>

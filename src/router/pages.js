@@ -22,9 +22,9 @@ const ActivityDetail = r => require.ensure([], () => r(require('pages/ActivityDe
 const QRCodeCheck = r => require.ensure([], () => r(require('pages/QRCodeCheck')), 'QRCodeCheck')
 
 const RepairUser = r => require.ensure([], () => r(require('pages/RepairUser')), 'RepairUser')
-const RepairSubmit = r => require.ensure([], () => r(require('pages/RepairSubmit')), 'RepairSubmit')
-
 const RepairEngineer = r => require.ensure([], () => r(require('pages/RepairEngineer')), 'RepairEngineer')
+const RepairDetail = r => require.ensure([], () => r(require('pages/RepairDetail')), 'RepairDetail')
+const RepairSubmit = r => require.ensure([], () => r(require('pages/RepairSubmit')), 'RepairSubmit')
 
 const AdviseUser = r => require.ensure([], () => r(require('pages/AdviseUser')), 'AdviseUser')
 const AdviseManager = r => require.ensure([], () => r(require('pages/AdviseManager')), 'AdviseManager')
@@ -230,7 +230,7 @@ export default [
   },
   // 报修用户
   {
-    path: '/repairuser',
+    path: '/repairuser/:state',
     name: 'repairuser',
     component: RepairUser,
     meta: {
@@ -255,6 +255,15 @@ export default [
       title: '业主报修'
     }
   },
+  // 报修单详情
+  {
+    path: '/repairdetail/:role/:id',
+    name: 'repairdetail',
+    component: RepairDetail,
+    meta: {
+      title: '详情'
+    }
+  },
   // 投诉建议用户列表
   {
     path: '/adviseuser/:state',
@@ -264,7 +273,7 @@ export default [
       title: '投诉建议'
     }
   },
-  // 投诉建议用户详情
+  // 投诉建议详情
   {
     path: '/advisedetail/:role/:id',
     name: 'advisedetail',
