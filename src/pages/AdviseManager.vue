@@ -87,6 +87,11 @@ export default {
     '$route' (to, from) {
       this.stateType = to.params.state
       this.stateChangeHandler()
+    },
+    manager (val) {
+      if (val === null) {
+        alert(1)
+      }
     }
   },
   created () {

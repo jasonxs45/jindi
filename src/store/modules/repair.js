@@ -2,7 +2,6 @@
 import types from '../mutation-types'
 import api from 'common/api'
 const state = {
-  parts: null,
   user: {
     untreated: {
       stateId: 0,
@@ -40,19 +39,6 @@ const getters = {
 
 // actions
 const actions = {
-  parts ({commit}) {
-    api.repair.submit.parts()
-    .then(({res, index}) => {
-      if (res.data.IsSuccess) {
-        commit(types.REPAIR_PARTS, res.data.Data)
-      } else {
-        window.$alert(res.data.Message)
-      }
-    })
-    .catch(err => {
-      console.log(err)
-    })
-  },
   list ({commit, state}, {role, stateType}) {
     commit(types.ADVISE_NEXT, {role, stateType})
     api.advise.list(role, state[role][stateType].stateId, state[role][stateType].page)
@@ -79,9 +65,6 @@ const actions = {
 }
 // mutations
 const mutations = {
-  [types.REPAIR_PARTS] (state, res) {
-    state.parts = res
-  },
   [types.ADVISE_LIST] (state, {res, role, stateType}) {
     let arr = res.list
     // 有数据才进行操作

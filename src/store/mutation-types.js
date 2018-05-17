@@ -13,7 +13,5 @@ export default {
   // 投诉建议组件注销还原状态
   ADVISE_DESTROY: 'ADVISE_DESTROY',
   // 业主身份下的房源
-  OWNER_HOUSES: 'OWNER_HOUSES',
-  // 业主身份下的房源
-  REPAIR_PARTS: 'REPAIR_PARTS'
+  OWNER_HOUSES: 'OWNER_HOUSES'
 }

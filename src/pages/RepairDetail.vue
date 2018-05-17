@@ -1,6 +1,6 @@
 <template>
   <div class="repair-detail">
-    <div class="repair-detail-wrapper">
+    <div class="repair-detail-wrapper" :class="role === 'user' ? 'user' : ''">
       <div class="detail">
         <flexbox>
           <flexbox-item class="house-name">
@@ -54,12 +54,20 @@
             </flexbox-item>
           </flexbox>
         </div>
-
+        <Split type="line"/>
+        <flexbox class="order-score">
+          <flexbox-item class="left">
+            维修评价
+          </flexbox-item>
+          <flexbox-item class="right">
+            <Star :size="24" readOnly :score="3.5"/>
+          </flexbox-item>
+        </flexbox>
       </div>
     </div>
-    <Btn type="primary" size="lar" text="我要评价"/>
+    <Btn v-if="role === 'user'" type="primary" size="lar" text="我要评价" @click="toggleShowEvaluate"/>
     <transition name="slide-in-right">
-      <div class="evaluate">
+      <div class="evaluate" v-show="showEvaluate">
         <div class="evaluate-wrapper">
           <flexbox class="evaluate-item">
             <flexbox-item class="head">响应速度</flexbox-item>
@@ -112,6 +120,8 @@
             </img-cell>
           </img-row>
         </div>
+        <Btn type="primary" text="提交" size="lar" class="submit"/>
+        <Btn type="default" text="取消" size="lar" class="cancel" @click="toggleShowEvaluate"/>
       </div>
     </transition>
   </div>
@@ -145,6 +155,8 @@ export default {
   },
   data () {
     return {
+      showEvaluate: false,
+      role: '',
       imgs: [
         'static/images/active1.png',
         'static/images/active2.png',
@@ -173,6 +185,22 @@ export default {
         'static/images/active2.png'
       ]
     }
+  },
+  watch: {
+    '$route' (to, from) {
+      this.role = to.params.role
+    }
+  },
+  created () {
+    this.role = this.$route.params.role
+  },
+  methods: {
+    roleHandler () {
+
+    },
+    toggleShowEvaluate () {
+      this.showEvaluate = !this.showEvaluate
+    }
   }
 }
 </script>
@@ -182,9 +210,11 @@ export default {
 .repair-detail{
   width: 100vw;
   .repair-detail-wrapper{
-    min-height: 100vh;
-    padding-bottom: p2r(230);
-    background: $background-color;
+    &.user{
+      min-height: 100vh;
+      padding-bottom: p2r(230);
+      background: $background-color;
+    }
     .detail{
       background: #fff;
       padding: p2r(50) p2r($base-padding) p2r($base-padding);
@@ -297,9 +327,19 @@ export default {
           }
         }
       }
+      .order-score{
+        margin-top: p2r(30);
+        .left,.right{
+          color: $thr-color;
+          font-size: 12px;
+        }
+        .right{
+          text-align: right;
+        }
+      }
     }
   }
-  .btn{
+  &>.btn{
     position: relative;
     margin-top: p2r(-140);
   }
@@ -351,6 +391,18 @@ export default {
         margin-top: p2r($base-padding * 1.5);
         background: #f2f2f2;
         border: none;
+      }
+      .imgs{
+        margin-top: p2r($base-padding);
+      }
+    }
+    &>.btn{
+      position: absolute;
+      left: 50%;
+      bottom: p2r(80);
+      margin-left: p2r(-295);
+      &.submit{
+        bottom: p2r(200);
       }
     }
   }

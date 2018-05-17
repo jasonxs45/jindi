@@ -151,7 +151,7 @@ export default {
     .group-title{
       height: p2r(60);
       line-height: p2r(60);
-      font-size: p2r(28);
+      font-size: p2r(26);
       color:$text-sub-color;
       background: $background-color;
       padding:0 p2r($base-padding);
@@ -161,17 +161,20 @@ export default {
       margin-left: p2r($base-padding);
       height: p2r(100);
       line-height: p2r(100);
-      font-size: p2r(32);
       color:$text-color;
       @include _1px(#ddd);
       &:last-child{
         background: none;
       }
+      .name{
+        font-size: p2r(28);
+      }
       .tel{
-        flex: 0 0 p2r(200);
+        flex: 0 0 p2r(220);
+        width: p2r(220);
         text-align: right;
         a {
-          font-size: p2r(28)
+          font-size: p2r(26)
         }
       }
     }

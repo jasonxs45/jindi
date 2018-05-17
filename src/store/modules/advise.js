@@ -53,6 +53,13 @@ const actions = {
         )
       } else {
         window.$alert(res.data.Message)
+        commit(types.ADVISE_LIST,
+          {
+            res: res.data.Data,
+            role,
+            stateType
+          }
+        )
       }
     })
     .catch(err => {
@@ -66,11 +73,15 @@ const actions = {
 // mutations
 const mutations = {
   [types.ADVISE_LIST] (state, {res, role, stateType}) {
-    let arr = res.list
-    // 有数据才进行操作
-    if (arr.length > 0) {
-      state[role][stateType].orders = state[role][stateType].orders.concat(arr)
-      state[role][stateType].lastPage = res.lastpage
+    if (res) {
+      let arr = res.list
+      // 有数据才进行操作
+      if (arr.length > 0) {
+        state[role][stateType].orders = state[role][stateType].orders.concat(arr)
+        state[role][stateType].lastPage = res.lastpage
+      }
+    } else {
+      window.alert(res.Message)
     }
   },
   [types.ADVISE_NEXT] (state, {role, stateType}) {

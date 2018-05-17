@@ -33,38 +33,47 @@
             class="selected-tag"
           >
             <span class="text">{{item}}</span>
-            <span
-              :data-index="index"
-              class="icon"
-              @click.stop="clearHandler"
-            >
-              <Icon name="close-fill"/>
-            </span>
           </div>
         </flexbox-item>
       </flexbox>
       <Split type="line"/>
-      <div class="tags">
+      <div class="tags super">
         <flexbox
           wrap="wrap"
           class="tags-row"
         >
-          <label
-            v-for="(item, index) in tagsGroup"
-            :key="'room-'+index+item.id+Math.round(Math.random()*9999)"
+          <div
+            v-for="(item, index) in supertags"
+            :key="'supertag-'+index+item.ID"
             class="radio-tag"
           >
-            <input
-              type="radio"
-              :value="item.id"
-              :data-label="item.title"
-              data-name="room"
-              name="tag"
-              class="radio"
-              @change="changeHandler"
-            />
-            <span class="text">{{item.title}}</span>
-          </label>
+            <span
+             :class="item.checked && currentSuperTagIndex === index ? 'checked' : selectedTags.some(item1 => item1.startsWith(item.Name)) ? 'checking' : ''"
+             :data-index="index"
+             class="text"
+             @click="superChangeHandler"
+            >{{item.Name}}</span>
+          </div>
+        </flexbox>
+      </div>
+      <Split v-if="subtags.length > 0" type="line"/>
+      <div class="tags sub">
+        <flexbox
+          wrap="wrap"
+          class="tags-row"
+        >
+          <div
+            v-for="(item, index) in subtags"
+            :key="'subtag-'+currentSuperTagIndex+index+item.ID"
+            class="radio-tag"
+          >
+            <span
+              :class="item.checked ? 'checked' : ''"
+              :data-index="index"
+              class="text"
+              @click="subChangeHandler"
+            >{{item.Name}}</span>
+          </div>
         </flexbox>
       </div>
       <XTextarea
@@ -140,8 +149,6 @@ import {
   ImgCell
 } from 'components'
 import {
-  posRoom,
-  posLocation,
   NAME_REG,
   TEL_REG
 } from 'common/data'
@@ -166,7 +173,10 @@ export default {
     return {
       houses: [],
       tagsState: 0,
-      selectedTags: [],
+      supertags: [],
+      subtags: [],
+      currentSuperTagIndex: '',
+      currentSubTagIndex: '',
       selectingTag: false,
       uploadedImgs: [
         '/static/images/banner2.png',
@@ -182,13 +192,26 @@ export default {
     }
   },
   computed: {
-    tagsGroup () {
-      if (this.tagsState <= 0) return posRoom
-      if (this.tagsState > 0 && this.tagsState <= 1) return posLocation
+    selectedTags () {
+      let selectedArr = []
+      let arr = this.supertags.filter(item => item.checked === true)
+      for (let i = 0; i < arr.length; i++) {
+        let subarr = arr[i].Sub.filter(item => {
+          if (item.checked === true) {
+            return item.Name
+          }
+        })
+        for (let j = 0; j < subarr.length; j++) {
+          let str = `${arr[i].Name}${subarr[j].Name}`
+          selectedArr.push(str)
+        }
+      }
+      return selectedArr
     }
   },
   created () {
     this.getHouses()
+    this.getParts()
   },
   methods: {
     getHouses () {
@@ -209,18 +232,55 @@ export default {
       })
     },
     getParts () {
-      return this.$store.dispatch('repair/parts')
+      api.repair.submit.parts()
+      .then(({res, index}) => {
+        if (res.data.IsSuccess) {
+          let supertags = res.data.Data
+          supertags.forEach(item => {
+            item.checked = false
+            item.Sub.forEach(item => {
+              item.checked = false
+            })
+          })
+          this.supertags = supertags
+        } else {
+          window.$alert(res.data.Message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
     },
-    changeHandler (e) {
-      if (this.tagsState > 1) return
-      this.tagsState += 1
-      this.selectedTags.push(e.target.dataset.label)
+    superChangeHandler (e) {
+      let index = e.target.dataset.index
+      if (this.currentSuperTagIndex === parseInt(index)) {
+        this.supertags[this.currentSuperTagIndex].checked = !this.supertags[this.currentSuperTagIndex].checked
+      } else {
+        this.currentSuperTagIndex = parseInt(index)
+        this.supertags[this.currentSuperTagIndex].checked = true
+      }
+      if (!this.supertags[this.currentSuperTagIndex].checked) {
+        this.supertags[this.currentSuperTagIndex].Sub.forEach(item => {
+          item.checked = false
+        })
+        this.subtags = []
+      } else {
+        this.subtags = this.supertags[index].Sub
+      }
+    },
+    subChangeHandler (e) {
+      let index = e.target.dataset.index
+      this.currentSubTagIndex = parseInt(index)
+      this.supertags[this.currentSuperTagIndex].Sub[index].checked = !this.supertags[this.currentSuperTagIndex].Sub[index].checked
+      this.supertags[this.currentSuperTagIndex].checked = this.supertags[this.currentSuperTagIndex].Sub.some(item => item.checked)
+      if (!this.supertags[this.currentSuperTagIndex].checked) {
+        this.subtags = []
+      }
     },
     clearHandler (e) {
-      let length = this.selectedTags.length
-      let index = e.currentTarget.dataset.index
-      this.tagsState -= length - index
-      this.selectedTags.splice(index, length - index)
+      // let length = this.selectedTags.length
+      // let index = e.currentTarget.dataset.index
+      // this.tagsState -= length - index
+      // this.selectedTags.splice(index, length - index)
     },
     uploadImg (e) {
       console.log('upload')
@@ -408,10 +468,6 @@ export default {
             left:0;
             width:0;
             height:0;
-            &:checked + .text{
-              background: $primary-color;
-              color:#fff;
-            }
           }
           .text{
             display: block;
@@ -424,6 +480,14 @@ export default {
             font-size: p2r(24);
             text-align: center;
             color:lighten($primary-color, 18%);
+            &.checking{
+              background:lighten($primary-color, 20%);
+              color:#fff;
+            }
+            &.checked{
+              background: $primary-color;
+              color:#fff;
+            }
           }
         }
       }

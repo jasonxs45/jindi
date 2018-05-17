@@ -463,7 +463,7 @@ export default {
     -webkit-overflow-scrolling: touch;
     .banner{
       width:100%;
-      max-height: p2r(350);
+      overflow: hidden;
       .img{
         max-width: 100%;
       }

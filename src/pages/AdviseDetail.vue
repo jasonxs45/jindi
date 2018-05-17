@@ -36,13 +36,22 @@
       </div>
       <Split type="line"/>
       <div
-        v-if="item.State === 1"
+        v-if="role === 'user' && item.State === 1"
         class="manager"
       >
         <p class="name">受理人：{{item.AdminName}}</p>
         <p class="tel">联系方式：<a :href="'tel:'+item.AdminTel">{{item.AdminTel}}</a></p>
         <p class="clearfix"></p>
         <p class="time">受理时间：{{item.AcceptTime}}</p>
+      </div>
+      <div
+        v-if="role === 'manager' && item.State === 1"
+        class="manager"
+      >
+        <p class="name">发起人：{{item.Name}}</p>
+        <p class="tel">联系方式：<a :href="'tel:'+item.Tel">{{item.Tel}}</a></p>
+        <p class="clearfix"></p>
+        <p class="time">发起时间：{{item.AddTime}}</p>
       </div>
     </div>
     <div class="btns">
@@ -108,14 +117,20 @@ export default {
   },
   methods: {
     detail () {
-      api.advise.detail(this.id)
-      .then(({res, index}) => {
-        if (res.data.IsSuccess) {
-          this.item = res.data.Data
-        } else {
-          window.$alert(res.data.Message)
-        }
-      })
+      if (this.role === 'user' || this.role === 'manager') {
+        api.advise.detail(this.id)
+        .then(({res, index}) => {
+          if (res.data.IsSuccess) {
+            this.item = res.data.Data
+          } else {
+            window.$alert(res.data.Message)
+          }
+        })
+      } else {
+        this.$router.push({
+          name: 'pagenotfound'
+        })
+      }
     },
     previewImg (current) {
       let _self = this
