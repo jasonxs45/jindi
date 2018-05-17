@@ -8,7 +8,7 @@
             <div class="project">
               <span class="name">{{house.ProjectName}}</span>
             </div>
-            <p class="stage">{{house.StageName}}{{house.Building}}栋{{house.Unit}}单元{{house.HouseNo}}</p>
+            <p class="stage">{{house.StageName}} {{house.Building}} - {{house.Unit}}单元{{house.HouseNo}}</p>
           </div>
         </div>
       </div>

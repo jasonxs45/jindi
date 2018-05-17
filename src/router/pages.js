@@ -52,6 +52,7 @@ const Guide = r => require.ensure([], () => r(require('pages/Guide')), 'Guide')
 const GuideDetail = r => require.ensure([], () => r(require('pages/GuideDetail')), 'GuideDetail')
 const PageNotFound = r => require.ensure([], () => r(require('pages/PageNotFound')), 'PageNotFound')
 const Wait = r => require.ensure([], () => r(require('pages/Wait')), 'Wait')
+const Menu = r => require.ensure([], () => r(require('pages/Menu')), 'Menu')
 export default [
   // 主页
   {
@@ -421,6 +422,14 @@ export default [
     component: GuideDetail,
     meta: {
       title: '服务指南'
+    }
+  },
+  {
+    path: '/menu',
+    name: 'menu',
+    component: Menu,
+    meta: {
+      title: '菜单'
     }
   }
 ]

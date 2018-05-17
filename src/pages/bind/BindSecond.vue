@@ -119,7 +119,7 @@ export default {
         return
       }
       if (!this.form.building) {
-        window.$alert('请输入楼栋')
+        window.$alert('请输入楼 - ')
         return
       }
       if (!this.form.unit) {

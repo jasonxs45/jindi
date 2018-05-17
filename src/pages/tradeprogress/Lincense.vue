@@ -82,13 +82,16 @@ export default {
     }
   },
   computed: {
+    state () {
+      return this.$store.state.userInfo.state
+    },
     swiper () {
       return this.$refs.mySwiper.swiper
     },
     banners () {
       if (this.fetchedData) {
         return this.fetchedData.map(item => {
-          return item.House.StageName + item.House.Building + '栋' + item.House.Unit + '单元' + item.House.HouseNo
+          return item.House.StageName + ' ' + item.House.Building + ' - ' + item.House.Unit + '单元' + item.House.HouseNo
         })
       }
     },
@@ -103,10 +106,32 @@ export default {
       return currentArr
     }
   },
+  watch: {
+    state (newVal, oldVal) {
+      if (newVal !== 3) {
+        this.checkIdentity()
+      }
+    }
+  },
   created () {
+    this.checkIdentity()
     this.getProgress()
   },
   methods: {
+    checkIdentity () {
+      if (this.$store.state.userInfo.state && this.$store.state.userInfo.state !== 3) {
+        let index = window.$alert({
+          title: '对不起',
+          content: '请先绑定业主身份！',
+          yes: () => {
+            window.$close(index)
+            this.$router.replace({
+              name: 'bindowner'
+            })
+          }
+        })
+      }
+    },
     getProgress () {
       api.tradeprogress.list()
       .then(({res, index}) => {

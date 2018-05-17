@@ -96,7 +96,7 @@ export default {
             let houseList = res.data.Data
             this.houseList = houseList.map(item => {
               return {
-                label: item.ProjectName + '--' + item.Building + '栋' + item.Unit + '单元' + item.HouseNo,
+                label: item.ProjectName + '--' + item.Building + ' - ' + item.Unit + '单元' + item.HouseNo,
                 value: item.ID
               }
             })

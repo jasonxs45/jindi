@@ -41,7 +41,7 @@
               />
               <flexbox>
                 <flexbox-item class="house-name">
-                  {{item.StageName}}{{item.Building}}栋{{item.Unit}}单元{{item.HouseNo}}{{item.Binded?'【已绑定】':''}}
+                  <p class="text">{{item.StageName}} {{item.Building}} - {{item.Unit}}单元{{item.HouseNo}}{{item.Binded?'【已绑定】':''}}</p>
                 </flexbox-item>
                 <flexbox-item class="owner-name">
                   {{item.Owner}}
@@ -283,12 +283,17 @@ export default {
           }
           .flexbox {
             height: p2r(88);
-            line-height: p2r(88);
             border-radius: 4px;
             padding: 0 p2r(20);
             color: #eda697;
             background: lighten($primary-color, 38%);
             transition: color, background 0.2s;
+            align-items:center;
+            .house-name{
+              .text{
+                line-height: 1.5;
+              }
+            }
             .owner-name {
               flex: 0 0 p2r(150);
               font-size: p2r(24);

@@ -19,7 +19,7 @@
               <span class="name">{{item.Name}}</span>
               <span class="role">{{item.Role}}</span>
           </h3>
-          <p class="house">{{item.StageName + item.Building + '栋' + item.Unit + '单元' + item.HouseNo}}</p>
+          <p class="house">{{item.StageName + ' ' + item.Building + ' - ' + item.Unit + '单元' + item.HouseNo}}</p>
         </flexbox-item>
       </flexbox>
       <div class="desc">

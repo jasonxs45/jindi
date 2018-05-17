@@ -17,9 +17,9 @@
             <div class="top">
               <div class="project">
                 <span class="name">{{item.ProjectName}}</span>
-                <span class="tag" :class="item.classType">{{item.OwnerType}}</span>
+                <span v-if="item.OwnerType" class="tag" :class="item.classType">{{item.OwnerType}}</span>
               </div>
-              <p class="stage">{{item.StageName}}{{item.Building}}栋{{item.Unit}}单元{{item.HouseNo}}</p>
+              <p class="stage">{{item.StageName}} {{item.Building}} - {{item.Unit}}单元{{item.HouseNo}}</p>
             </div>
             <Btn type="base" text="成员列表" @click.stop="goMembers(item.ID)"/>
           </div>

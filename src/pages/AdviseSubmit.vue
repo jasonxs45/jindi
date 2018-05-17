@@ -28,7 +28,7 @@
         <x-option
           v-for="(item, index) in houses"
           :key="'house-'+index"
-          :label="item.StageName+item.Building+'栋'+item.Unit+'单元'+item.HouseNo"
+          :label="item.StageName+ ' ' + item.Building+' - '+item.Unit+'单元'+item.HouseNo"
           :value="item.ID"
         ></x-option>
       </x-select>

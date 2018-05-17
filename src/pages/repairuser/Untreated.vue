@@ -23,7 +23,7 @@ for (let i = 0; i < 5; i++) {
   let obj = {
     state: 0,
     id: Math.round(Math.random() * 9999),
-    title: '金地城二期E栋1303',
+    title: '金地城二期E - 1303',
     date: '2018/02/28',
     desc: '主卧墙面-破裂；天花-漏水',
     descDetail: '问题描述问题描述问题描述问题描述问题描述问题描述问题描述问题描述问题描述问题描述问题描述问题描述问题描述',

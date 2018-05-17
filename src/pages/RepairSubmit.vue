@@ -197,7 +197,7 @@ export default {
         if (res.data.IsSuccess) {
           let houses = res.data.Data
           houses.forEach(item => {
-            item.houseFull = `${item.ProjectName + item.Building}栋${item.Unit}单元${item.HouseNo}`
+            item.houseFull = `${item.ProjectName + item.Building} - ${item.Unit}单元${item.HouseNo}`
           })
           this.houses = houses
         } else {
