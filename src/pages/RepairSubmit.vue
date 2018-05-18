@@ -1,7 +1,7 @@
 <template>
 <div class="repair-submit">
   <div class="top">
-    <img src="/static/images/rstop.jpg" alt="" />
+    <img src="static/images/rstop.jpg" alt="" />
   </div>
   <div class="logo">
     <Icon name="repair"/>
@@ -18,25 +18,12 @@
           v-for="(item, index) in houses"
           :key="'houses-'+index"
           :label="item.houseFull"
-          :value="item.houseFull"
+          :value="item.ID"
         ></x-option>
       </x-select>
     </div>
     <div class="panel">
       <h3 class="title">选择具体部位</h3>
-      <flexbox class="selected-info">
-        <flexbox-item class="head">报修部位：</flexbox-item>
-        <flexbox-item class="body" @click="openSelectBox">
-          <div
-            v-for="(item, index) in selectedTags"
-            :key="'st-'+index"
-            class="selected-tag"
-          >
-            <span class="text">{{item}}</span>
-          </div>
-        </flexbox-item>
-      </flexbox>
-      <Split type="line"/>
       <div class="tags super">
         <flexbox
           wrap="wrap"
@@ -76,12 +63,25 @@
           </div>
         </flexbox>
       </div>
+      <Split type="line"/>
+      <div class="selected-info">
+        <h3 class="head">已选部位：</h3>
+        <div class="body">
+          <div
+            v-for="(item, index) in selectedTags"
+            :key="'st-'+index"
+            class="selected-tag"
+          >
+            <span class="text">{{item}}</span>
+          </div>
+        </div>
+      </div>
       <XTextarea
         v-model="form.desc"
         placeholder="请输入您要报修的具体内容"
         class="desc"
       />
-      <p class="tips">* 上传照片（最多四张）</p>
+      <p class="tips">上传照片（最多四张）</p>
       <img-row
         :group="uploadedImgs"
         :canUpload="true"
@@ -121,16 +121,8 @@
     @click="submitHandler"
   />
   <div class="bottom">
-    <img src="/static/images/rsbot.jpg" alt="" srcset="">
+    <img src="static/images/rsbot.jpg" alt="" srcset="">
   </div>
-  <transition name="slide-in-right">
-    <div class="select-tag-box" v-show="selectingTag">
-      <div class="btns">
-        <Btn type="primary" size="lar" text="确定" />
-        <Btn type="default" size="lar" text="取消" @click="closeSelectBox" />
-      </div>
-    </div>
-  </transition>
 </div>
 </template>
 <script>
@@ -177,12 +169,7 @@ export default {
       subtags: [],
       currentSuperTagIndex: '',
       currentSubTagIndex: '',
-      selectingTag: false,
-      uploadedImgs: [
-        '/static/images/banner2.png',
-        '/static/images/active1.png',
-        '/static/images/banner2.png'
-      ],
+      uploadedImgs: [],
       form: {
         house: '',
         desc: '',
@@ -192,6 +179,9 @@ export default {
     }
   },
   computed: {
+    state () {
+      return this.$store.state.userInfo.state
+    },
     selectedTags () {
       let selectedArr = []
       let arr = this.supertags.filter(item => item.checked === true)
@@ -202,25 +192,47 @@ export default {
           }
         })
         for (let j = 0; j < subarr.length; j++) {
-          let str = `${arr[i].Name}${subarr[j].Name}`
+          let str = `${arr[i].Name}-${subarr[j].Name}`
           selectedArr.push(str)
         }
       }
       return selectedArr
     }
   },
+  watch: {
+    state (newVal, oldVal) {
+      if (newVal !== 3) {
+        this.checkIdentity()
+      }
+    }
+  },
   created () {
+    this.checkIdentity()
     this.getHouses()
     this.getParts()
   },
   methods: {
+    checkIdentity () {
+      if (this.$store.state.userInfo.state !== null && this.$store.state.userInfo.state !== 3) {
+        let index = window.$alert({
+          title: '对不起',
+          content: '请先绑定业主身份！',
+          yes: () => {
+            window.$close(index)
+            this.$router.replace({
+              name: 'bindowner'
+            })
+          }
+        })
+      }
+    },
     getHouses () {
       api.bind.getMyHouse()
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
           let houses = res.data.Data
           houses.forEach(item => {
-            item.houseFull = `${item.ProjectName + item.Building} - ${item.Unit}单元${item.HouseNo}`
+            item.houseFull = `${item.ProjectName + item.StageName + ' ' + item.Building} - ${item.Unit}-${item.HouseNo}`
           })
           this.houses = houses
         } else {
@@ -232,7 +244,7 @@ export default {
       })
     },
     getParts () {
-      api.repair.submit.parts()
+      api.repair.user.parts()
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
           let supertags = res.data.Data
@@ -276,23 +288,29 @@ export default {
         this.subtags = []
       }
     },
-    clearHandler (e) {
-      // let length = this.selectedTags.length
-      // let index = e.currentTarget.dataset.index
-      // this.tagsState -= length - index
-      // this.selectedTags.splice(index, length - index)
-    },
-    uploadImg (e) {
-      console.log('upload')
+    uploadImg (res) {
+      this.uploadedImgs.push(res)
     },
     deleteImg (e) {
       let index = e.currentTarget.dataset.index
       this.uploadedImgs.splice(index, 1)
     },
     submitHandler () {
-      if (!this.form.name) {
+      if (!this.form.house) {
         window.$alert({
-          content: '请填写联系人姓名'
+          content: '请选择房源'
+        })
+        return
+      }
+      if (this.selectedTags.length < 1) {
+        window.$alert({
+          content: '请选择报修部位'
+        })
+        return
+      }
+      if (!this.form.desc) {
+        window.$alert({
+          content: '请填写您要报修的具体内容'
         })
         return
       }
@@ -302,33 +320,35 @@ export default {
         })
         return
       }
-      if (!this.form.tel) {
-        window.$alert({
-          content: '请填写联系人电话'
-        })
-        return
-      }
       if (!this.form.tel.match(TEL_REG)) {
         window.$alert({
           content: '请填写正确格式的联系人电话'
         })
         return
       }
+      let opt = {
+        HouseID: this.form.house.value,
+        Name: this.form.name,
+        Tel: this.form.tel,
+        Part: this.selectedTags.join(';'),
+        Content: this.form.desc,
+        Images: this.uploadedImgs.join(',')
+      }
       // 提交
-      window.$alert({
-        className: 'rs-alertbox',
-        content: ''
+      api.repair.user.submit(opt)
+      .then(({res, index}) => {
+        if (res.data.IsSuccess) {
+          window.$alert({
+            title: '恭喜您！',
+            content: '提交成功！'
+          })
+        } else {
+          window.$alert(res.data.Message)
+        }
       })
-    },
-    toggleShowSelectBox () {
-      this.selectingTag = !this.selectingTag
-    },
-    openSelectBox () {
-      this.selectingTag = true
-      this.getParts()
-    },
-    closeSelectBox () {
-      this.selectingTag = false
+      .catch(err => {
+        console.log(err)
+      })
     }
   }
 }
@@ -496,6 +516,7 @@ export default {
     .desc{
       margin-top: p2r(20);
       font-size: p2r(26);
+      width: 100%;
     }
     .img-row{
       .img-cell{

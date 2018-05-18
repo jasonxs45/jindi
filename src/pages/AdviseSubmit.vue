@@ -135,7 +135,7 @@ export default {
   },
   methods: {
     checkIdentity () {
-      if (this.$store.state.userInfo.state !== 3) {
+      if (this.$store.state.userInfo.state !== null && this.$store.state.userInfo.state !== 3) {
         let index = window.$alert({
           title: '对不起',
           content: '请先绑定业主身份！',

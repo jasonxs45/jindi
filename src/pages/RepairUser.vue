@@ -3,7 +3,7 @@
     <userinfo
       type-class="rectangle"
       tagText="我要报修"
-      @tagClick="submitOrder"
+      @tagClick="toSubmit"
     ></userinfo>
     <flexbox class="links">
       <flexbox-item
@@ -20,33 +20,42 @@
       </flexbox-item>
     </flexbox>
     <div class="content">
-      <div class="repair-card">
+      <div v-if="(user[stateType].orders && user[stateType].orders.length < 1)|| !user[stateType].orders" class="no-data">
+        <img src="static/images/repairnodata.png" alt="" />
+        <p class="text">暂无数据</p>
+      </div>
+      <div
+        v-for="(item, index) in user[stateType].orders"
+        :key="'untreatedorder-'+index"
+        class="repair-card"
+        @click="toDetail(item.ID)"
+      >
         <flexbox>
           <flexbox-item class="title">
-            报修的房源信息
+            {{item.ProjectName+item.StageName}} {{item.Building}} - {{item.Unit}}-{{item.HouseNo}}
           </flexbox-item>
           <flexbox-item class="date">
-            2018/05/12 13:12
+            {{item.AddTime|formatdate}}
           </flexbox-item>
         </flexbox>
         <div class="info">
-          报修位置描述报修位置描述
+          {{item.Part}}
         </div>
         <div class="desc">
-          用户提交的具体描述信息用户提交的具体描述信息用户提交的具体描述信息用户提交的具体描述信息用户提交的具体描述信息用户提交的具体描述信息
+          {{item.Content}}
         </div>
-        <template>
+        <template v-if="item.State > 0">
           <Split type="line"/>
           <flexbox class="engineer">
             <flexbox-item class="name">
-              工程师：周星星
+              工程师：{{item.AdminName}}
             </flexbox-item>
             <flexbox-item class="tel">
-              <a href="tel:12345678910">12345678910</a>
+              <a :href="`tel:${item.AdminTel}`">{{item.AdminTel}}</a>
             </flexbox-item>
           </flexbox>
         </template>
-        <template>
+        <template v-if="item.State === 4">
           <flexbox class="score">
             <flexbox-item class="text">
               维修评分
@@ -57,6 +66,11 @@
           </flexbox>
         </template>
       </div>
+      <Getmore
+        v-if="user[stateType].orders && user[stateType].orders.length > 0"
+        :canClick="!user[stateType].lastPage"
+        @click="list"
+      />
     </div>
   </div>
 </template>
@@ -66,8 +80,12 @@ import {
   Flexbox,
   FlexboxItem,
   Split,
-  Star
+  Star,
+  Getmore
 } from 'components'
+import {
+  formatDate
+} from 'common/utils/date'
 let navs = [
   {
     path: 'untreated',
@@ -89,21 +107,74 @@ export default {
     Flexbox,
     FlexboxItem,
     Split,
-    Star
+    Star,
+    Getmore
   },
   data () {
     return {
-      navs
+      navs,
+      stateType: '',
+      role: 'user'
     }
   },
   computed: {
+    user () {
+      return this.$store.getters['repair/user']
+    }
+  },
+  watch: {
+    '$route' (to, from) {
+      this.stateType = to.params.state
+      this.stateChangeHandler()
+    }
+  },
+  filters: {
+    formatdate (val) {
+      return formatDate(new Date(val), 'yyyy/MM/dd hh:mm')
+    }
+  },
+  created () {
+    this.stateType = this.$route.params.state
+    this.stateChangeHandler()
+  },
+  destroyed () {
+    this.reset()
   },
   methods: {
-    submitOrder () {
-      alert('我要报修')
+    reset () {
+      this.$store.dispatch('repair/destroyed', this.role)
     },
-    tabSwitchHandler (val) {
-      console.log(val)
+    list () {
+      this.$store.dispatch('repair/list', {
+        role: this.role,
+        stateType: this.stateType
+      })
+    },
+    stateChangeHandler () {
+      if (this.navs.every(item => item.path !== this.stateType)) {
+        this.$router.push({
+          name: 'pagenotfound'
+        })
+        return
+      }
+      // this.list(this.stateType)
+      if (this.user[this.stateType].page < 1) {
+        this.list(this.stateType)
+      }
+    },
+    toSubmit () {
+      this.$router.push({
+        name: 'repairsubmit'
+      })
+    },
+    toDetail (id) {
+      this.$router.push({
+        name: 'repairdetail',
+        params: {
+          role: this.role,
+          id
+        }
+      })
     }
   }
 }
@@ -164,13 +235,28 @@ export default {
      overflow-y: auto;
      padding: p2r($base-padding);
      -webkit-overflow-scrolling: touch;
+     .no-data{
+       width: p2r(312);
+       margin: p2r(200) auto 0;
+       .text{
+         color: $thr-color;
+         font-size: p2r(28);
+         text-align: center;
+         font-weight: 600;
+       }
+     }
      .repair-card{
       background: #fff;
       border-radius: 4px;
       padding:p2r($base-padding);
+      margin: p2r(30) 0;
+      &:first-child {
+        margin-top: 0;
+      }
       .title{
         color:$primary-color;
-        font-size: p2r(26);
+        font-size: p2r(24);
+        line-height: 1.5;
       }
       .date{
         font-size: p2r(24);
@@ -178,6 +264,7 @@ export default {
         flex: 0 0 p2r(210);
         width:p2r(210);
         text-align: right;
+        line-height: 1.5;
       }
       .info{
         background: $primary-color;

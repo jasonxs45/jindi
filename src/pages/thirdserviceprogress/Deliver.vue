@@ -1,8 +1,8 @@
 <template>
-<div class="trades" v-if="fetchedData.length">
+<div class="trades" v-if="fetchedData.length>0">
   <div class="swiper">
     <swiper
-      v-if="banners"
+      v-if="banners.length>0"
       :options="swiperOption"
       :activeIndex="activeSwipeIndex"
       ref="mySwiper"
@@ -16,10 +16,10 @@
       </swiper-slide>
     </swiper>
   </div>
-  <div v-if="currentProgress.length" class="progress">
+  <div v-if="currentProgress.length>0" class="progress">
     <flexbox
       v-for="(item, index) in currentProgress"
-      :key="'item-'+activeTabIndex+index"
+      :key="'item-'+index"
       class="progress-item"
     >
       <flexbox-item class="icon">
@@ -28,8 +28,11 @@
       <flexbox-item class="item-body">
         <div class="item-body-wrapper">
           <p class="time">{{item.StatusTime}}</p>
-          <h3 class="status">{{item.Status}}</h3>
-          <p class="info" :class="item.Info ? '' : 'opa'">{{item.Info}}</p>
+          <p class="desc">您在【集中交付】中反馈的问题【<span class="status">{{item.Status}}</span>】</p>
+          <div class="info">
+            <p>运维中心：{{item.RepairName}}</p>
+            <p>联系电话：<a :href="`tel:${item.RepairTel}`">{{item.RepairTel}}</a></p>
+          </div>
         </div>
       </flexbox-item>
     </flexbox>
@@ -53,9 +56,12 @@ import {
 } from 'components'
 import 'swiper/dist/css/swiper.css'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import {
+  formatDate
+} from 'common/utils/date'
 import api from 'common/api'
 export default {
-  name: 'TradeProgress',
+  name: 'Deliver',
   components: {
     swiper,
     swiperSlide,
@@ -97,7 +103,7 @@ export default {
     },
     currentProgress () {
       let currentArr = []
-      if (this.fetchedData) {
+      if (this.fetchedData.length) {
         let progressArr = this.fetchedData.map(item => {
           return item.Process
         })
@@ -111,6 +117,11 @@ export default {
       if (newVal !== 3) {
         this.checkIdentity()
       }
+    }
+  },
+  filters: {
+    formatdate (val) {
+      return formatDate(new Date(val), 'yyyy/MM/dd hh:mm')
     }
   },
   created () {
@@ -133,10 +144,10 @@ export default {
       }
     },
     getProgress () {
-      api.tradeprogress.list()
+      api.thirdserviceprogress.list()
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
-          this.fetchedData = res.data.Data.Permit
+          this.fetchedData = res.data.Data.DocumentSrch
         } else {
           window.$alert(res.Message)
         }
@@ -148,7 +159,7 @@ export default {
       this.activeSwipeIndex = this.swiper.activeIndex
     },
     goBind () {
-      this.$router.push('/bind')
+      this.$router.push('/bind/bindowner')
     }
   }
 }
@@ -258,20 +269,24 @@ export default {
               color:$thr-color;
               font-weight: 200;
             }
-            .status{
+            .desc{
+              margin-top: p2r(30);
               font-size: p2r(28);
-              color:$primary-color;
-              margin-top: p2r(20);
+              color: $text-sub-color;
+              .status{
+                color:$primary-color;
+              }
             }
             .info{
-              margin-top: p2r(20);
+              margin-top: p2r(30);
               margin-bottom: p2r(70);
               font-size: p2r(24);
               color:$text-color;
               background: $background-color;
               padding: p2r(20);
               font-weight: 200;
-              line-height: 1.4;
+              line-height: 1.7;
+              border-radius: 4px;
               &.opa{
                 opacity: 0;
               }

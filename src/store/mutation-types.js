@@ -13,5 +13,11 @@ export default {
   // 投诉建议组件注销还原状态
   ADVISE_DESTROY: 'ADVISE_DESTROY',
   // 业主身份下的房源
-  OWNER_HOUSES: 'OWNER_HOUSES'
+  OWNER_HOUSES: 'OWNER_HOUSES',
+  // 投诉建议
+  REPAIR_LIST: 'REPAIR_LIST',
+  // 投诉建议下一页
+  REPAIR_NEXT: 'REPAIR_NEXT',
+  // 投诉建议组件注销还原状态
+  REPAIR_DESTROY: 'REPAIR_DESTROY'
 }

@@ -10,6 +10,10 @@ const TradeProgress = r => require.ensure([], () => r(require('pages/TradeProgre
 const Contract = r => require.ensure([], () => r(require('pages/tradeprogress/Contract')), 'Contract')
 const Lincense = r => require.ensure([], () => r(require('pages/tradeprogress/Lincense')), 'Lincense')
 
+const ThirdServiceProgress = r => require.ensure([], () => r(require('pages/ThirdServiceProgress')), 'ThirdServiceProgress')
+const Open = r => require.ensure([], () => r(require('pages/thirdserviceprogress/Open')), 'Open')
+const Deliver = r => require.ensure([], () => r(require('pages/thirdserviceprogress/Deliver')), 'Deliver')
+
 const Bind = r => require.ensure([], () => r(require('pages/Bind')), 'Bind')
 const BindOwner = r => require.ensure([], () => r(require('pages/bind/BindOwner')), 'BindOwner')
 const BindRelative = r => require.ensure([], () => r(require('pages/bind/BindRelative')), 'BindRelative')
@@ -144,6 +148,34 @@ export default [
         component: Lincense,
         meta: {
           title: '产证进度'
+        }
+      }
+    ]
+  },
+  // 工地开放 集中交付
+  {
+    path: '/thirdserviceprogress',
+    name: 'thirdserviceprogress',
+    component: ThirdServiceProgress,
+    meta: {
+      title: '合同/产证'
+    },
+    redirect: '/tradeprogress/open',
+    children: [
+      {
+        path: 'open',
+        name: 'open',
+        component: Open,
+        meta: {
+          title: '工地开放'
+        }
+      },
+      {
+        path: 'deliver',
+        name: 'deliver',
+        component: Deliver,
+        meta: {
+          title: '集中交付'
         }
       }
     ]

@@ -8,6 +8,7 @@ import magazine from './magazine'
 import projectprogress from './projectprogress'
 import investigate from './investigate'
 import tradeprogress from './tradeprogress'
+import thirdserviceprogress from './thirdserviceprogress'
 import message from './message'
 import mypoints from './mypoints'
 import modify from './modify'
@@ -105,6 +106,7 @@ let api = {
   modify,
   guide,
   advise,
-  repair
+  repair,
+  thirdserviceprogress
 }
 export default api

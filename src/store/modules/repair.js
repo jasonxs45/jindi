@@ -9,8 +9,14 @@ const state = {
       page: 0,
       lastPage: false
     },
-    finished: {
+    treated: {
       stateId: 1,
+      orders: [],
+      page: 0,
+      lastPage: false
+    },
+    finished: {
+      stateId: 2,
       orders: [],
       page: 0,
       lastPage: false
@@ -23,8 +29,14 @@ const state = {
       page: 0,
       lastPage: false
     },
-    finished: {
+    treated: {
       stateId: 1,
+      orders: [],
+      page: 0,
+      lastPage: false
+    },
+    finished: {
+      stateId: 2,
       orders: [],
       page: 0,
       lastPage: false
@@ -40,11 +52,11 @@ const getters = {
 // actions
 const actions = {
   list ({commit, state}, {role, stateType}) {
-    commit(types.ADVISE_NEXT, {role, stateType})
-    api.advise.list(role, state[role][stateType].stateId, state[role][stateType].page)
+    commit(types.REPAIR_NEXT, {role, stateType})
+    api.repair.list(role, stateType, state[role][stateType].page)
     .then(({res, index}) => {
       if (res.data.IsSuccess) {
-        commit(types.ADVISE_LIST,
+        commit(types.REPAIR_LIST,
           {
             res: res.data.Data,
             role,
@@ -60,23 +72,23 @@ const actions = {
     })
   },
   destroyed ({commit}, role) {
-    commit(types.ADVISE_DESTROY, role)
+    commit(types.REPAIR_DESTROY, role)
   }
 }
 // mutations
 const mutations = {
-  [types.ADVISE_LIST] (state, {res, role, stateType}) {
-    let arr = res.list
+  [types.REPAIR_LIST] (state, {res, role, stateType}) {
+    let arr = res.repairList
     // 有数据才进行操作
     if (arr.length > 0) {
       state[role][stateType].orders = state[role][stateType].orders.concat(arr)
       state[role][stateType].lastPage = res.lastpage
     }
   },
-  [types.ADVISE_NEXT] (state, {role, stateType}) {
+  [types.REPAIR_NEXT] (state, {role, stateType}) {
     state[role][stateType].page += 1
   },
-  [types.ADVISE_DESTROY] (state, role) {
+  [types.REPAIR_DESTROY] (state, role) {
     for (let n in state[role]) {
       state[role][n].orders = []
       state[role][n].page = 0

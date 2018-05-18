@@ -19,7 +19,7 @@
   <div v-if="currentProgress.length>0" class="progress">
     <flexbox
       v-for="(item, index) in currentProgress"
-      :key="'item-'+activeTabIndex+index"
+      :key="'item-'+index"
       class="progress-item"
     >
       <flexbox-item class="icon">
@@ -29,7 +29,7 @@
         <div class="item-body-wrapper">
           <p class="time">{{item.StatusTime}}</p>
           <h3 class="status">{{item.Status}}</h3>
-          <p class="info">{{item.Info}}</p>
+          <p class="info" :class="item.Info ? '' : 'opa'">{{item.Info}}</p>
         </div>
       </flexbox-item>
     </flexbox>
@@ -119,7 +119,7 @@ export default {
   },
   methods: {
     checkIdentity () {
-      if (this.$store.state.userInfo.state && this.$store.state.userInfo.state !== 3) {
+      if (this.$store.state.userInfo.state !== null && this.$store.state.userInfo.state !== 3) {
         let index = window.$alert({
           title: '对不起',
           content: '请先绑定业主身份！',
@@ -207,7 +207,7 @@ export default {
         }
       }
       .progress{
-        padding:p2r($base-padding);
+        padding:p2r($base-padding) p2r($base-padding / 3 * 4);
         height:calc(100% - 2.3466666rem);
         overflow: auto;
         -webkit-overflow-scrolling: touch;
@@ -272,6 +272,9 @@ export default {
               padding: p2r(20);
               font-weight: 200;
               line-height: 1.4;
+              &.opa{
+                opacity: 0;
+              }
             }
           }
         }
