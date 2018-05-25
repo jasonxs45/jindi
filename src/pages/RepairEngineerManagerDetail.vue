@@ -1,6 +1,6 @@
 <template>
   <div class="repair-detail">
-    <div :class="['repair-detail-wrapper', role]">
+    <div :class="['repair-detail-wrapper', role, singleBtn ? 'single' : '']">
       <div class="detail">
         <flexbox>
           <flexbox-item class="house-name">
@@ -51,13 +51,18 @@
               <a :href="`tel:${repair.AdminTel}`">{{repair.AdminTel}}</a>
             </flexbox-item>
           </flexbox>
-          <x-textarea :value="repair.RefuseReason" readonly class="refuse-desc"></x-textarea>
+          <x-textarea
+            v-if="repair.RefuseReason"
+            :value="repair.RefuseReason"
+            readonly
+            class="refuse-desc"
+          ></x-textarea>
         </div>
       </div>
     </div>
-    <div :class="['btns']">
+    <div :class="['btns', singleBtn ? 'single' : '']">
       <!-- 工程师主管 -->
-      <flexbox class="double">
+      <flexbox v-if="!singleBtn" class="double">
         <Btn
           text="驳回"
           class="inline flexbox-item opa"
@@ -163,6 +168,7 @@ export default {
   },
   data () {
     return {
+      stateType: '',
       role: '',
       id: '',
       content: null,
@@ -176,6 +182,9 @@ export default {
     }
   },
   computed: {
+    singleBtn () {
+      return this.stateType === 'timeout'
+    },
     repair () {
       return this.content ? this.content.repair : {}
     },
@@ -214,6 +223,7 @@ export default {
     '$route' (to, from) {
       this.role = to.params.role
       this.id = to.params.id
+      this.stateType = to.query.type
       this.getDetail()
     }
   },
@@ -225,6 +235,7 @@ export default {
   created () {
     this.role = this.$route.params.role
     this.id = this.$route.params.id
+    this.stateType = this.$route.query.type
     this.getDetail()
   },
   methods: {
@@ -357,6 +368,9 @@ export default {
     min-height: 100vh;
     padding-bottom: p2r(320);
     background: $background-color;
+    &.single{
+      padding-bottom: p2r(200);
+    }
     .detail{
       background: #fff;
       padding: p2r(40) p2r($base-padding) p2r($base-padding);
@@ -430,6 +444,9 @@ export default {
     position: relative;
     margin-top: p2r(-300);
     background: $background-color;
+    &.single{
+      margin-top: p2r(-180);
+    }
     .double{
       width: p2r(640);
       margin:0 auto;

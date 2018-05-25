@@ -159,6 +159,9 @@ export default {
         name: 'repairengineermanagerdetail',
         params: {
           id
+        },
+        query: {
+          type: this.stateType
         }
       })
     }
