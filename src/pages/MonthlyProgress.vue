@@ -67,7 +67,7 @@ export default {
             item.Img = webRoot + item.Img
           })
         } else {
-          window.$alert(res.Message)
+          window.$alert(res.data.Message)
         }
       }).catch(err => {
         console.log(err)

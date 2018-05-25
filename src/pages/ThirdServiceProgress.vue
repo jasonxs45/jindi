@@ -2,8 +2,8 @@
   <div class="trade-progress">
     <div class="top">
       <tabnav class="tab" justify="justify">
-        <router-link tag="div" to="/thirdserviceprogress/open" class="tabnav-item">工地开放</router-link>
-        <router-link tag="div" to="/thirdserviceprogress/deliver" class="tabnav-item">集中交付</router-link>
+        <router-link tag="div" to="/thirdserviceprogress/open" class="tabnav-item">工地开放验房查询</router-link>
+        <router-link tag="div" to="/thirdserviceprogress/deliver" class="tabnav-item">集中交付验房查询</router-link>
       </tabnav>
     </div>
     <router-view></router-view>

@@ -50,7 +50,7 @@ export default {
           this.fetchedDetail.AddTime = formatDate(new Date(this.fetchedDetail.AddTime.replace(/-/g, '/')), 'yyyy年MMM月')
           this.fetchedDetail.Content = this.fetchedDetail.Content.replace(/src="\//g, `src="${webRoot}/`)
         } else {
-          window.$alert(res.Message)
+          window.$alert(res.data.Message)
         }
       }).catch(err => {
         console.log(err)

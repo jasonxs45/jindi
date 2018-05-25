@@ -27,7 +27,7 @@
       </flexbox-item>
       <flexbox-item class="item-body">
         <div class="item-body-wrapper">
-          <p class="time">{{item.StatusTime}}</p>
+          <p class="time">{{item.StatusTime|formatdate}}</p>
           <h3 class="status">{{item.Status}}</h3>
           <p class="info" :class="item.Info ? '' : 'opa'">{{item.Info}}</p>
         </div>
@@ -53,6 +53,9 @@ import {
 } from 'components'
 import 'swiper/dist/css/swiper.css'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import {
+  formatDate
+} from 'common/utils/date'
 import api from 'common/api'
 export default {
   name: 'TradeProgress',
@@ -113,6 +116,11 @@ export default {
       }
     }
   },
+  filters: {
+    formatdate (val) {
+      return formatDate(new Date(val), 'yyyy/MM/dd')
+    }
+  },
   created () {
     this.checkIdentity()
     this.getProgress()
@@ -138,7 +146,7 @@ export default {
         if (res.data.IsSuccess) {
           this.fetchedData = res.data.Data.Permit
         } else {
-          window.$alert(res.Message)
+          window.$alert(res.data.Message)
         }
       }).catch(err => {
         console.log(err)
@@ -273,7 +281,8 @@ export default {
               font-weight: 200;
               line-height: 1.4;
               &.opa{
-                opacity: 0;
+                height: 1px;
+                padding:0;
               }
             }
           }

@@ -326,6 +326,7 @@ export default {
         })
         return
       }
+      let _self = this
       let opt = {
         HouseID: this.form.house.value,
         Name: this.form.name,
@@ -340,7 +341,15 @@ export default {
         if (res.data.IsSuccess) {
           window.$alert({
             title: '恭喜您！',
-            content: '提交成功！'
+            content: '提交成功！',
+            yes () {
+              _self.$router.push({
+                name: 'repairuser',
+                params: {
+                  state: 'untreated'
+                }
+              })
+            }
           })
         } else {
           window.$alert(res.data.Message)

@@ -1,6 +1,7 @@
 <template>
   <div class="repair-detail">
-    <div class="repair-detail-wrapper" :class="role === 'user' ? 'user' : ''">
+    <p class="tag">{{repair.State|formatStatus}}</p>
+    <div :class="['repair-detail-wrapper', repair.State !== 3 ? 'single' : '' ]">
       <div class="detail">
         <flexbox>
           <flexbox-item class="house-name">
@@ -25,18 +26,20 @@
             :group="imgs"
             :key="'upimg-'+index"
           >
-            <Fitimg :src="item"/>
+            <Fitimg :src="item" @on-click="previewImg(item)"/>
           </img-cell>
         </img-row>
-        <Split type="line" v-if="repair.AdminName"/>
-        <flexbox v-if="repair.AdminName">
-          <flexbox-item class="engineer-name">
-            工程师：{{repair.AdminName}}
-          </flexbox-item>
-          <flexbox-item class="tel">
-            <a :href="`tel:${repair.AdminTel}`">{{repair.AdminTel}}</a>
-          </flexbox-item>
-        </flexbox>
+        <template v-if="repair.AdminName">
+          <Split type="line"/>
+          <flexbox>
+            <flexbox-item class="engineer-name">
+              工程师：{{repair.AdminName}}
+            </flexbox-item>
+            <flexbox-item class="tel">
+              <a :href="`tel:${repair.AdminTel}`">{{repair.AdminTel}}</a>
+            </flexbox-item>
+          </flexbox>
+        </template>
         <div v-if="currentProgress && currentProgress.length > 0" class="progress">
           <flexbox
             v-for="(item, index) in currentProgress"
@@ -55,20 +58,23 @@
             </flexbox-item>
           </flexbox>
         </div>
-        <Split v-if="repair.EvaluateScore" type="line"/>
-        <flexbox v-if="repair.EvaluateScore" class="order-score">
-          <flexbox-item class="left">
-            维修评价
-          </flexbox-item>
-          <flexbox-item class="right">
-            <Star :size="24" readOnly :score="repair.EvaluateScore"/>
-          </flexbox-item>
-        </flexbox>
+        <template v-if="repair.EvaluateScore">
+          <Split type="line"/>
+          <flexbox class="order-score">
+            <flexbox-item class="left">
+              维修评价
+            </flexbox-item>
+            <flexbox-item class="right">
+              <Star :size="24" readOnly :score="repair.EvaluateScore"/>
+            </flexbox-item>
+          </flexbox>
+        </template>
       </div>
     </div>
-    <div class="btns">
+    <div :class="['btns', repair.State !== 3 ? 'single' : '']">
+      <!-- 用户 -->
       <Btn
-        v-if="role === 'user'"
+        v-if="repair.State === 3"
         type="primary"
         size="lar"
         text="我要评价"
@@ -84,40 +90,20 @@
     <transition name="slide-in-right">
       <div class="evaluate" v-show="showEvaluate">
         <div class="evaluate-wrapper">
-          <flexbox class="evaluate-item">
-            <flexbox-item class="head">响应速度</flexbox-item>
+          <flexbox
+            v-for="(item, index) in questions"
+            :key="'question-'+index"
+            class="evaluate-item"
+          >
+            <flexbox-item class="head">{{item}}：</flexbox-item>
             <flexbox-item class="body">
               <span class="left">非常不满意</span>
-              <Star :size="36"/>
-              <span class="right">非常满意</span>
-            </flexbox-item>
-          </flexbox>
-          <flexbox class="evaluate-item">
-            <flexbox-item class="head">服务态度</flexbox-item>
-            <flexbox-item class="body">
-              <span class="left">非常不满意</span>
-              <Star :size="36"/>
-              <span class="right">非常满意</span>
-            </flexbox-item>
-          </flexbox>
-          <flexbox class="evaluate-item">
-            <flexbox-item class="head">解决问题</flexbox-item>
-            <flexbox-item class="body">
-              <span class="left">非常不满意</span>
-              <Star :size="36"/>
-              <span class="right">非常满意</span>
-            </flexbox-item>
-          </flexbox>
-          <flexbox class="evaluate-item">
-            <flexbox-item class="head">维修保护</flexbox-item>
-            <flexbox-item class="body">
-              <span class="left">非常不满意</span>
-              <Star :size="36"/>
+              <Star :size="36" :data-index="index" @on-rate="gatherScore"/>
               <span class="right">非常满意</span>
             </flexbox-item>
           </flexbox>
           <Split type="line"/>
-          <x-textarea placeholder="请输入您要补充的评价"></x-textarea>
+          <x-textarea v-model="desc" placeholder="请输入您要补充的评价"></x-textarea>
           <img-row
             :group="uploadImages"
             :canUpload="true"
@@ -131,11 +117,11 @@
               :del="true"
               :key="'uploadImage-'+index"
             >
-              <Fitimg :src="item"/>
+              <Fitimg :src="item" @on-click="previewImg(item)"/>
             </img-cell>
           </img-row>
         </div>
-        <Btn type="primary" text="提交" size="lar" class="submit"/>
+        <Btn type="primary" text="提交" size="lar" class="submit" @click="evaluate"/>
         <Btn type="default" text="取消" size="lar" class="cancel" @click="toggleShowEvaluate"/>
       </div>
     </transition>
@@ -161,8 +147,9 @@ import {
   webRoot
 } from 'common/data'
 import api from 'common/api'
+import wxConf from 'common/utils/wxConf'
 export default {
-  name: 'RepairDetail',
+  name: 'RepairUserDetail',
   components: {
     Flexbox,
     FlexboxItem,
@@ -181,10 +168,10 @@ export default {
       role: '',
       id: '',
       content: null,
-      uploadImages: [
-        'static/images/active1.png',
-        'static/images/active2.png'
-      ]
+      desc: '',
+      uploadImages: [],
+      questions: ['响应速度', '服务态度', '解决问题', '维修保护'],
+      scoreArr: [0, 0, 0, 0]
     }
   },
   computed: {
@@ -219,6 +206,29 @@ export default {
     }
   },
   filters: {
+    formatStatus (val) {
+      let str = ''
+      switch (val) {
+        case 0:
+          str = '待处理'
+          break
+        case 1 || 2:
+          str = '处理中'
+          break
+        case 3:
+          str = '未评价'
+          break
+        case 4:
+          str = '已评价'
+          break
+        case 5:
+          str = '已取消'
+          break
+        default:
+          break
+      }
+      return str
+    },
     formatdate (val) {
       return formatDate(new Date(val), 'yyyy/MM/dd hh:mm')
     }
@@ -247,6 +257,55 @@ export default {
         console.log(err)
       })
     },
+    previewImg (current) {
+      let _self = this
+      wxConf.previewImg({
+        current,
+        urls: _self.imgs
+      })
+    },
+    gatherScore (val) {
+      let index = event.currentTarget.dataset.index
+      this.scoreArr[index] = val
+    },
+    evaluate () {
+      let _self = this
+      if (this.scoreArr.some(item => item === 0)) {
+        window.$alert('请完成评分！')
+        return
+      }
+      let opt = {
+        ID: this.id,
+        EvaluateScore1: this.scoreArr[0],
+        EvaluateScore2: this.scoreArr[1],
+        EvaluateScore3: this.scoreArr[2],
+        EvaluateScore4: this.scoreArr[3],
+        EvaluateContent: this.desc,
+        Images: this.uploadImages.join(',')
+      }
+      api.repair.user.evaluate(opt)
+      .then(({res, index}) => {
+        if (res.data.IsSuccess) {
+          let index = window.$alert({
+            content: '提交成功',
+            yes () {
+              window.$close(index)
+              _self.$router.push({
+                name: 'repairuser',
+                params: {
+                  state: 'untreated'
+                }
+              })
+            }
+          })
+        } else {
+          window.$alert(res.data.Message)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
     back () {
       this.$router.go(-1)
     }
@@ -258,10 +317,23 @@ export default {
 @import "~common/scss/mixins.scss";
 .repair-detail{
   width: 100vw;
+  .tag{
+    display: inline-block;
+    background: #ccc;
+    color:$text-color;
+    padding: p2r(10) p2r(15);
+    border-top-right-radius: 4px;
+    position: absolute;
+    top:0;
+    right:0;
+  }
   .repair-detail-wrapper{
-    &.user{
+    min-height: 100vh;
+    padding-bottom: p2r(340);
+    background: $background-color;
+    &.single{
       min-height: 100vh;
-      padding-bottom: p2r(340);
+      padding-bottom: p2r(200);
       background: $background-color;
     }
     .detail{
@@ -296,9 +368,9 @@ export default {
       }
       .imgs{
         margin-top: p2r($base-padding / 3);
-        & + .split{
-          margin-top: p2r($base-padding);
-        }
+      }
+      .split{
+        margin-top: p2r($base-padding);
       }
       .engineer-name,
       .tel{
@@ -397,6 +469,9 @@ export default {
   &>.btns{
     position: relative;
     margin-top: p2r(-250);
+    &.single{
+      margin-top: p2r(-150);
+    }
     .btn{
       margin: p2r(20) auto;
       &:first-child{

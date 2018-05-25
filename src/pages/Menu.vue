@@ -37,7 +37,7 @@ export default {
         {
           label: '我要查询',
           children: {
-            '验房查询': 'wait',
+            '验房查询': 'thirdserviceprogress/open',
             '工程进度': 'projectprogress',
             '合同/产证': 'tradeprogress',
             '服务指南': 'guide',

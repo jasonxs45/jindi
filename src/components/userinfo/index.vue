@@ -9,7 +9,7 @@
         <span class="text">{{userInfo.nickname}}</span>
         <span class="mark">{{userInfo.markMap[userInfo.state]}}</span>
       </div>
-      <div class="state-info">{{userInfo.house}}</div>
+      <div class="state-info"><slot>{{userInfo.house}}</slot></div>
     </flexbox-item>
   </flexbox>
 <div class="tag-area" v-if="tagText">

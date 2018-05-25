@@ -22,7 +22,7 @@ const state = {
       lastPage: false
     }
   },
-  manager: {
+  engineer: {
     untreated: {
       stateId: 0,
       orders: [],
@@ -40,13 +40,19 @@ const state = {
       orders: [],
       page: 0,
       lastPage: false
+    },
+    canceled: {
+      stateId: 3,
+      orders: [],
+      page: 0,
+      lastPage: false
     }
   }
 }
 // getters
 const getters = {
   user: state => state.user,
-  manager: state => state.manager
+  engineer: state => state.engineer
 }
 
 // actions

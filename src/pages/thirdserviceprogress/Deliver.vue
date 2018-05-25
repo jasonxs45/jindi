@@ -27,11 +27,17 @@
       </flexbox-item>
       <flexbox-item class="item-body">
         <div class="item-body-wrapper">
-          <p class="time">{{item.StatusTime}}</p>
-          <p class="desc">您在【集中交付】中反馈的问题【<span class="status">{{item.Status}}</span>】</p>
+          <p class="time">{{item.StatusTime|formatdate}}</p>
+          <p class="desc">
+            {{
+              item.Status === '已受理'
+              ? '尊敬的业主，您好！您在收楼时报修的问题，我中心已安排维修处理，并将在维修完成后电话通知您。如有其它问题欢迎致电：'
+              : '尊敬的业主，您好！您在收楼时报修的问题已维修处理完毕，请您及时查看现场，如您还有其它疑问，欢迎致电：'
+            }}
+          </p>
           <div class="info">
-            <p>运维中心：{{item.RepairName}}</p>
-            <p>联系电话：<a :href="`tel:${item.RepairTel}`">{{item.RepairTel}}</a></p>
+            <p>保修中心：{{item.RepairName}}</p>
+            <p>保修电话：<a :href="`tel:${item.RepairTel}`">{{item.RepairTel}}</a></p>
           </div>
         </div>
       </flexbox-item>
@@ -121,7 +127,7 @@ export default {
   },
   filters: {
     formatdate (val) {
-      return formatDate(new Date(val), 'yyyy/MM/dd hh:mm')
+      return formatDate(new Date(val), 'yyyy/MM/dd')
     }
   },
   created () {
@@ -147,9 +153,9 @@ export default {
       api.thirdserviceprogress.list()
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
-          this.fetchedData = res.data.Data.DocumentSrch
+          this.fetchedData = res.data.Data.Permit
         } else {
-          window.$alert(res.Message)
+          window.$alert(res.data.Message)
         }
       }).catch(err => {
         console.log(err)
@@ -271,7 +277,8 @@ export default {
             }
             .desc{
               margin-top: p2r(30);
-              font-size: p2r(28);
+              font-size: p2r(26);
+              line-height: 1.5;
               color: $text-sub-color;
               .status{
                 color:$primary-color;
@@ -288,7 +295,8 @@ export default {
               line-height: 1.7;
               border-radius: 4px;
               &.opa{
-                opacity: 0;
+                height: 1px;
+                padding:0;
               }
             }
           }

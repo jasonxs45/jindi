@@ -172,7 +172,7 @@ export default {
           this.tel = res.data.Data.Tel
           this.address = res.data.Data.Address
         } else {
-          window.$alert(res.Message)
+          window.$alert(res.data.Message)
         }
       }).catch(err => {
         console.log(err)
@@ -206,7 +206,7 @@ export default {
             }
           })
         } else {
-          window.$alert(res.Message)
+          window.$alert(res.data.Message)
         }
       }).catch(err => {
         console.log(err)

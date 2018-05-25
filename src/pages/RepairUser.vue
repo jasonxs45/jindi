@@ -30,6 +30,7 @@
         class="repair-card"
         @click="toDetail(item.ID)"
       >
+        <p class="tag">{{item.State|formatStatus}}</p>
         <flexbox>
           <flexbox-item class="title">
             {{item.ProjectName+item.StageName}} {{item.Building}} - {{item.Unit}}-{{item.HouseNo}}
@@ -129,6 +130,29 @@ export default {
     }
   },
   filters: {
+    formatStatus (val) {
+      let str = ''
+      switch (val) {
+        case 0:
+          str = '待处理'
+          break
+        case 1 || 2:
+          str = '处理中'
+          break
+        case 3:
+          str = '未评价'
+          break
+        case 4:
+          str = '已评价'
+          break
+        case 5:
+          str = '已取消'
+          break
+        default:
+          break
+      }
+      return str
+    },
     formatdate (val) {
       return formatDate(new Date(val), 'yyyy/MM/dd hh:mm')
     }
@@ -169,9 +193,8 @@ export default {
     },
     toDetail (id) {
       this.$router.push({
-        name: 'repairdetail',
+        name: 'repairuserdetail',
         params: {
-          role: this.role,
           id
         }
       })
@@ -250,6 +273,17 @@ export default {
       border-radius: 4px;
       padding:p2r($base-padding);
       margin: p2r(30) 0;
+      position: relative;
+      .tag{
+        display: inline-block;
+        background: #ccc;
+        color:$text-color;
+        padding: p2r(10) p2r(15);
+        border-top-right-radius: 4px;
+        position: absolute;
+        top:0;
+        right:0;
+      }
       &:first-child {
         margin-top: 0;
       }
@@ -257,6 +291,7 @@ export default {
         color:$primary-color;
         font-size: p2r(24);
         line-height: 1.5;
+        margin-top: p2r(20);
       }
       .date{
         font-size: p2r(24);
@@ -265,6 +300,7 @@ export default {
         width:p2r(210);
         text-align: right;
         line-height: 1.5;
+        margin-top: p2r(20);
       }
       .info{
         background: $primary-color;

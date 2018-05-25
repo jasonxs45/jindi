@@ -107,7 +107,7 @@ export default {
             }
           })
         } else {
-          window.$alert(res.Message)
+          window.$alert(res.data.Message)
         }
       }).catch(err => {
         console.log(err)
@@ -161,7 +161,7 @@ export default {
         if (res.data.IsSuccess) {
           window.$alert('提交成功，请等待工作人员审核！')
         } else {
-          window.$alert(res.Message)
+          window.$alert(res.data.Message)
         }
       }).catch(err => {
         console.log(err)

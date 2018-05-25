@@ -27,7 +27,9 @@ const QRCodeCheck = r => require.ensure([], () => r(require('pages/QRCodeCheck')
 
 const RepairUser = r => require.ensure([], () => r(require('pages/RepairUser')), 'RepairUser')
 const RepairEngineer = r => require.ensure([], () => r(require('pages/RepairEngineer')), 'RepairEngineer')
-const RepairDetail = r => require.ensure([], () => r(require('pages/RepairDetail')), 'RepairDetail')
+const RepairOrderAllot = r => require.ensure([], () => r(require('pages/RepairOrderAllot')), 'RepairOrderAllot')
+const RepairUserDetail = r => require.ensure([], () => r(require('pages/RepairUserDetail')), 'RepairUserDetail')
+const RepairEngineerDetail = r => require.ensure([], () => r(require('pages/RepairEngineerDetail')), 'RepairEngineerDetail')
 const RepairSubmit = r => require.ensure([], () => r(require('pages/RepairSubmit')), 'RepairSubmit')
 
 const AdviseUser = r => require.ensure([], () => r(require('pages/AdviseUser')), 'AdviseUser')
@@ -158,7 +160,7 @@ export default [
     name: 'thirdserviceprogress',
     component: ThirdServiceProgress,
     meta: {
-      title: '合同/产证'
+      title: ''
     },
     redirect: '/tradeprogress/open',
     children: [
@@ -167,7 +169,7 @@ export default [
         name: 'open',
         component: Open,
         meta: {
-          title: '工地开放'
+          title: '工地开放验房查询'
         }
       },
       {
@@ -175,7 +177,7 @@ export default [
         name: 'deliver',
         component: Deliver,
         meta: {
-          title: '集中交付'
+          title: '集中交付验房查询'
         }
       }
     ]
@@ -281,20 +283,38 @@ export default [
   },
   // 报修工程师
   {
-    path: '/repairengineer',
+    path: '/repairengineer/:state',
     name: 'repairengineer',
     component: RepairEngineer,
     meta: {
       title: '业主报修'
     }
   },
-  // 报修单详情
+  // 报修单详情-----用户
   {
-    path: '/repairdetail/:role/:id',
-    name: 'repairdetail',
-    component: RepairDetail,
+    path: '/repairuserdetail/:id',
+    name: 'repairuserdetail',
+    component: RepairUserDetail,
     meta: {
       title: '详情'
+    }
+  },
+  // 报修单详情-----工程师
+  {
+    path: '/repairengineerdetail/:id',
+    name: 'repairengineerdetail',
+    component: RepairEngineerDetail,
+    meta: {
+      title: '详情'
+    }
+  },
+  // 派发
+  {
+    path: '/repairorderallot/:id',
+    name: 'repairorderallot',
+    component: RepairOrderAllot,
+    meta: {
+      title: '报修分类'
     }
   },
   // 投诉建议用户列表

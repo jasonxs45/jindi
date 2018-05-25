@@ -82,7 +82,7 @@ export default {
           })
           this.fetchedList = list
         } else {
-          window.$alert(res.Message)
+          window.$alert(res.data.Message)
         }
       }).catch(err => {
         console.log(err)

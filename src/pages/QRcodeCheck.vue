@@ -54,7 +54,7 @@ export default {
           this.state = res.data.Data
           // window.$alert(res.data.Data)
         } else {
-          window.$alert(res.Message)
+          window.$alert(res.data.Message)
         }
       })
       .catch(err => {

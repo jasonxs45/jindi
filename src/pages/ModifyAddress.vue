@@ -78,7 +78,7 @@ export default {
           this.tel = res.data.Data.Tel
           // this.name = res.data.Data.Name
         } else {
-          window.$alert(res.Message)
+          window.$alert(res.data.Message)
         }
       }).catch(err => {
         console.log(err)
