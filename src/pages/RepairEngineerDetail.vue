@@ -60,7 +60,21 @@
           </flexbox>
         </template>
       </div>
-      <div class="sub-order-list">
+      <div v-if="repair.State === 5" class="refuse-info">
+        <Split type="line"/>
+        <div class="refuse-info-wrapper">
+          <flexbox>
+            <flexbox-item class="left">
+              已拒单
+            </flexbox-item>
+            <flexbox-item class="right">
+              {{repair.RefuseTime|formatdate}}
+            </flexbox-item>
+          </flexbox>
+          <x-textarea class="refuse-reason" readonly :value="repair.RefuseReason"></x-textarea>
+        </div>
+      </div>
+      <div v-if="detailList.length > 0" class="sub-order-list">
         <div
           v-for="(item, index) in detailList"
           :key="'detail-'+index"
@@ -110,7 +124,7 @@
               处理单位：{{item.BuilderName}}
             </flexbox-item>
             <flexbox-item class="tel">
-              <a @click.stop :href="`tel:${item.BuilderTel}`">{{item.BuilderTel}}</a>
+              <a :href="`tel:${item.BuilderTel}`">{{item.BuilderTel}}</a>
             </flexbox-item>
           </flexbox>
           <div class="operation">
@@ -640,6 +654,31 @@ export default {
         }
         .right{
           text-align: right;
+        }
+      }
+    }
+    .refuse-info {
+      background: #fff;
+      padding-top: p2r(50);
+      .refuse-info-wrapper{
+        padding: p2r($base-padding);
+        .left,
+        .right{
+          font-size: p2r(26);
+        }
+        .left{
+          color: $primary-color;
+        }
+        .right{
+          text-align: right;
+          color: $thr-color;
+        }
+        .refuse-reason{
+          width: 100%;
+          border: none;
+          height: auto;
+          font-size: p2r(24);
+          margin-top: p2r($base-padding);
         }
       }
     }

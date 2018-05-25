@@ -1,6 +1,6 @@
 <template>
   <div class="x-option" @click="clickHandler">
-    {{label}}
+    <slot>{{label}}</slot>
   </div>
 </template>
 <script>

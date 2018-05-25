@@ -47,12 +47,27 @@ const state = {
       page: 0,
       lastPage: false
     }
+  },
+  engineermanager: {
+    untreated: {
+      stateId: 0,
+      orders: [],
+      page: 0,
+      lastPage: false
+    },
+    timeout: {
+      stateId: 1,
+      orders: [],
+      page: 0,
+      lastPage: false
+    }
   }
 }
 // getters
 const getters = {
   user: state => state.user,
-  engineer: state => state.engineer
+  engineer: state => state.engineer,
+  engineermanager: state => state.engineermanager
 }
 
 // actions

@@ -5,7 +5,7 @@ const ROLE = {
   // 工程师
   engineer: '工程师',
   // 管理员
-  engineerManager: '工程师主管',
+  engineermanager: '工程师主管',
   // 客服
   manager: '客服'
 }
@@ -20,6 +20,10 @@ const STATE = {
     treated: '已接单',
     finished: '已完成',
     canceled: '已取消'
+  },
+  engineermanager: {
+    untreated: '待审核',
+    timeout: '已超时'
   }
 }
 let repair = {
@@ -170,6 +174,45 @@ let repair = {
         Act: 'RepairFinish',
         Data: JSON.stringify({
           ID
+        })
+      }
+      return api.globalQuery(opt)
+    }
+  },
+  engineermanager: {
+    // 驳回拒单
+    refuse (ID, ReturnMsg) {
+      let opt = {
+        Act: 'RepairReturn',
+        Data: JSON.stringify({
+          ID,
+          ReturnMsg
+        })
+      }
+      return api.globalQuery(opt)
+    },
+    agree (ID) {
+      let opt = {
+        Act: 'RepairAgree',
+        Data: JSON.stringify({
+          ID
+        })
+      }
+      return api.globalQuery(opt)
+    },
+    getEngineers () {
+      let opt = {
+        Act: 'RepairGetEngineerList'
+      }
+      return api.globalQuery(opt)
+    },
+    change (ID, AdminID, AllotMsg) {
+      let opt = {
+        Act: 'RepairChangeEngineer',
+        Data: JSON.stringify({
+          ID,
+          AdminID,
+          AllotMsg
         })
       }
       return api.globalQuery(opt)

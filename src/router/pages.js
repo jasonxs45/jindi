@@ -30,6 +30,8 @@ const RepairEngineer = r => require.ensure([], () => r(require('pages/RepairEngi
 const RepairOrderAllot = r => require.ensure([], () => r(require('pages/RepairOrderAllot')), 'RepairOrderAllot')
 const RepairUserDetail = r => require.ensure([], () => r(require('pages/RepairUserDetail')), 'RepairUserDetail')
 const RepairEngineerDetail = r => require.ensure([], () => r(require('pages/RepairEngineerDetail')), 'RepairEngineerDetail')
+const RepairEngineerManager = r => require.ensure([], () => r(require('pages/RepairEngineerManager')), 'RepairEngineerManager')
+const RepairEngineerManagerDetail = r => require.ensure([], () => r(require('pages/RepairEngineerManagerDetail')), 'RepairEngineerManagerDetail')
 const RepairSubmit = r => require.ensure([], () => r(require('pages/RepairSubmit')), 'RepairSubmit')
 
 const AdviseUser = r => require.ensure([], () => r(require('pages/AdviseUser')), 'AdviseUser')
@@ -290,6 +292,15 @@ export default [
       title: '业主报修'
     }
   },
+  // 报修工程师主管
+  {
+    path: '/repairengineermanager/:state',
+    name: 'repairengineermanager',
+    component: RepairEngineerManager,
+    meta: {
+      title: '业主报修'
+    }
+  },
   // 报修单详情-----用户
   {
     path: '/repairuserdetail/:id',
@@ -304,6 +315,15 @@ export default [
     path: '/repairengineerdetail/:id',
     name: 'repairengineerdetail',
     component: RepairEngineerDetail,
+    meta: {
+      title: '详情'
+    }
+  },
+  // 报修单详情-----工程师
+  {
+    path: '/repairengineermanagerdetail/:id',
+    name: 'repairengineermanagerdetail',
+    component: RepairEngineerManagerDetail,
     meta: {
       title: '详情'
     }
