@@ -62,7 +62,7 @@
               维修评分
             </flexbox-item>
             <flexbox-item class="star">
-              <Star :score="3.5" :size="24" readOnly/>
+              <Star :score="item.EvaluateScore" :size="24" readOnly/>
             </flexbox-item>
           </flexbox>
         </template>
