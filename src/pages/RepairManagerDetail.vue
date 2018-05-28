@@ -175,11 +175,12 @@ export default {
         console.log(err)
       })
     },
-    previewImg (current) {
-      let _self = this
+    previewImg (cur) {
+      let current = window.location.origin + cur
+      let urls = this.imgs.map(item => window.location.origin + item)
       wxConf.previewImg({
         current,
-        urls: _self.imgs
+        urls
       })
     },
     submit () {
