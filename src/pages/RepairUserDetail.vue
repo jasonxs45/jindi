@@ -212,7 +212,10 @@ export default {
         case 0:
           str = '待处理'
           break
-        case 1 || 2:
+        case 1:
+          str = '处理中'
+          break
+        case 2:
           str = '处理中'
           break
         case 3:
@@ -257,11 +260,12 @@ export default {
         console.log(err)
       })
     },
-    previewImg (current) {
-      let _self = this
+    previewImg (cur) {
+      let current = window.location.origin + cur
+      let urls = this.imgs.map(item => window.location.origin + item)
       wxConf.previewImg({
         current,
-        urls: _self.imgs
+        urls
       })
     },
     gatherScore (val) {
