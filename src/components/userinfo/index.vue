@@ -6,10 +6,10 @@
     </flexbox-item>
     <flexbox-item>
       <div class="nickname">
-        <span class="text">{{userInfo.nickname}}</span>
-        <span class="mark">{{userInfo.markMap[userInfo.state]}}</span>
+        <div class="text">{{userInfo.nickname}}</div>
+        <div class="mark"><slot name="tag">{{userInfo.markMap[userInfo.state]}}</slot></div>
       </div>
-      <div class="state-info"><slot>{{userInfo.house}}</slot></div>
+      <div class="state-info"><slot name="desc">{{userInfo.house}}</slot></div>
     </flexbox-item>
   </flexbox>
 <div class="tag-area" v-if="tagText">
@@ -90,21 +90,23 @@ export default {
     margin-top: p2r(20);
     margin-left: p2r(40);
     .text{
+      height:p2r(36);
+      line-height: p2r(36);
       font-size: p2r(36);
       color:#fff;
       font-weight: 600;
       display: inline-block;
-      vertical-align: top;
+      vertical-align: middle;
     }
     .mark{
       font-size: p2r(20);
       display: inline-block;
-      vertical-align: top;
+      vertical-align: middle;
       background: $warning-color;
       color:#fff;
       min-width:p2r(60);
-      height:p2r(32);
-      line-height: p2r(32);
+      height:p2r(36);
+      line-height: p2r(36);
       text-align: center;
       border-radius: 20px;
       margin-left: p2r(20);

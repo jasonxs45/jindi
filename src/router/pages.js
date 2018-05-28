@@ -32,6 +32,8 @@ const RepairUserDetail = r => require.ensure([], () => r(require('pages/RepairUs
 const RepairEngineerDetail = r => require.ensure([], () => r(require('pages/RepairEngineerDetail')), 'RepairEngineerDetail')
 const RepairEngineerManager = r => require.ensure([], () => r(require('pages/RepairEngineerManager')), 'RepairEngineerManager')
 const RepairEngineerManagerDetail = r => require.ensure([], () => r(require('pages/RepairEngineerManagerDetail')), 'RepairEngineerManagerDetail')
+const RepairManager = r => require.ensure([], () => r(require('pages/RepairManager')), 'RepairManager')
+const RepairManagerDetail = r => require.ensure([], () => r(require('pages/RepairManagerDetail')), 'RepairManagerDetail')
 const RepairSubmit = r => require.ensure([], () => r(require('pages/RepairSubmit')), 'RepairSubmit')
 
 const AdviseUser = r => require.ensure([], () => r(require('pages/AdviseUser')), 'AdviseUser')
@@ -301,6 +303,15 @@ export default [
       title: '业主报修'
     }
   },
+  // 报修管理员
+  {
+    path: '/repairmanager/:state',
+    name: 'repairmanager',
+    component: RepairManager,
+    meta: {
+      title: '业主报修'
+    }
+  },
   // 报修单详情-----用户
   {
     path: '/repairuserdetail/:id',
@@ -319,11 +330,20 @@ export default [
       title: '详情'
     }
   },
-  // 报修单详情-----工程师
+  // 报修单详情-----工程师管理员
   {
     path: '/repairengineermanagerdetail/:id',
     name: 'repairengineermanagerdetail',
     component: RepairEngineerManagerDetail,
+    meta: {
+      title: '详情'
+    }
+  },
+  // 报修单详情-----客服
+  {
+    path: '/repairmanagerdetail/:id',
+    name: 'repairmanagerdetail',
+    component: RepairManagerDetail,
     meta: {
       title: '详情'
     }

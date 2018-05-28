@@ -24,6 +24,9 @@ const STATE = {
   engineermanager: {
     untreated: '待审核',
     timeout: '已超时'
+  },
+  manager: {
+    untreated: '待处理'
   }
 }
 let repair = {
@@ -213,6 +216,30 @@ let repair = {
           ID,
           AdminID,
           AllotMsg
+        })
+      }
+      return api.globalQuery(opt)
+    }
+  },
+  manager: {
+    info () {
+      let opt = {
+        Act: 'RepairGetManager'
+      }
+      return api.globalQuery(opt)
+    },
+    allEngineer () {
+      let opt = {
+        Act: 'RepairGetEngineerAll'
+      }
+      return api.globalQuery(opt)
+    },
+    submit (ID, AdminID) {
+      let opt = {
+        Act: 'RepairChooseEngineer',
+        Data: JSON.stringify({
+          ID,
+          AdminID
         })
       }
       return api.globalQuery(opt)

@@ -61,13 +61,22 @@ const state = {
       page: 0,
       lastPage: false
     }
+  },
+  manager: {
+    untreated: {
+      stateId: 0,
+      orders: [],
+      page: 0,
+      lastPage: false
+    }
   }
 }
 // getters
 const getters = {
   user: state => state.user,
   engineer: state => state.engineer,
-  engineermanager: state => state.engineermanager
+  engineermanager: state => state.engineermanager,
+  manager: state => state.manager
 }
 
 // actions
