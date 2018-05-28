@@ -136,7 +136,10 @@ export default {
         case 0:
           str = '待处理'
           break
-        case 1 || 2:
+        case 1:
+          str = '处理中'
+          break
+        case 2:
           str = '处理中'
           break
         case 3:
