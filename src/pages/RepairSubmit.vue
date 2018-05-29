@@ -291,10 +291,6 @@ export default {
     uploadImg (res) {
       this.uploadedImgs.push(res)
     },
-    deleteImg (e) {
-      let index = e.currentTarget.dataset.index
-      this.uploadedImgs.splice(index, 1)
-    },
     submitHandler () {
       if (!this.form.house) {
         window.$alert({

@@ -26,7 +26,7 @@
             :group="imgs"
             :key="'upimg-'+index"
           >
-            <Fitimg :src="item" @on-click="previewImg(item)"/>
+            <Fitimg :src="item" @on-click="previewImg(item, imgs)"/>
           </img-cell>
         </img-row>
         <template v-if="repair.AdminName">
@@ -105,19 +105,20 @@
           <Split type="line"/>
           <x-textarea v-model="desc" placeholder="请输入您要补充的评价"></x-textarea>
           <img-row
-            :group="uploadImages"
+            :group="uploadImgs"
             :canUpload="true"
+            @on-upload="uploadImg"
             class="imgs"
           >
             <img-cell
-              v-for="(item, index) in uploadImages"
+              v-for="(item, index) in uploadImgs"
               :index="index"
               :canUpload="true"
-              :group="uploadImages"
+              :group="uploadImgs"
               :del="true"
-              :key="'uploadImage-'+index"
+              :key="'uploadImg-'+index"
             >
-              <Fitimg :src="item" @on-click="previewImg(item)"/>
+              <Fitimg :src="item" @on-click="previewImg(item, uploadImgs)"/>
             </img-cell>
           </img-row>
         </div>
@@ -169,7 +170,7 @@ export default {
       id: '',
       content: null,
       desc: '',
-      uploadImages: [],
+      uploadImgs: [],
       questions: ['响应速度', '服务态度', '解决问题', '维修保护'],
       scoreArr: [0, 0, 0, 0]
     }
@@ -242,7 +243,6 @@ export default {
     this.getDetail()
   },
   methods: {
-    roleHandler () {},
     toggleShowEvaluate () {
       this.showEvaluate = !this.showEvaluate
     },
@@ -260,9 +260,12 @@ export default {
         console.log(err)
       })
     },
-    previewImg (cur) {
+    uploadImg (res) {
+      this.uploadImgs.push(res)
+    },
+    previewImg (cur, groups) {
       let current = window.location.origin + cur
-      let urls = this.imgs.map(item => window.location.origin + item)
+      let urls = groups.map(item => window.location.origin + item)
       wxConf.previewImg({
         current,
         urls
@@ -285,7 +288,7 @@ export default {
         EvaluateScore3: this.scoreArr[2],
         EvaluateScore4: this.scoreArr[3],
         EvaluateContent: this.desc,
-        Images: this.uploadImages.join(',')
+        Images: this.uploadImgs.join(',')
       }
       api.repair.user.evaluate(opt)
       .then(({res, index}) => {

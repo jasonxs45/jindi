@@ -34,7 +34,7 @@
             :group="imgs"
             :key="'upimg-'+index"
           >
-            <Fitimg :src="item" @on-click="previewImg(item)"/>
+            <Fitimg :src="item" @on-click="previewImg(item, imgs)"/>
           </img-cell>
         </img-row>
         <template v-if="repair.Name">
@@ -44,7 +44,7 @@
               联系人：{{repair.Name}}
             </flexbox-item>
             <flexbox-item class="tel">
-              <a :href="`tel:${repair.AdminTel}`">{{repair.Tel}}</a>
+              <a :href="`tel:${repair.AdminTel}`">{{repair.AdminTel}}</a>
             </flexbox-item>
           </flexbox>
         </template>
@@ -92,13 +92,13 @@
               class="imgs"
             >
               <img-cell
-                v-for="(item, index) in item.Images"
+                v-for="(img, index) in item.Images"
                 :index="index"
                 :canUpload="false"
                 :group="item.Images"
                 :key="'subupimg-'+index"
               >
-                <Fitimg :src="item" @on-click="previewImg(item)"/>
+                <Fitimg :src="img" @on-click="previewImg(img, item.Images)"/>
               </img-cell>
             </img-row>
             <Split type="line" />
@@ -342,9 +342,9 @@ export default {
         console.log(err)
       })
     },
-    previewImg (cur) {
+    previewImg (cur, groups) {
       let current = window.location.origin + cur
-      let urls = this.imgs.map(item => window.location.origin + item)
+      let urls = groups.map(item => window.location.origin + item)
       wxConf.previewImg({
         current,
         urls

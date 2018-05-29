@@ -112,7 +112,8 @@ import {
   Btn,
   Icon,
   ImgRow,
-  ImgCell
+  ImgCell,
+  Fitimg
 } from 'components'
 import 'swiper/dist/css/swiper.css'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
@@ -129,7 +130,8 @@ export default {
     swiper,
     swiperSlide,
     ImgRow,
-    ImgCell
+    ImgCell,
+    Fitimg
   },
   data () {
     return {
@@ -298,10 +300,6 @@ export default {
     },
     uploadImg (res) {
       this.uploadedImgs.push(res)
-    },
-    deleteImg (e) {
-      let index = e.currentTarget.dataset.index
-      this.uploadedImgs.splice(index, 1)
     }
   }
 }
