@@ -60,7 +60,6 @@ export default {
     width:p2r(36);
     height: p2r(36);
     text-align: center;
-    color:$primary-color;
     top:p2r(-15);
     right:p2r(5);
     z-index:1;
@@ -68,9 +67,9 @@ export default {
     border-radius: 50%;
     color:#fff;
     .iconfont{
-      font-size: p2r(20);
+      height: 100%;
+      font-size: p2r(28);
       line-height: p2r(36);
-      vertical-align: top;
       display: inline-block;
     }
   }
