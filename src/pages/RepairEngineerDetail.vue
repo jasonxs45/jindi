@@ -103,7 +103,7 @@
             </img-row>
             <Split type="line" />
           </div>
-          <flexbox>
+          <flexbox v-if="repair.State > 1">
             <flexbox-item class="builder-name">
               处理时间：
             </flexbox-item>
@@ -111,7 +111,7 @@
               {{item.AddTime|formatdate}}
             </flexbox-item>
           </flexbox>
-          <flexbox>
+          <flexbox v-if="repair.State > 1">
             <flexbox-item class="builder-name">
               预计完成时间：
             </flexbox-item>
@@ -470,10 +470,11 @@ export default {
       api.repair.engineer.finishSubOrder(id)
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
-          window.$alert({
+          let index = window.$alert({
             content: '提交成功！',
             yes () {
-              _self.$router.go(0)
+              window.$close(index)
+              _self.getDetail()
             }
           })
         } else {

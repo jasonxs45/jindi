@@ -47,7 +47,7 @@
               联系人：{{item.Name}}
             </flexbox-item>
             <flexbox-item class="tel">
-              <a :href="`tel:${item.Tel}`">{{item.Tel}}</a>
+              <a :href="`tel:${item.Tel}`" @click.stop>{{item.Tel}}</a>
             </flexbox-item>
           </flexbox>
         </template>

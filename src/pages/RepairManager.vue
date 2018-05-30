@@ -52,7 +52,7 @@
               工程师：{{item.AdminName}}
             </flexbox-item>
             <flexbox-item class="tel">
-              <a :href="`tel:${item.AdminTel}`">{{item.AdminTel}}</a>
+              <a :href="`tel:${item.AdminTel}`" @click.stop>{{item.AdminTel}}</a>
             </flexbox-item>
           </flexbox>
         </template>

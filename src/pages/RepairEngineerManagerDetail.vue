@@ -336,8 +336,12 @@ export default {
       api.repair.engineermanager.change(this.id, this.selectedEngineer.value, this.allotReason)
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
-          window.$alert('分单成功！')
-          _self.$router.go(-1)
+          window.$alert({
+            content: '分单成功！',
+            yes () {
+              _self.$router.go(-1)
+            }
+          })
         } else {
           window.$alert(res.data.Message)
         }
