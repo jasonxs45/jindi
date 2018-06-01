@@ -221,24 +221,28 @@ export default {
       let value = e.currentTarget.value
       if (this.parts[id]) {
         if (this.banners[groupIndex + 1]) {
-          this.banners.splice(
-            groupIndex + 1,
-            this.banners.length - 1 - groupIndex,
-            this.parts[id].Sub
-          )
-          this.tabs.splice(
-            groupIndex,
-            this.tabs.length,
-            value,
-            '请选择'
-          )
+          if (this.parts[id].Sub.length !== 0) {
+            this.banners.splice(
+              groupIndex + 1,
+              this.banners.length - 1 - groupIndex,
+              this.parts[id].Sub
+            )
+            this.tabs.splice(
+              groupIndex,
+              this.tabs.length,
+              value,
+              '请选择'
+            )
+          }
         } else {
-          this.banners.push(this.parts[id].Sub)
-          this.tabs.splice(
-            this.tabs.length - 1,
-            0,
-            value
-          )
+          if (this.parts[id].Sub.length !== 0) {
+            this.banners.push(this.parts[id].Sub)
+            this.tabs.splice(
+              this.tabs.length - 1,
+              0,
+              value
+            )
+          }
         }
       } else {
         this.tabs.splice(

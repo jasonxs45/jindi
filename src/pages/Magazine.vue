@@ -121,19 +121,17 @@ export default {
   position: relative;
   background: url('../../static/images/magabg.png') center bottom/contain no-repeat;
   .title{
-    padding-top: p2r(80);
-    padding-left: p2r(156);
+    padding-top: p2r(60);
+    padding-left: p2r(60);
     font-size: p2r(72);
     color:$primary-color;
     font-weight: bold;
   }
   .desc{
-    width:p2r(480);
     font-size: p2r(24);
     color:$primary-color;
-    line-height: 1.4;
-    padding-top: p2r(20);
-    margin-left: p2r(156);
+    line-height: 1.3;
+    padding: p2r(20) p2r(60) 0;
   }
   .date{
     position: absolute;
