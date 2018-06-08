@@ -18,31 +18,33 @@
       </swiper>
     </div>
     <div v-if="currentProgress.length>0" class="progress">
-      <flexbox
-        v-for="(item, index) in currentProgress"
-        :key="'item-'+index"
-        class="progress-item"
-      >
-        <flexbox-item class="icon">
-          <Icon :name="index===0?'radio-check':'radio'"/>
-        </flexbox-item>
-        <flexbox-item class="item-body">
-          <div class="item-body-wrapper">
-            <p class="time">{{item.StatusTime|formatdate}}</p>
-            <p class="desc">
-              {{
-                item.Status === '已受理'
-                ? '尊敬的业主，您好！您在工地开放时记录的问题，我中心已安排整改处理，并将在处理完成后电话通知您，如有其它问题欢迎致电：'
-                : '尊敬的业主，您好！您在工地开放时提出的问题已处理完毕，您可以于集中交付时查看现场，如您还有其它疑问，欢迎致电：'
-                }}
-            </p>
-            <div class="info">
-              <p>保修中心：{{item.RepairName}}</p>
-              <p>保修电话：<a :href="`tel:${item.RepairTel}`">{{item.RepairTel}}</a></p>
+      <div>
+        <flexbox
+          v-for="(item, index) in currentProgress"
+          :key="'item-'+index"
+          class="progress-item"
+        >
+          <flexbox-item class="icon">
+            <Icon :name="index===0?'radio-check':'radio'"/>
+          </flexbox-item>
+          <flexbox-item class="item-body">
+            <div class="item-body-wrapper">
+              <p class="time">{{item.StatusTime|formatdate}}</p>
+              <p class="desc">
+                {{
+                  item.Status === '已受理'
+                  ? '尊敬的业主，您好！您在工地开放时记录的问题，我中心已安排整改处理，并将在处理完成后电话通知您，如有其它问题欢迎致电：'
+                  : '尊敬的业主，您好！您在工地开放时提出的问题已处理完毕，您可以于集中交付时查看现场，如您还有其它疑问，欢迎致电：'
+                  }}
+              </p>
+              <div class="info">
+                <p>保修中心：{{item.RepairName}}</p>
+                <p>保修电话：<a :href="`tel:${item.RepairTel}`">{{item.RepairTel}}</a></p>
+              </div>
             </div>
-          </div>
-        </flexbox-item>
-      </flexbox>
+          </flexbox-item>
+        </flexbox>
+      </div>
       <p class="tip">温馨提示：以上数据在每周五更新，具体以您收到的通知领取短信及实际领取时间为准。</p>
     </div>
     <div v-else class="no-data-guide">

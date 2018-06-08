@@ -18,22 +18,24 @@
       </swiper>
     </div>
     <div v-if="currentProgress.length>0" class="progress">
-      <flexbox
-        v-for="(item, index) in currentProgress"
-        :key="'item-'+index"
-        class="progress-item"
-      >
-        <flexbox-item class="icon">
-          <Icon :name="index===0?'radio-check':'radio'"/>
-        </flexbox-item>
-        <flexbox-item class="item-body">
-          <div class="item-body-wrapper">
-            <p class="time">{{item.StatusTime|formatdate}}</p>
-            <h3 class="status">{{item.Status}}</h3>
-            <p class="info" :class="item.Info ? '' : 'opa'">{{item.Info}}</p>
-          </div>
-        </flexbox-item>
-      </flexbox>
+      <div>
+        <flexbox
+          v-for="(item, index) in currentProgress"
+          :key="'item-'+index"
+          class="progress-item"
+        >
+          <flexbox-item class="icon">
+            <Icon :name="index===0?'radio-check':'radio'"/>
+          </flexbox-item>
+          <flexbox-item class="item-body">
+            <div class="item-body-wrapper">
+              <p class="time">{{item.StatusTime|formatdate}}</p>
+              <h3 class="status">{{item.Status}}</h3>
+              <p class="info" :class="item.Info ? '' : 'opa'">{{item.Info}}</p>
+            </div>
+          </flexbox-item>
+        </flexbox>
+      </div>
       <p class="tip">温馨提示：以上数据在每周五更新，具体以您收到的通知领取短信及实际领取时间为准。</p>
     </div>
     <div v-else class="no-data-guide">
