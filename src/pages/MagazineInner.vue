@@ -155,8 +155,9 @@ export default {
       margin-top: p2r(40);
     }
     .links{
+      margin-top: .5rem;
       width:100%;
-      height: calc(100% - 2.5rem);
+      height: calc(100% - 3rem);
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       .link-item{

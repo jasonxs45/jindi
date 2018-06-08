@@ -26,10 +26,11 @@
     <XInput  v-model="form.id" placeholder="请输入身份证"/>
     <p class="tip">* 请输入手机号码</p>
     <XInput v-model="form.tel" placeholder="请输入手机号码" htmlType="tel"/>
-    <p class="tip">* 请上传房产证及身份证正反面照片</p>
+    <p class="tip">* 请上传买卖合同、房产证及身份证正反面照片</p>
     <img-row
       :group="uploadedImgs"
       :canUpload="true"
+      :maxCount="9"
       @on-upload="uploadImg"
     >
       <img-cell

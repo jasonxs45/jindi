@@ -16,16 +16,16 @@
             <span class="text">我是家属</span>
           </router-link>
       </flexbox-item>
-      <flexbox-item class="entry middle">
+      <flexbox-item v-if="0" class="entry middle">
         <router-link to="/bind/bindrenter" tag="div" class="entry-wrapper">
           <Icon class="icon" name="rent"/>
           <span class="text">我是租户</span>
         </router-link>
       </flexbox-item>
-      <flexbox-item class="entry middle">
+      <flexbox-item class="entry large">
         <router-link to="/bind/bindsecond" tag="div" class="entry-wrapper">
           <Icon class="icon" name="second-user"/>
-          <span class="text">我是二手业主</span>
+          <span class="text">二手房业主</span>
         </router-link>
       </flexbox-item>
     </flexbox>

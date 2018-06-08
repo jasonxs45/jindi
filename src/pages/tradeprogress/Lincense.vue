@@ -1,46 +1,49 @@
 <template>
-<div class="trades" v-if="fetchedData.length">
-  <div class="swiper">
-    <swiper
-      v-if="banners"
-      :options="swiperOption"
-      :activeIndex="activeSwipeIndex"
-      ref="mySwiper"
-      @slideChange="swipeChangeHandler"
-    >
-      <swiper-slide
-        v-for="(item, index) in banners"
-        :key="'house-'+index"
+<div>
+  <div class="trades" v-if="fetchedData.length">
+    <div class="swiper">
+      <swiper
+        v-if="banners"
+        :options="swiperOption"
+        :activeIndex="activeSwipeIndex"
+        ref="mySwiper"
+        @slideChange="swipeChangeHandler"
       >
-        <span class="house-name">{{item}}</span>
-      </swiper-slide>
-    </swiper>
-  </div>
-  <div v-if="currentProgress.length" class="progress">
-    <flexbox
-      v-for="(item, index) in currentProgress"
-      :key="'item-'+activeTabIndex+index"
-      class="progress-item"
-    >
-      <flexbox-item class="icon">
-        <Icon :name="index===0?'radio-check':'radio'"/>
-      </flexbox-item>
-      <flexbox-item class="item-body">
-        <div class="item-body-wrapper">
-          <p class="time">{{item.StatusTime|formatdate}}</p>
-          <h3 class="status">{{item.Status}}</h3>
-          <p class="info" :class="item.Info ? '' : 'opa'">{{item.Info}}</p>
-        </div>
-      </flexbox-item>
-    </flexbox>
+        <swiper-slide
+          v-for="(item, index) in banners"
+          :key="'house-'+index"
+        >
+          <span class="house-name">{{item}}</span>
+        </swiper-slide>
+      </swiper>
+    </div>
+    <div v-if="currentProgress.length" class="progress">
+      <flexbox
+        v-for="(item, index) in currentProgress"
+        :key="'item-'+activeTabIndex+index"
+        class="progress-item"
+      >
+        <flexbox-item class="icon">
+          <Icon :name="index===0?'radio-check':'radio'"/>
+        </flexbox-item>
+        <flexbox-item class="item-body">
+          <div class="item-body-wrapper">
+            <p class="time">{{item.StatusTime|formatdate}}</p>
+            <h3 class="status">{{item.Status}}</h3>
+            <p class="info" :class="item.Info ? '' : 'opa'">{{item.Info}}</p>
+          </div>
+        </flexbox-item>
+      </flexbox>
+      <p class="tip">温馨提示：以上数据在每周五更新，具体以您收到的通知领取短信及实际领取时间为准。</p>
+    </div>
   </div>
   <div v-else class="no-data-guide">
     <nodata>暂无信息</nodata>
   </div>
-</div>
-<div v-else class="no-data-guide">
-  <nodata>暂无房源信息</nodata>
-  <Btn type="primary" text="绑定房产" @click="goBind"/>
+  <div v-if="state===0" class="no-data-guide">
+    <nodata>暂无房源信息</nodata>
+    <Btn type="primary" text="绑定房产" @click="goBind"/>
+  </div>
 </div>
 </template>
 <script>
@@ -112,7 +115,7 @@ export default {
   watch: {
     state (newVal, oldVal) {
       if (newVal !== 3) {
-        this.checkIdentity()
+        // this.checkIdentity()
       }
     }
   },
@@ -122,7 +125,7 @@ export default {
     }
   },
   created () {
-    this.checkIdentity()
+    // this.checkIdentity()
     this.getProgress()
   },
   methods: {
@@ -219,6 +222,13 @@ export default {
         height:calc(100% - 2.3466666rem);
         overflow: auto;
         -webkit-overflow-scrolling: touch;
+        .tip{
+          font-size: p2r(24);
+          color: $thr-color;
+          line-height: 1.5;
+          margin: p2r(60) 0 p2r(30);
+          text-align: center;
+        }
         .progress-item{
           &:first-child{
             .icon{

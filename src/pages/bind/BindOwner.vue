@@ -67,6 +67,7 @@
           </div>
         </div>
       </div>
+      <p class="caution">业主信息须与购房合同上的业主名称、<br/>身份证号信息一致，方可绑定</p>
       <div class="part2">
         <Btn v-if="step===1" type="primary" size="lar" text="下一步" @click="goStep2"/>
         <Btn v-if="step===2" type="primary" size="lar" text="确认绑定" @click="submitHandler"/>
@@ -75,6 +76,7 @@
     <p class="see-rights" style="display:none">
       <span @click="toggleRights">查看业主权益</span>
     </p>
+    <p class="tip">从一手房市场购买金地开发的房产且已完成<br />网签手续的客户，可进行业主绑定注册！</p>
     <transition name="fade">
       <div v-if="showRights" class="rights" @click="toggleRights">
         <div class="rights-wrapper">
@@ -247,14 +249,21 @@ export default {
   padding: p2r(30);
   .bind-owner-wrapper {
     width: 100%;
-    height: 90%;
+    height: 88%;
     border-radius: 4px;
     box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
     padding-top: p2r(40);
     padding-bottom: p2r(40);
     background: #fff;
+    .caution{
+      font-size: p2r(24);
+      color:lighten($text-color, 22%);
+      text-align: center;
+      line-height: 1.5;
+      padding:0 p2r($base-padding);
+    }
     .part1 {
-      height: p2r(760);
+      height: p2r(700);
       .title {
         font-size: p2r(28);
         color: $primary-color;
@@ -262,8 +271,8 @@ export default {
       }
       .houses {
         width: p2r(594);
-        height: p2r(412);
-        margin: p2r(40) auto;
+        height: p2r(400);
+        margin: p2r(30) auto;
         overflow: auto;
         -webkit-overflow-scrolling: touch;
         .house-bar {
@@ -346,20 +355,32 @@ export default {
         }
       }
       .step1{
-        padding-top: p2r(50);
+        padding-top: p2r(30);
         .roundbar{
           display: block;
           width:p2r(600);
           height: p2r(100);
-          margin: p2r(40) auto;
+          margin: p2r(50) auto;
           position: relative;
+          &:first-child{
+            margin-top: 0;
+          }
         }
       }
-
+      .step2{
+        padding-top: p2r(30);
+      }
     }
     .part2 {
       padding-top: p2r(40);
     }
+  }
+  .tip{
+    font-size: p2r(24);
+    color:lighten($text-color, 22%);
+    text-align: center;
+    line-height: 1.5;
+    padding: p2r($base-padding);
   }
   .see-rights{
     text-align: center;

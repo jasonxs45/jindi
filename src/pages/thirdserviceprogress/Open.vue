@@ -1,55 +1,58 @@
 <template>
-<div class="trades" v-if="fetchedData.length>0">
-  <div class="swiper">
-    <swiper
-      v-if="banners.length>0"
-      :options="swiperOption"
-      :activeIndex="activeSwipeIndex"
-      ref="mySwiper"
-      @slideChange="swipeChangeHandler"
-    >
-      <swiper-slide
-        v-for="(item, index) in banners"
-        :key="'house-'+index"
+<div>
+  <div class="trades" v-if="fetchedData.length>0">
+    <div class="swiper">
+      <swiper
+        v-if="banners.length>0"
+        :options="swiperOption"
+        :activeIndex="activeSwipeIndex"
+        ref="mySwiper"
+        @slideChange="swipeChangeHandler"
       >
-        <span class="house-name">{{item}}</span>
-      </swiper-slide>
-    </swiper>
-  </div>
-  <div v-if="currentProgress.length>0" class="progress">
-    <flexbox
-      v-for="(item, index) in currentProgress"
-      :key="'item-'+index"
-      class="progress-item"
-    >
-      <flexbox-item class="icon">
-        <Icon :name="index===0?'radio-check':'radio'"/>
-      </flexbox-item>
-      <flexbox-item class="item-body">
-        <div class="item-body-wrapper">
-          <p class="time">{{item.StatusTime|formatdate}}</p>
-          <p class="desc">
-            {{
-              item.Status === '已受理'
-              ? '尊敬的业主，您好！您在工地开放时记录的问题，我中心已安排整改处理，并将在处理完成后电话通知您，如有其它问题欢迎致电：'
-              : '尊敬的业主，您好！您在工地开放时提出的问题已处理完毕，您可以于集中交付时查看现场，如您还有其它疑问，欢迎致电：'
-              }}
-          </p>
-          <div class="info">
-            <p>保修中心：{{item.RepairName}}</p>
-            <p>保修电话：<a :href="`tel:${item.RepairTel}`">{{item.RepairTel}}</a></p>
+        <swiper-slide
+          v-for="(item, index) in banners"
+          :key="'house-'+index"
+        >
+          <span class="house-name">{{item}}</span>
+        </swiper-slide>
+      </swiper>
+    </div>
+    <div v-if="currentProgress.length>0" class="progress">
+      <flexbox
+        v-for="(item, index) in currentProgress"
+        :key="'item-'+index"
+        class="progress-item"
+      >
+        <flexbox-item class="icon">
+          <Icon :name="index===0?'radio-check':'radio'"/>
+        </flexbox-item>
+        <flexbox-item class="item-body">
+          <div class="item-body-wrapper">
+            <p class="time">{{item.StatusTime|formatdate}}</p>
+            <p class="desc">
+              {{
+                item.Status === '已受理'
+                ? '尊敬的业主，您好！您在工地开放时记录的问题，我中心已安排整改处理，并将在处理完成后电话通知您，如有其它问题欢迎致电：'
+                : '尊敬的业主，您好！您在工地开放时提出的问题已处理完毕，您可以于集中交付时查看现场，如您还有其它疑问，欢迎致电：'
+                }}
+            </p>
+            <div class="info">
+              <p>保修中心：{{item.RepairName}}</p>
+              <p>保修电话：<a :href="`tel:${item.RepairTel}`">{{item.RepairTel}}</a></p>
+            </div>
           </div>
-        </div>
-      </flexbox-item>
-    </flexbox>
+        </flexbox-item>
+      </flexbox>
+      <p class="tip">温馨提示：以上数据在每周五更新，具体以您收到的通知领取短信及实际领取时间为准。</p>
+    </div>
+    <div v-else class="no-data-guide">
+      <nodata>暂无信息</nodata>
+    </div>
   </div>
-  <div v-else class="no-data-guide">
-    <nodata>暂无信息</nodata>
+  <div v-if="state === 0" class="no-data-guide">
+    <nodata>暂无房源信息</nodata>
+    <Btn type="primary" text="绑定房产" @click="goBind"/>
   </div>
-</div>
-<div v-else class="no-data-guide">
-  <nodata>暂无房源信息</nodata>
-  <Btn type="primary" text="绑定房产" @click="goBind"/>
 </div>
 </template>
 <script>
@@ -121,7 +124,7 @@ export default {
   watch: {
     state (newVal, oldVal) {
       if (newVal !== 3) {
-        this.checkIdentity()
+        // this.checkIdentity()
       }
     }
   },
@@ -131,7 +134,7 @@ export default {
     }
   },
   created () {
-    this.checkIdentity()
+    // this.checkIdentity()
     this.getProgress()
   },
   methods: {
@@ -228,6 +231,13 @@ export default {
         height:calc(100% - 2.3466666rem);
         overflow: auto;
         -webkit-overflow-scrolling: touch;
+        .tip{
+          font-size: p2r(24);
+          color: $thr-color;
+          line-height: 1.5;
+          margin: p2r(60) 0 p2r(30);
+          text-align: center;
+        }
         .progress-item{
           &:first-child{
             .icon{

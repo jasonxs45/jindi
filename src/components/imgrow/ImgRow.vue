@@ -7,7 +7,7 @@
     <slot></slot>
       <img-cell>
           <div
-            v-if="canUpload&&group.length<4"
+            v-if="canUpload&&group.length<maxCount"
             class="upload-btn"
             @click="clickHandler"
           >
@@ -38,11 +38,16 @@ export default {
     canUpload: {
       type: Boolean,
       default: false
+    },
+    maxCount: {
+      type: Number,
+      default: 4
     }
   },
   methods: {
     clickHandler (e) {
-      wxConf.wxUpload(4, (res) => {
+      let _self = this
+      wxConf.wxUpload(_self.maxCount, (res) => {
         this.$emit('on-upload', res)
       })
       .catch(error => {

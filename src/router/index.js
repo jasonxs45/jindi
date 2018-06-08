@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import pageRoutes from './pages'
 import wxConf from 'common/utils/wxConf'
+import MtaH5 from 'common/utils/mta'
 Vue.use(Router)
 
 let routes = pageRoutes
@@ -18,5 +19,6 @@ router.beforeEach((to, from, next) => {
 })
 router.afterEach((to, from) => {
   window.$closeAll()
+  MtaH5.pgv()
 })
 export default router

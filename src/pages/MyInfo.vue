@@ -29,14 +29,14 @@
       </flexbox>
       <flexbox class="border area">
         <flexbox-item class="fh">
-          收货地址
+          收件地址
         </flexbox-item>
         <flexbox-item class="fb">
           <input
             v-model="address"
             type="text"
             readonly
-            placeholder="完善收货地址"
+            placeholder="完善收件地址"
             class="input"
             @click="toggoleShowArea"
             @focus="focus"
@@ -188,7 +188,7 @@ export default {
         return
       }
       if (!this.address) {
-        window.$alert('请完善收货地址')
+        window.$alert('请完善收件地址')
         return
       }
       let _self = this

@@ -7,7 +7,7 @@
     <flexbox-item>
       <div class="nickname">
         <div class="text">{{userInfo.nickname}}</div>
-        <div class="mark"><slot name="tag">{{userInfo.markMap[userInfo.state]}}</slot></div>
+        <div v-if="userInfo.markMap[userInfo.state]" class="mark"><slot name="tag">{{userInfo.markMap[userInfo.state]}}</slot></div>
       </div>
       <div class="state-info"><slot name="desc">{{userInfo.house}}</slot></div>
     </flexbox-item>

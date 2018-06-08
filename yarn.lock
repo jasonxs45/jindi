@@ -4133,6 +4133,10 @@ ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
 
+mta-h5-analysis@^2.0.9:
+  version "2.0.9"
+  resolved "https://registry.npmjs.org/mta-h5-analysis/-/mta-h5-analysis-2.0.9.tgz#8175e2ba73af589dd7f0fef66d86fa6cdbc3367e"
+
 multicast-dns-service-types@^1.1.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/multicast-dns-service-types/-/multicast-dns-service-types-1.1.0.tgz#899f11d9686e5e05cb91b35d5f0e63b773cfc901"

@@ -71,7 +71,7 @@ export default {
   computed: {
     list () {
       this.memberList.forEach((item) => {
-        item.classType = item.BindType === OWNER_TYPE
+        item.classType = item.BindType === OWNER_TYPE || item.BindType === 4
                          ? 'owner'
                          : item.BindType === RELA_TYPE
                          ? 'rela'
@@ -271,8 +271,8 @@ export default {
           .tag{
             font-size: p2r(20);
             padding:0 .3rem;
-            height: p2r(30);
-            line-height: p2r(30);
+            height: p2r(36);
+            line-height: p2r(36);
             background: #333;
             border-radius:25px;
             color:#fff;
