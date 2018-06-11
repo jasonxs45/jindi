@@ -21,7 +21,7 @@
       <div>
         <flexbox
           v-for="(item, index) in currentProgress"
-          :key="'item-'+activeTabIndex+index"
+          :key="'item-'+index"
           class="progress-item"
         >
           <flexbox-item class="icon">
@@ -31,7 +31,7 @@
             <div class="item-body-wrapper">
               <p class="time">{{item.StatusTime|formatdate}}</p>
               <h3 class="status">{{item.Status}}</h3>
-              <p class="info" :class="item.Info ? '' : 'opa'">{{item.Info}}</p>
+              <p class="info" :class="item.Remark ? '' : 'opa'">{{item.Remark}}</p>
             </div>
           </flexbox-item>
         </flexbox>
