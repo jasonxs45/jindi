@@ -119,6 +119,14 @@
               {{item.ExpectTime|formatdate}}
             </flexbox-item>
           </flexbox>
+          <flexbox v-if="item.FinishTime">
+            <flexbox-item class="builder-name">
+              完成时间：
+            </flexbox-item>
+            <flexbox-item class="tel">
+              {{item.FinishTime|formatdate}}
+            </flexbox-item>
+          </flexbox>
           <flexbox>
             <flexbox-item class="builder-name">
               处理单位：{{item.BuilderName}}
@@ -444,7 +452,7 @@ export default {
     startRepair () {
       let _self = this
       let index = window.$confirm({
-        content: '开始维修后，不可删除子报修单<br/>确定删除吗？',
+        content: '开始维修后，不可删除子报修单<br/>确定吗？',
         yes () {
           window.$close(index)
           api.repair.engineer.startRepair(_self.repair.ID)
@@ -493,7 +501,7 @@ export default {
         if (res.data.IsSuccess) {
           window.$alert({
             title: '恭喜您',
-            content: '订单完成！',
+            content: '报修工单完成！',
             yes () {
               _self.$router.push({
                 name: 'repairengineer',

@@ -274,9 +274,10 @@ export default {
       api.repair.engineermanager.refuse(this.id, this.refuseReason)
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
-          window.$alert({
+          let index = window.$alert({
             content: '已成功驳回拒单！',
             yes () {
+              window.$close(index)
               _self.$router.go(-1)
             }
           })

@@ -10,7 +10,10 @@
           :key="'question-'+index1"
           class="question"
         >
-          <dt class="tit">{{item.Number}}、{{item.Question}}<span v-if="item.Type==='多选'" class="multiple-mark">【多选】</span></dt>
+          <dt class="tit">
+            <p class="num">{{item.Number}}、</p>
+            <p class="text">{{item.Question}}<span v-if="item.Type==='多选'" class="multiple-mark">【多选】</span></p>
+          </dt>
           <dd class="options">
             <XTextarea
               v-if="item.Type==='填空'"
@@ -240,9 +243,27 @@ export default {
         }
         .tit{
           color:$text-color;
-          font-size: p2r(28);
+          line-height: 1.4;
+          font-size: 0;
+          .num{
+            font-size: p2r(28);
+            display: inline-block;
+            width: p2r(30);
+            vertical-align: top;
+          }
+          .text{
+            display: inline-block;
+            font-size: p2r(28);
+            width: calc(100% - .64rem);
+            vertical-align: top;
+          }
           .multiple-mark{
             color:$primary-color;
+          }
+          &:after{
+            content: '';
+            display: block;
+            clear: both;
           }
         }
         .options{
