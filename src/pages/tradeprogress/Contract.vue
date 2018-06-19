@@ -31,7 +31,10 @@
             <div class="item-body-wrapper">
               <p class="time">{{item.StatusTime|formatdate}}</p>
               <h3 class="status">{{item.Status}}</h3>
-              <p class="info" :class="item.Remark ? '' : 'opa'">{{item.Remark}}</p>
+              <div class="info" :class="item.Remark ? '' : 'opa'">
+                <p>{{item.Remark}}</p>
+                <p v-if="item.Tel">咨询电话：<a :href="'tel:'+item.Tel">{{item.Tel}}</a></p>
+              </div>
             </div>
           </flexbox-item>
         </flexbox>

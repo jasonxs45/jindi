@@ -26,7 +26,7 @@
       <p class="tip">* 手机号码</p>
       <XInput v-model="form.tel" readonly placeholder="请输入手机号码" htmlType="tel"/>
       <Btn type="primary" size="lar" text="提交" @click="submitHandler"/>
-      <Btn type="default" size="lar" text="取消" @click="$router.go(-1)"/>
+      <Btn type="default" size="lar" text="取消" @click="back"/>
     </div>
   </div>
 </template>
@@ -39,6 +39,7 @@ import {
   Btn
 } from 'components'
 import api from 'common/api'
+import wxConf from 'common/utils/wxConf'
 export default {
   name: 'BindOwnerConfirm',
   components: {
@@ -159,6 +160,17 @@ export default {
         return
       }
       this.getPass()
+    },
+    back () {
+      if (window.history.length >= 2) {
+        window.history.go(-1)
+      } else {
+        if (window.wx) {
+          wxConf.closeWindow()
+        } else {
+          window.close()
+        }
+      }
     }
   }
 }

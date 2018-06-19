@@ -394,7 +394,7 @@ export default {
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
           window.$alert({
-            content: '已成功拒单',
+            content: '拒单申请已提交',
             yes () {
               _self.$router.push({
                 name: 'repairengineer',

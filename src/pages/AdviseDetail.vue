@@ -140,7 +140,15 @@ export default {
       })
     },
     back () {
-      this.$router.go(-1)
+      if (window.history.length >= 2) {
+        window.history.go(-1)
+      } else {
+        if (window.wx) {
+          wxConf.closeWindow()
+        } else {
+          window.close()
+        }
+      }
     },
     accept () {
       let _self = this

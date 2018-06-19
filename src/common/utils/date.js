@@ -22,7 +22,7 @@ function padLeftZero (str) {
   return ('00' + str).substr(str.length)
 }
 function transferWeek (n) {
-  var txt = ''
+  let txt = ''
   switch (n) {
     case 0:
       txt = '日'

@@ -43,6 +43,9 @@ let wxConf = {
   openMap (opt) {
     wx.openLocation(opt)
   },
+  closeWindow () {
+    wx.closeWindow()
+  },
   previewImg ({current, urls}) {
     wx.previewImage({
       current,

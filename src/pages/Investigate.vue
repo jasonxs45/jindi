@@ -248,13 +248,13 @@ export default {
           .num{
             font-size: p2r(28);
             display: inline-block;
-            width: p2r(30);
+            width: p2r(50);
             vertical-align: top;
           }
           .text{
             display: inline-block;
             font-size: p2r(28);
-            width: calc(100% - .64rem);
+            width: calc(100% - 1.1rem);
             vertical-align: top;
           }
           .multiple-mark{

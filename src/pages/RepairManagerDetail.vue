@@ -36,12 +36,12 @@
           <x-option
             v-for="(engineer, index) in enginners"
             :key="'engineer-'+index"
-            :label="engineer.Name+'--'+engineer.StageName+' '+engineer.Building+' - '+engineer.Unit+'单元'"
+            :label="engineer.Name"
             :value="engineer.ID"
           >
             <flexbox>
               <flexbox-item class="left">{{engineer.Name}}</flexbox-item>
-              <flexbox-item class="right">{{engineer.ProjectName}}{{engineer.StageName}} {{engineer.Building}} - {{engineer.Unit}}单元</flexbox-item>
+              <flexbox-item class="right"></flexbox-item>
             </flexbox>
           </x-option>
         </x-select>
@@ -208,7 +208,15 @@ export default {
       })
     },
     back () {
-      this.$router.go(-1)
+      if (window.history.length >= 2) {
+        window.history.go(-1)
+      } else {
+        if (window.wx) {
+          wxConf.closeWindow()
+        } else {
+          window.close()
+        }
+      }
     }
   }
 }

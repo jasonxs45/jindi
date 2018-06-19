@@ -1,5 +1,5 @@
 <template>
-  <div class="repair-detail">
+  <div class="repair-detail" :class="sh">
     <p class="tag">{{repair.State|formatStatus}}</p>
     <div :class="['repair-detail-wrapper', repair.State !== 3 ? 'single' : '' ]">
       <div class="detail">
@@ -172,7 +172,8 @@ export default {
       desc: '',
       uploadImgs: [],
       questions: ['响应速度', '服务态度', '解决问题', '维修保护'],
-      scoreArr: [0, 0, 0, 0]
+      scoreArr: [0, 0, 0, 0],
+      sh: ''
     }
   },
   computed: {
@@ -245,6 +246,19 @@ export default {
   methods: {
     toggleShowEvaluate () {
       this.showEvaluate = !this.showEvaluate
+      if (this.showEvaluate) {
+        this.sh = 'sh'
+        window.document.querySelector('html').style.overflow = 'hidden'
+        window.document.querySelector('html').style.height = '100%'
+        window.document.querySelector('body').style.overflow = 'hidden'
+        window.document.querySelector('body').style.height = '100%'
+      } else {
+        this.sh = ''
+        window.document.querySelector('html').style.overflow = ''
+        window.document.querySelector('html').style.height = ''
+        window.document.querySelector('body').style.overflow = ''
+        window.document.querySelector('body').style.height = ''
+      }
     },
     getDetail () {
       api.repair.detail(this.id)
@@ -314,7 +328,15 @@ export default {
       })
     },
     back () {
-      this.$router.go(-1)
+      if (window.history.length >= 2) {
+        window.history.go(-1)
+      } else {
+        if (window.wx) {
+          wxConf.closeWindow()
+        } else {
+          window.close()
+        }
+      }
     }
   }
 }
@@ -324,6 +346,9 @@ export default {
 @import "~common/scss/mixins.scss";
 .repair-detail{
   width: 100vw;
+  &.sh{
+    overflow: hidden;
+  }
   .tag{
     display: inline-block;
     background: #ccc;

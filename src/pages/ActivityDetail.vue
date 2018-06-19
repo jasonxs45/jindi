@@ -232,6 +232,7 @@ import {
   ID_CHECK,
   webRoot
 } from 'common/data'
+import wxConf from 'common/utils/wxConf'
 export default {
   name: 'ActivityDetail',
   components: {
@@ -301,7 +302,15 @@ export default {
       this.toggoleShowArea()
     },
     goBack () {
-      this.$router.go(-1)
+      if (window.history.length >= 2) {
+        window.history.go(-1)
+      } else {
+        if (window.wx) {
+          wxConf.closeWindow()
+        } else {
+          window.close()
+        }
+      }
     },
     getArea (val) {
       this.extraInfos.consignee.pickedArea = val
