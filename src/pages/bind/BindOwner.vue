@@ -230,10 +230,10 @@ export default {
         message = message === ''
                       ? '绑定成功！'
                       : message === '领完了'
-                      ? '<p>唔~领完了，感觉错过一个亿</p><p>关注金地华中服务号，更多福利等你来领</p>'
+                      ? '<p>很遗憾，红包已经领取完毕</p><p>关注金地华中服务号，后期更多福利等你来领</p>'
                       : '此房源红包已被领取'
         let index = window.$alert({
-          title: '恭喜您！',
+          title: message === '' ? '恭喜您！' : '绑定成功！',
           content: message,
           yes () {
             window.$close(index)
@@ -243,7 +243,7 @@ export default {
           }
         })
       } else {
-        location.href = `http://weixin.juzhen.com/2018/jdhb_0626/index.html?RedInfo=${redinfo}`
+        location.href = `http://kuaima.juzhen02.com/2018/jdhb_0626/index.html?RedInfo=${redinfo}`
       }
     },
     toggleRights () {

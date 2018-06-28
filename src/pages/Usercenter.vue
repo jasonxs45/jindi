@@ -49,7 +49,17 @@ export default {
   },
   data () {
     return {
-      entries: entries.filter(item => {
+    }
+  },
+  computed: {
+    memberid () {
+      return this.$store.state.userInfo.memberid
+    },
+    entries () {
+      return entries.filter(item => {
+        if (item.name === '分享得积分') {
+          item.link = `/share/${this.memberid}`
+        }
         return item.name !== '个人中心' &&
                item.name !== '社区活动' &&
                item.name !== '金地家书' &&

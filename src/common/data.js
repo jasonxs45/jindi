@@ -1,6 +1,7 @@
 import store from '@/store'
 /* eslint-disable no-unused-vars */
 const webRoot = process.env.NODE_ENV === 'production' ? '' : 'http://jindi.1juke.cn'
+console.log(`/share/${store.state.userInfo.memberid}`)
 let entries = [
   {
     name: '我的房源',
