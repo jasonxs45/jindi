@@ -202,6 +202,24 @@ export default {
       }
       this.getHouses()
     },
+    fansHandler () {
+      api.globalQuery(
+        {
+          Act: 'HasSubscribe'
+        }
+      ).then(({res}) => {
+        if (res.data.IsSuccess) {
+          // 已关注
+        } else {
+          let index = window.$alert({
+            content: '您还未关注公众号，点击前往关注！',
+            yes () {
+              localStorage.href = 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzI4MTcxNDE3NQ==&scene=124#wechat_redirect'
+            }
+          })
+        }
+      })
+    },
     submitHandler () {
       if (!this.houseid) {
         window.$alert('请选择房源')
