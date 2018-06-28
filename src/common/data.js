@@ -1,3 +1,4 @@
+import store from '@/store'
 /* eslint-disable no-unused-vars */
 const webRoot = process.env.NODE_ENV === 'production' ? '' : 'http://jindi.1juke.cn'
 let entries = [
@@ -76,6 +77,11 @@ let entries = [
     name: '我的资料',
     icon: 'set',
     link: '/myinfo'
+  },
+  {
+    name: '分享得积分',
+    icon: 'msg',
+    link: `/share/${store.state.userInfo.memberid}`
   }
 ]
 // 提交报修的类别

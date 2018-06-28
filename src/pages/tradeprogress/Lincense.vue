@@ -31,12 +31,15 @@
             <div class="item-body-wrapper">
               <p class="time">{{item.StatusTime|formatdate}}</p>
               <h3 class="status">{{item.Status}}</h3>
-              <p class="info" :class="item.Remark ? '' : 'opa'">{{item.Remark}}</p>
+              <div class="info" :class="item.Remark ? '' : 'opa'">
+                <p>{{item.Remark}}</p>
+                <p v-if="item.Tel">咨询电话：<a :href="'tel:'+item.Tel">{{item.Tel}}</a></p>
+              </div>
             </div>
           </flexbox-item>
         </flexbox>
       </div>
-      <p class="tip">温馨提示：以上数据在每周五更新，具体以您收到的通知领取短信及实际领取时间为准。</p>
+      <p class="tip">温馨提示：以上数据更新截止时间为每周日18：00，具体以您收到的通知领取短信及实际领取时间为准。</p>
     </div>
     <div v-else class="no-data-guide">
       <nodata>暂无信息</nodata>

@@ -20,7 +20,7 @@
         </div>
         <div class="text">
           <h3 class="name">
-            <span class="txt"> {{item.ProjectName}}【{{item.ShortName}}】</span>
+            <span class="txt"> {{item.ProjectName}}<!--【{{item.ShortName}}】--></span>
           </h3>
           <p v-if="item.Address" class="address">地址：{{item.Address}}</p>
           <p class="updatetime">更新时间<i>{{item.Ext}}</i></p>

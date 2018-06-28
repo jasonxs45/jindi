@@ -20,6 +20,10 @@
                 <span v-if="item.OwnerType" class="tag" :class="item.classType">{{item.OwnerType}}</span>
               </div>
               <p class="stage">{{item.StageName}} {{item.Building}} - {{item.Unit}}单元{{item.HouseNo}}</p>
+              <flexbox class="stage" justify="justify">
+                <flexbox-item>建筑面积：{{item.BuildArea || '--'}}㎡</flexbox-item>
+                <flexbox-item v-if="item.ContractDate" style="text-align:right">合同交付日期：{{item.ContractDate}}</flexbox-item>
+              </flexbox>
             </div>
             <Btn type="base" text="成员列表" @click.stop="goMembers(item.ID)"/>
           </div>
@@ -31,6 +35,8 @@
 </template>
 <script>
 import {
+  Flexbox,
+  FlexboxItem,
   Userinfo,
   Split,
   Nodata,
@@ -40,12 +46,15 @@ import api from 'common/api'
 import {
   formatDate
 } from 'common/utils/date'
+const OWNER_TYPE_SECOND = 4
 const OWNER_TYPE = 3
 const RELA_TYPE = 2
 const RENT_TYPE = 1
 export default {
   name: 'MyHouses',
   components: {
+    Flexbox,
+    FlexboxItem,
     Userinfo,
     Split,
     Nodata,
@@ -59,7 +68,7 @@ export default {
   computed: {
     list () {
       this.houseList.forEach((item) => {
-        item.classType = item.BindType === OWNER_TYPE
+        item.classType = (item.BindType === OWNER_TYPE || item.BindType === OWNER_TYPE_SECOND)
                          ? 'owner'
                          : item.BindType === RELA_TYPE
                          ? 'rela'
@@ -68,6 +77,7 @@ export default {
                          : ''
         item.SignTime = formatDate(new Date(item.SignTime), 'yyyy/MM/dd')
         item.Warranty = formatDate(new Date(item.Warranty), 'yyyy/MM/dd')
+        item.ContractDate = item.ContractDate ? formatDate(new Date(item.ContractDate), 'yyyy/MM/dd') : ''
       })
       return this.houseList
     }

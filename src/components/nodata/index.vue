@@ -1,6 +1,7 @@
 <template>
   <div class="nodata">
-    <Icon name="suggest"/>
+    <!-- <Icon name="suggest"/> -->
+    <img class="nodataimg" src="static/images/nodata.png">
     <div class="info">
       <slot></slot>
     </div>
@@ -20,7 +21,10 @@ export default {
 .nodata{
  text-align: center;
  color:$thr-color;
- padding-top: p2r(50);
+ padding-top: p2r(20);
+ .nodataimg{
+   width: p2r(200);
+ }
  .iconfont{
    font-size: p2r(56);
  }

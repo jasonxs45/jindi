@@ -8,6 +8,7 @@
         <flexbox-item class="fb">
           <input
             v-model="name"
+            :disabled="disabled"
             type="text"
             placeholder="请输入您的姓名"
             class="input"
@@ -133,7 +134,8 @@ export default {
       address: null,
       showAreaPage: false,
       pickedArea: '',
-      desc: ''
+      desc: '',
+      disabled: false
     }
   },
   created () {
@@ -168,6 +170,9 @@ export default {
       api.modify.get()
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
+          if (res.data.Data.Name) {
+            this.disabled = true
+          }
           this.name = res.data.Data.Name
           this.tel = res.data.Data.Tel
           this.address = res.data.Data.Address

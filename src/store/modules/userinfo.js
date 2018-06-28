@@ -5,6 +5,7 @@ const state = {
   nickname: '',
   state: null,
   house: null,
+  memberid: '',
   markMap: [
     '未注册',
     '租户',
@@ -41,6 +42,7 @@ const mutations = {
     state.nickname = res.NickName
     state.state = res.Identity
     state.house = res.Identity === 0 ? '尚未绑定房源信息' : `房源数量：${res.HouseCount}`
+    state.memberid = res.MemberID
   }
 }
 

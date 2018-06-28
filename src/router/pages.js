@@ -63,6 +63,7 @@ const GuideDetail = r => require.ensure([], () => r(require('pages/GuideDetail')
 const PageNotFound = r => require.ensure([], () => r(require('pages/PageNotFound')), 'PageNotFound')
 const Wait = r => require.ensure([], () => r(require('pages/Wait')), 'Wait')
 const Menu = r => require.ensure([], () => r(require('pages/Menu')), 'Menu')
+const Share = r => require.ensure([], () => r(require('pages/Share')), 'Share')
 export default [
   // 主页
   {
@@ -522,6 +523,14 @@ export default [
     component: Menu,
     meta: {
       title: '菜单'
+    }
+  },
+  {
+    path: '/share/:id',
+    name: 'share',
+    component: Share,
+    meta: {
+      title: '分享得积分'
     }
   }
 ]

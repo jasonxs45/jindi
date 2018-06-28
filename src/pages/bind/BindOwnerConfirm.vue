@@ -2,10 +2,10 @@
   <div class="bind-relative">
     <div class="top">
       <h3 class="title">【{{typeid === 2 ? '家属' : typeid === 1 ? '租户' : ''}}】会员注册审核</h3>
-      <div class="sub-title">绑定居住房源，获得物业专属服务权益</div>
+      <div class="sub-title">绑定居住房源，获得金地地产专属服务权益</div>
     </div>
     <div class="content">
-      <p class="tip title"><b v-if="member">{{member.NickName}}</b>要以【{{typeid === 2 ? '家属' : typeid === 1 ? '租户' : ''}}】身份注册会员，以下是注册信息，请确认是否属实。如果审核通过，用户将以业主等同身份享受您所在物业的服务！</p>
+      <p class="tip title"><b v-if="member">{{member.NickName}}</b>要以【{{typeid === 2 ? '家属' : typeid === 1 ? '租户' : ''}}】身份注册会员，以下是注册信息，请确认是否属实。如果审核通过，用户将以业主等同身份享受您所在金地地产的服务！</p>
       <p class="tip">* 请选择房源</p>
       <x-select
         v-model="selectedItem"

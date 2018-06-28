@@ -203,7 +203,6 @@ export default {
       this.getHouses()
     },
     submitHandler () {
-      let _self = this
       if (!this.houseid) {
         window.$alert('请选择房源')
         return
@@ -216,22 +215,36 @@ export default {
       .then(({res, index}) => {
         window.$close(index)
         if (res.data.IsSuccess) {
-          let index = window.$alert({
-            title: '恭喜您！',
-            content: '绑定成功！',
-            yes () {
-              window.$close(index)
-              _self.$router.push({
-                name: 'usercenter'
-              })
-            }
-          })
+          let message = res.data.Message
+          let redinfo = res.data.Data.RedInfo
+          this.registHandler(message, redinfo)
         } else {
           window.$alert(res.data.Message)
         }
       }).catch(err => {
         console.log(err)
       })
+    },
+    registHandler (message, redinfo) {
+      if (redinfo === '') {
+        message = message === ''
+                      ? '绑定成功！'
+                      : message === '领完了'
+                      ? '<p>唔~领完了，感觉错过一个亿</p><p>关注金地华中服务号，更多福利等你来领</p>'
+                      : '此房源红包已被领取'
+        let index = window.$alert({
+          title: '恭喜您！',
+          content: message,
+          yes () {
+            window.$close(index)
+            this.$router.push({
+              name: 'usercenter'
+            })
+          }
+        })
+      } else {
+        location.href = `http://weixin.juzhen.com/2018/jdhb_0626/index.html?RedInfo=${redinfo}`
+      }
     },
     toggleRights () {
       this.showRights = !this.showRights
@@ -263,7 +276,7 @@ export default {
       padding:0 p2r($base-padding);
     }
     .part1 {
-      height: p2r(700);
+      height: p2r(630);
       .title {
         font-size: p2r(28);
         color: $primary-color;
@@ -271,7 +284,7 @@ export default {
       }
       .houses {
         width: p2r(594);
-        height: p2r(400);
+        height: p2r(350);
         margin: p2r(30) auto;
         overflow: auto;
         -webkit-overflow-scrolling: touch;
@@ -291,7 +304,7 @@ export default {
             }
           }
           .flexbox {
-            height: p2r(88);
+            height: p2r(80);
             border-radius: 4px;
             padding: 0 p2r(20);
             color: #eda697;
@@ -313,7 +326,7 @@ export default {
       }
       .idnum-controller {
         width: p2r(490);
-        margin: p2r(40) auto;
+        margin: p2r(20) auto;
         text-align: center;
         font-size: 0;
         position: relative;
@@ -360,7 +373,7 @@ export default {
           display: block;
           width:p2r(600);
           height: p2r(100);
-          margin: p2r(50) auto;
+          margin: p2r(40) auto;
           position: relative;
           &:first-child{
             margin-top: 0;

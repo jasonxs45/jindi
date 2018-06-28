@@ -106,7 +106,7 @@ export default {
           this.changeShare()
           let index = window.$alert({
             title: '申请已提交！',
-            content: '请将本页面转发给已绑定的业主审核，<br/>待通过后才能完成家属注册流程！',
+            content: '点击右上角，将本页面转发给已绑定的业主审核，<br/>待业主审核通过后才能完成家属注册流程！',
             yes () {
               window.$close(index)
               // _self.toggleShare()
