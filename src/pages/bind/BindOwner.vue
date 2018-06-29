@@ -244,6 +244,7 @@ export default {
       })
     },
     registHandler (message, redinfo) {
+      let _self = this
       if (redinfo === '') {
         message = message === ''
                       ? '绑定成功！'
@@ -255,7 +256,7 @@ export default {
           content: message,
           yes () {
             window.$close(index)
-            this.$router.push({
+            _self.$router.push({
               name: 'usercenter'
             })
           }
