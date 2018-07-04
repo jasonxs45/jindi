@@ -93,13 +93,18 @@
           <flexbox
             v-for="(item, index) in questions"
             :key="'question-'+index"
+            align="center"
             class="evaluate-item"
           >
             <flexbox-item class="head">{{item}}：</flexbox-item>
-            <flexbox-item class="body">
-              <span class="left">非常不满意</span>
-              <Star :size="36" :data-index="index" @on-rate="gatherScore"/>
-              <span class="right">非常满意</span>
+            <flexbox-item class="star-wrapper">
+              <Star :allowHalf="false" :size="36" :data-index="index" @on-rate="gatherScore"/>
+            </flexbox-item>
+            <flexbox-item class="num">
+              {{scoreArr[index] ? scoreArr[index] + '分' : ''}}
+            </flexbox-item>
+            <flexbox-item class="desc">
+              {{judge[index] || '点击星星评分'}}
             </flexbox-item>
           </flexbox>
           <Split type="line"/>
@@ -149,6 +154,9 @@ import {
 } from 'common/data'
 import api from 'common/api'
 import wxConf from 'common/utils/wxConf'
+const judgeMap = [
+  '非常不满意', '不满意', '一般', '满意', '非常满意'
+]
 export default {
   name: 'RepairUserDetail',
   components: {
@@ -173,6 +181,8 @@ export default {
       uploadImgs: [],
       questions: ['响应速度', '服务态度', '解决问题', '维修保护'],
       scoreArr: [0, 0, 0, 0],
+      judgeMap,
+      judge: ['', '', '', ''],
       sh: ''
     }
   },
@@ -288,6 +298,8 @@ export default {
     gatherScore (val) {
       let index = event.currentTarget.dataset.index
       this.scoreArr[index] = val
+      this.scoreArr.splice(index, 1, val)
+      this.judge.splice(index, 1, judgeMap[Math.round(val) - 1])
     },
     evaluate () {
       let _self = this
@@ -533,22 +545,22 @@ export default {
           line-height: p2r(36);
           font-size: p2r(26);
         }
-        .body{
-          .left,
-          .star,
-          .right{
+        .star-wrapper{
+          flex: 0 0 p2r(250);
+          width: p2r(250);
+          .star{
             display: inline-block;
             vertical-align: top;
             color: $text-sub-color;
           }
-          .left,
-          .right{
-            line-height: p2r(36);
-            font-size: p2r(24);
-          }
-          .star{
-            margin: 0 p2r(30);
-          }
+        }
+        .num{
+          flex: 0 0 p2r(80);
+          width: p2r(80);
+          text-align: right;
+        }
+        .desc{
+          text-align: right;
         }
       }
       .split{

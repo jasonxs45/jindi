@@ -22,6 +22,10 @@ const CLS_HALF = 'half'
 export default {
   name: 'Star',
   props: {
+    allowHalf: {
+      type: Boolean,
+      default: true
+    },
     size: {
       type: Number,
       default: 48
@@ -70,7 +74,9 @@ export default {
       let starW = e.target.getBoundingClientRect().width
       let innerLeft = e.target.getBoundingClientRect().left
       let downX = e.clientX
-      let score = Number(e.target.dataset.index) + Math.floor((downX - innerLeft) / starW * 2) / 2 + 0.5
+      let score = this.allowHalf
+                  ? Number(e.target.dataset.index) + Math.floor((downX - innerLeft) / starW * 2) / 2 + 0.5
+                  : Number(e.target.dataset.index) + 1
       if (!isNaN(score)) {
         this.rateScore = score
         this.$emit('on-rate', this.rateScore)
