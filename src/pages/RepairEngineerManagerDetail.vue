@@ -310,9 +310,10 @@ export default {
       api.repair.engineermanager.agree(this.id)
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
-          window.$alert({
+          let index = window.$alert({
             content: '已同意拒单！',
             yes () {
+              window.$close(index)
               _self.$router.go(-1)
             }
           })
@@ -352,9 +353,10 @@ export default {
       api.repair.engineermanager.change(this.id, this.selectedEngineer.value, this.allotReason)
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
-          window.$alert({
+          let index = window.$alert({
             content: '分单成功！',
             yes () {
+              window.$close(index)
               _self.$router.go(-1)
             }
           })
