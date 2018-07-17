@@ -202,12 +202,12 @@ export default {
   watch: {
     state (newVal, oldVal) {
       if (newVal !== 3) {
-        // this.checkIdentity()
+        this.checkIdentity()
       }
     }
   },
   created () {
-    // this.checkIdentity()
+    this.checkIdentity()
     this.getHouses()
     this.getParts()
   },

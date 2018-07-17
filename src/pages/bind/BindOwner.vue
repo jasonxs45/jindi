@@ -404,7 +404,7 @@ export default {
       }
     }
     .part2 {
-      padding-top: p2r(40);
+      padding-top: p2r(30);
     }
   }
   .tip{

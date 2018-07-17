@@ -55,6 +55,9 @@ export default {
   computed: {
     readonly () {
       return !!this.user
+    },
+    wxReady () {
+      return this.$store.state.global.wxReady
     }
   },
   created () {
