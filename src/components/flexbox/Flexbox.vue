@@ -68,6 +68,7 @@ export default {
   @import '~common/scss/variables.scss';
   @import '~common/scss/mixins.scss';
   .flexbox{
+    display:-webkit-box;
     display: flex;
     &.flexbox-content-center{
       justify-content: center;

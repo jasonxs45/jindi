@@ -106,4 +106,7 @@ export default {
     }
   }
 }
+.bigfont{
+  font-size: p2r(34) !important;
+}
 </style>

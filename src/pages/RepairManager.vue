@@ -2,7 +2,7 @@
   <div class="repair-user repair-manager">
     <userinfo type-class="rectangle">
       <span slot="tag" class="kefu">客服</span>
-      <div class="name" slot="desc">
+      <div v-if="managerInfo" class="name" slot="desc">
         <span>{{managerInfo.Name}}</span> <a :href="'tel:'+managerInfo.Tel">{{managerInfo.Tel}}</a>
       </div>
     </userinfo>

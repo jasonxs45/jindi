@@ -111,6 +111,17 @@ let repair = {
       }
       return api.globalQuery(opt)
     },
+    // 征求意见
+    askFor (ID, RefuseReason) {
+      let opt = {
+        Act: 'RepairRequest',
+        Data: JSON.stringify({
+          ID,
+          RefuseReason
+        })
+      }
+      return api.globalQuery(opt)
+    },
     // 获取专业分类
     parts () {
       let opt = {
@@ -199,6 +210,17 @@ let repair = {
         Act: 'RepairAgree',
         Data: JSON.stringify({
           ID
+        })
+      }
+      return api.globalQuery(opt)
+    },
+    // 给出反馈
+    sendResponse (ID, ReturnMsg) {
+      let opt = {
+        Act: 'RepairResponse',
+        Data: JSON.stringify({
+          ID,
+          ReturnMsg
         })
       }
       return api.globalQuery(opt)

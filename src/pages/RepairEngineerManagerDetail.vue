@@ -62,7 +62,7 @@
     </div>
     <div :class="['btns', singleBtn ? 'single' : '']">
       <!-- 工程师主管 -->
-      <flexbox v-if="!singleBtn" class="double">
+      <flexbox v-if="repair.AdminState === 1 && !singleBtn" class="double">
         <Btn
           text="驳回"
           class="inline flexbox-item opa"
@@ -83,6 +83,12 @@
         />
       </flexbox>
       <Btn
+        type="primary"
+        text="反馈"
+        size="lar"
+        @click="toggleResponse"
+      />
+      <Btn
         type="default"
         size="lar"
         text="返回"
@@ -98,6 +104,18 @@
           <x-textarea v-model="refuseReason" placeholder="请填写驳回理由"></x-textarea>
           <Btn type="primary" text="提交" size="lar" @click="submitRefuse"/>
           <Btn type="default" text="取消" size="lar" @click="toggleRefuse"/>
+        </div>
+      </transition>
+    </div>
+    <div class="refuse">
+      <transition name="fade">
+        <div v-show="showResponse" class="bg" @click="toggleResponse"></div>
+      </transition>
+      <transition name="slide-up">
+        <div v-show="showResponse" class="refuse-wrapper">
+          <x-textarea v-model="returnMsg" placeholder="请填写反馈意见"></x-textarea>
+          <Btn type="primary" text="提交" size="lar" @click="sendResponse"/>
+          <Btn type="default" text="取消" size="lar" @click="toggleResponse"/>
         </div>
       </transition>
     </div>
@@ -178,7 +196,9 @@ export default {
       refuseReason: '',
       engineerList: [],
       selectedEngineer: {},
-      allotReason: ''
+      allotReason: '',
+      showResponse: false,
+      returnMsg: ''
     }
   },
   computed: {
@@ -272,7 +292,7 @@ export default {
         }
       }
     },
-    /* =====驳回拒绝==== */
+    /* =====同意拒绝==== */
     submitRefuse () {
       if (!this.refuseReason) {
         window.$alert('请填写驳回理由')
@@ -310,10 +330,35 @@ export default {
       api.repair.engineermanager.agree(this.id)
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
-          let index = window.$alert({
+          let indexx = window.$alert({
             content: '已同意拒单！',
             yes () {
-              window.$close(index)
+              window.$close(indexx)
+              _self.$router.go(-1)
+            }
+          })
+        } else {
+          window.$alert(res.data.Message)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+    /* =====提交反馈==== */
+    sendResponse () {
+      if (!this.returnMsg) {
+        window.$alert('请填写反馈意见')
+        return
+      }
+      let _self = this
+      api.repair.engineermanager.sendResponse(this.id, this.returnMsg)
+      .then(({res, index}) => {
+        if (res.data.IsSuccess) {
+          let indexx = window.$alert({
+            content: '反馈意见已提交！',
+            yes () {
+              window.$close(indexx)
               _self.$router.go(-1)
             }
           })
@@ -369,6 +414,9 @@ export default {
       })
     },
     // 弹层
+    toggleResponse () {
+      this.showResponse = !this.showResponse
+    },
     toggleRefuse () {
       this.showRefuse = !this.showRefuse
     },

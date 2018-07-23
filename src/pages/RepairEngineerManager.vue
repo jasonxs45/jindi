@@ -26,6 +26,7 @@
         class="repair-card"
         @click="toDetail(item.ID)"
       >
+        <div class="mark">{{item.AdminState === 1 ? '拒单' : item.AdminState === 2 ? '征求意见' : ''}}</div>
         <flexbox>
           <flexbox-item class="title">
             {{item.ProjectName+item.StageName}} {{item.Building}} - {{item.Unit}}-{{item.HouseNo}}
@@ -235,10 +236,21 @@ export default {
        }
      }
      .repair-card{
+      position: relative;
       background: #fff;
       border-radius: 4px;
-      padding:p2r($base-padding);
+      padding:p2r($base-padding / 3 * 5) p2r($base-padding);
       margin: p2r(30) 0;
+      .mark{
+        display: inline-block;
+        background: #ccc;
+        color:$text-color;
+        padding: p2r(10) p2r(15);
+        border-top-right-radius: 4px;
+        position: absolute;
+        top:0;
+        right:0;
+      }
       &:first-child {
         margin-top: 0;
       }

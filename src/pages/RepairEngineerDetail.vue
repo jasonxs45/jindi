@@ -84,7 +84,8 @@
             <flexbox-item class="state" :class="item.State === 0 ? 'handling' : 'done'">{{item.State === 0 ? '处理中' : '已完成'}}</flexbox-item>
             <flexbox-item v-if="item.Status" class="timelimit"><span class="tag">{{item.Status}}</span></flexbox-item>
           </flexbox>
-          <div class="desc">{{item.TypeName}}</div>
+          <div class="type-name">{{item.TypeName}}</div>
+          <div class="desc">{{item.Desc}}</div>
           <div v-if="item.Images.length > 0" class="more-detail">
             <img-row
               :group="item.Images"
@@ -193,6 +194,14 @@
           class="inline flexbox-item"
           @click="toggleRefuse"
         />
+        <Btn
+          v-if="repair.State === 1 && !detailList.length"
+          type="primary"
+          size="lar"
+          text="征求意见"
+          class="inline flexbox-item"
+          @click="toggleAskFor"
+        />
       </flexbox>
       <Btn
         v-if="repair.State === 2 && detailList.every(item => item.State === 1)"
@@ -217,6 +226,18 @@
           <x-textarea v-model="refuseReason" placeholder="请填写拒绝理由"></x-textarea>
           <Btn type="primary" text="提交" size="lar" @click="submitRefuse"/>
           <Btn type="default" text="取消" size="lar" @click="toggleRefuse"/>
+        </div>
+      </transition>
+    </div>
+    <div class="refuse">
+      <transition name="fade">
+        <div v-show="showAskFor" class="bg" @click="toggleAskFor"></div>
+      </transition>
+      <transition name="slide-up">
+        <div v-show="showAskFor" class="refuse-wrapper">
+          <x-textarea v-model="refuseReason1" placeholder="请填写详细意见需求"></x-textarea>
+          <Btn type="primary" text="提交" size="lar" @click="askFor"/>
+          <Btn type="default" text="取消" size="lar" @click="toggleAskFor"/>
         </div>
       </transition>
     </div>
@@ -262,9 +283,11 @@ export default {
       role: '',
       id: '',
       refuseReason: '',
+      refuseReason1: '',
       content: null,
       desc: '',
-      showRefuse: false
+      showRefuse: false,
+      showAskFor: false
     }
   },
   computed: {
@@ -378,6 +401,39 @@ export default {
         console.log(err)
       })
     },
+    /* =====征求意见==== */
+    // 弹层
+    toggleAskFor () {
+      this.showAskFor = !this.showAskFor
+    },
+    askFor () {
+      let _self = this
+      if (!this.refuseReason1) {
+        window.$alert('请填写详细意见需求')
+        return
+      }
+      api.repair.engineer.askFor(this.id, this.refuseReason1)
+      .then(({res, index}) => {
+        if (res.data.IsSuccess) {
+          window.$alert({
+            content: '征求意见已提交',
+            yes () {
+              _self.$router.push({
+                name: 'repairengineer',
+                params: {
+                  state: 'untreated'
+                }
+              })
+            }
+          })
+        } else {
+          window.$alert(res.data.Message)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
     /* =====拒绝受理==== */
     // 弹层
     toggleRefuse () {
@@ -426,7 +482,7 @@ export default {
     delSubOrder (id) {
       let _self = this
       let index = window.$confirm({
-        content: '确定删除吗？',
+        content: '<p class="bigfont">确定删除吗？</p>',
         yes () {
           window.$close(index)
           if (_self.content.detailList) {
@@ -452,7 +508,7 @@ export default {
     startRepair () {
       let _self = this
       let index = window.$confirm({
-        content: '开始维修后，不可删除子报修单<br/>确定吗？',
+        content: '<p class="bigfont">开始维修后，不可删除子报修单<br/>确定吗？</p>',
         yes () {
           window.$close(index)
           api.repair.engineer.startRepair(_self.repair.ID)
@@ -700,6 +756,10 @@ export default {
         &:first-child{
           margin-top: p2r(20);
         }
+        .type-name{
+          font-size: p2r(28);
+          margin: 0 0 p2r(30);
+        }
         .desc{
           background: #eee;
           padding: p2r(30) p2r(20);
@@ -782,14 +842,14 @@ export default {
       margin-top: p2r(-300);
     }
     .double{
-      width: p2r(600);
+      width: p2r(640);
       margin:0 auto;
       font-size: 0;
       justify-content: space-between;
       .btn{
         margin: {
-          left: 0;
-          right: 0;
+          left: p2r(10);
+          right: p2r(10);
         }
       }
     }

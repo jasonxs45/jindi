@@ -53,7 +53,7 @@
               <div class="item-body-wrapper">
                 <p class="time">{{item.AddTime}}</p>
                 <h3 class="status">{{item.Title}}</h3>
-                <p class="info" :class="item.Remark? '': 'opa'">{{item.Remark}}</p>
+                <p class="info" :class="item.Remark? '': 'opa'" v-html="item.Remark"></p>
               </div>
             </flexbox-item>
           </flexbox>
