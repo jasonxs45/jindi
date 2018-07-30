@@ -83,6 +83,7 @@
         />
       </flexbox>
       <Btn
+        v-if="repair.AdminState === 2"
         type="primary"
         text="反馈"
         size="lar"
@@ -334,7 +335,13 @@ export default {
             content: '已同意拒单！',
             yes () {
               window.$close(indexx)
-              _self.$router.go(-1)
+              _self.toggleRefuse()
+              _self.$router.replace({
+                name: 'repairengineermanager',
+                params: {
+                  state: 'untreated'
+                }
+              })
             }
           })
         } else {
@@ -359,7 +366,13 @@ export default {
             content: '反馈意见已提交！',
             yes () {
               window.$close(indexx)
-              _self.$router.go(-1)
+              _self.toggleResponse()
+              _self.$router.replace({
+                name: 'repairengineermanager',
+                params: {
+                  state: 'untreated'
+                }
+              })
             }
           })
         } else {

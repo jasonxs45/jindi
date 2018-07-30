@@ -134,7 +134,7 @@
             applyDateRange: formatDate(new Date(item.ApplyStart), 'yyyy/MM/dd') + '-' + formatDate(new Date(item.ApplyEnd), 'yyyy/MM/dd'),
             playDateRange: formatDate(new Date(item.PlayStart), 'yyyy/MM/dd') + '-' + formatDate(new Date(item.PlayEnd), 'yyyy/MM/dd'),
             readNum: item.ViewCount,
-            state: item.IsOver ? 1 : 0
+            state: item.state
           }
         })
       },

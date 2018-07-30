@@ -71,7 +71,7 @@ export default {
           readNum: item.ViewCount,
           local: '',
           condition: item.Explain,
-          state: item.IsOver ? 1 : 0
+          state: item.state
         }
       })
     }

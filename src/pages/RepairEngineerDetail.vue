@@ -171,7 +171,7 @@
         size="lar"
         @click="handleConfirm"
       />
-      <flexbox class="double">
+      <flexbox v-if="repair.AdminState === 0" class="double">
         <Btn
           v-if="repair.State === 1"
           type="primary"
@@ -382,7 +382,15 @@ export default {
       })
     },
     back () {
-      this.$router.go(-1)
+      if (window.history.length >= 2) {
+        window.history.go(-1)
+      } else {
+        if (window.wx) {
+          wxConf.closeWindow()
+        } else {
+          window.close()
+        }
+      }
     },
     // 工程师
     handleConfirm () {
@@ -449,10 +457,11 @@ export default {
       api.repair.engineer.refuse(this.id, this.refuseReason)
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
-          window.$alert({
+          let index = window.$alert({
             content: '拒单申请已提交',
             yes () {
-              _self.$router.push({
+              window.$close(index)
+              _self.$router.replace({
                 name: 'repairengineer',
                 params: {
                   state: 'untreated'

@@ -31,7 +31,7 @@ let entries = [
   {
     name: '业主报修',
     icon: 'repair',
-    link: '/wait'
+    link: '/repairsubmit'
   },
   {
     name: '新闻中心',

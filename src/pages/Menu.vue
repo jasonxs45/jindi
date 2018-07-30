@@ -48,7 +48,7 @@ export default {
           label: '服务在线',
           children: {
             '投诉建议': 'advisesubmit',
-            '业主报修':'wait',
+            '业主报修':'repairsubmit',
             '预约保养':'activitylist/signup',
             '开放/交付':'activitylist/accept'
           }

@@ -3,7 +3,7 @@
     <div class="card-content">
       <flexbox class="oneline title-line">
         <flexbox-item class="title">{{title}}</flexbox-item>
-        <flexbox-item class="state" :class="state === 0?'':'timeout'">{{state === 0?'进行中':'已过期'}}</flexbox-item>
+        <flexbox-item class="state" :class="(state === 1 || state === 2)?'timeout':''">{{state === 1?'未开始':state === 2?'已过期':'进行中'}}</flexbox-item>
       </flexbox>
       <div class="img-wrapper">
         <Fitimg :src="img" alt="" />

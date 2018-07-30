@@ -26,7 +26,7 @@
         class="repair-card"
         @click="toDetail(item.ID)"
       >
-        <div class="mark">{{item.AdminState === 1 ? '拒单' : item.AdminState === 2 ? '征求意见' : ''}}</div>
+        <div class="mark">{{item.AdminState === 1 ? '拒单' : item.AdminState === 2 ? '征求意见' : '已超时'}}</div>
         <flexbox>
           <flexbox-item class="title">
             {{item.ProjectName+item.StageName}} {{item.Building}} - {{item.Unit}}-{{item.HouseNo}}
