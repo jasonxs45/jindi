@@ -233,9 +233,12 @@ export default {
       .then(({res, index}) => {
         window.$close(index)
         if (res.data.IsSuccess) {
-          let message = res.data.Message
-          let redinfo = res.data.Data.RedInfo
-          this.registHandler(message, redinfo)
+          /**
+          State 0=正常 1=跳转到url 2=提示msg
+          Url
+          Msg
+           */
+          this.registHandler(res.data.Data)
         } else {
           window.$alert(res.data.Message)
         }
@@ -243,27 +246,33 @@ export default {
         console.log(err)
       })
     },
-    registHandler (message, redinfo) {
-      let _self = this
-      if (redinfo === '') {
-        message = message === ''
-                      ? '绑定成功！'
-                      : message === '领完了'
-                      ? '<p>很遗憾，红包已经领取完毕</p><p>关注金地华中服务号，后期更多福利等你来领</p>'
-                      : '此房源红包已被领取'
-        let index = window.$alert({
-          title: message === '' ? '恭喜您！' : '绑定成功！',
-          content: message,
-          yes () {
-            window.$close(index)
-            _self.$router.push({
+    registHandler ({State, Url, Msg}) {
+      let title = ''
+      let content = ''
+      if (State === 0) {
+        title = '恭喜您！'
+        content = '绑定成功'
+      } else if (State === 1) {
+        title = '绑定成功！'
+        content = Msg
+      } else if (State === 2) {
+        title = '绑定成功！'
+        content = Msg
+      }
+      let index = window.$alert({
+        title,
+        content,
+        yes: () => {
+          window.$close(index)
+          if (State === 1) {
+            location.href = Url
+          } else {
+            this.$router.push({
               name: 'usercenter'
             })
           }
-        })
-      } else {
-        location.href = `http://kuaima.juzhen02.com/2018/jdhb_0626/index.html?RedInfo=${redinfo}`
-      }
+        }
+      })
     },
     toggleRights () {
       this.showRights = !this.showRights

@@ -44,7 +44,7 @@
               联系人：{{repair.Name}}
             </flexbox-item>
             <flexbox-item class="tel">
-              <a :href="`tel:${repair.AdminTel}`">{{repair.AdminTel}}</a>
+              <a :href="`tel:${repair.Tel}`">{{repair.Tel}}</a>
             </flexbox-item>
           </flexbox>
         </template>
