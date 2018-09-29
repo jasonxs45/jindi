@@ -2,7 +2,7 @@
 <div class="bind-second">
   <div class="top">
     <Icon name="second-user" />
-    <p>【二手业主】房产绑定</p>
+    <p>【二手房业主】房产绑定</p>
   </div>
   <div class="content">
     <p class="tip">* 请选择所在项目</p>

@@ -11,7 +11,7 @@ const router = new Router({
   routes
 })
 router.beforeEach((to, from, next) => {
-  window.document.title = to.meta.title || '金地'
+  window.document.title = to.meta.title || '金地客服在线家'
   if (process.env.NODE_ENV === 'production') {
     wxConf.init()
   }

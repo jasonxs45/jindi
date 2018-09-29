@@ -71,7 +71,7 @@ export default [
     name: 'home',
     component: Home,
     meta: {
-      title: '首页'
+      title: '金地客服在线家'
     }
   },
   // 404
@@ -229,7 +229,7 @@ export default [
     name: 'bindsecond',
     component: BindSecond,
     meta: {
-      title: '二手业主绑定'
+      title: '二手房业主绑定'
     }
   },
   // 业主审核
