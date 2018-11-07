@@ -13,9 +13,10 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   window.document.title = to.meta.title || '金地客服在线家'
   if (process.env.NODE_ENV === 'production') {
-    wxConf.init()
+    wxConf.init(next)
+  } else {
+    next()
   }
-  next()
 })
 router.afterEach((to, from) => {
   window.$closeAll()

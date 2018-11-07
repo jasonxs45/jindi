@@ -1,14 +1,27 @@
 import api from './index'
 let activity = {
   // 获取活动列表
-  list (type = 1) {
+  list (type = 1, pageSize = null, pageIndex = null) {
     let opt = {
       Act: 'ActivityGetList',
       Data: JSON.stringify({
-        S_Class: type
+        S_Class: type,
+        _PageSize: pageSize,
+        _PageIndex: pageIndex
       })
     }
     return api.globalQuery(opt)
+  },
+  list1 (type = 1, pageSize = null, pageIndex = null) {
+    let opt = {
+      Act: 'ActivityGetList',
+      Data: JSON.stringify({
+        S_Class: type,
+        _PageSize: pageSize,
+        _PageIndex: pageIndex
+      })
+    }
+    return api.fetch(opt)
   },
   // 获取活动详情
   detail (ID) {

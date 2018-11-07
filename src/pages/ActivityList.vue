@@ -1,5 +1,5 @@
 <template>
-  <div class="activity-list">
+  <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10" class="activity-list">
     <div v-if="list.length<1" class="nodata-box">
       <nodata><p>对不起，<br/>您尚未参与任何活动</p></nodata>
       <Btn style="display:none" type="primary" text="社区活动" @click="goList"/>
@@ -16,9 +16,11 @@
       :condition="item.condition"
       :state="item.state"
     ></activitycard>
+    <div class="loading">{{finished ? '---没有更多了---' : '加载中...'}}</div>
   </div>
 </template>
 <script>
+import infiniteScroll from 'vue-infinite-scroll'
 import {
   Activitycard,
   Nodata,
@@ -48,6 +50,9 @@ const CLASS_MAP = {
 }
 export default {
   name: 'ActivityList',
+  directives: {
+    infiniteScroll
+  },
   components: {
     Activitycard,
     Nodata,
@@ -56,7 +61,10 @@ export default {
   data () {
     return {
       activityList: [],
-      currentView: ''
+      currentView: '',
+      loading: false,
+      pageIndex: 1,
+      finished: false
     }
   },
   computed: {
@@ -102,7 +110,7 @@ export default {
   },
   methods: {
     getList () {
-      api.activity.list(CLASS_MAP[this.currentView].S_Class)
+      api.activity.list(CLASS_MAP[this.currentView].S_Class, 10, this.pageIndex)
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
           this.activityList = res.data.Data
@@ -120,6 +128,29 @@ export default {
           classtype: 'activity'
         }
       })
+    },
+    loadMore () {
+      if (!this.finished) {
+        this.loading = true
+        this.pageIndex += 1
+        api.activity.list1(CLASS_MAP[this.currentView].S_Class, 10, this.pageIndex)
+        .then(res => {
+          window.$closeAll()
+          this.loading = false
+          if (res.data.IsSuccess) {
+            if (this.activityList.length < res.data.DataCount) {
+              this.activityList = this.activityList.concat(res.data.Data)
+            } else {
+              this.finished = true
+            }
+          } else {
+            window.$alert(res.data.Message)
+          }
+        }).catch(err => {
+          this.loading = false
+          console.log(err)
+        })
+      }
     }
   }
 }
@@ -136,5 +167,12 @@ export default {
       margin-top: p2r(40);
     }
   }
+}
+.loading{
+  text-align: center;
+  font-size: p2r(24);
+  color: #888;
+  padding: p2r(30) 0 0;
+  font-weight: 200;
 }
 </style>
