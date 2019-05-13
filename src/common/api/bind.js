@@ -7,23 +7,34 @@ let bind = {
     }
     return api.globalQuery(opt)
   },
-  getOwnerHouseList (ProjectID, Name) {
+  getOwnerHouseList (ProjectID, Name, IDCardLast4) {
     let opt = {
       Act: 'HouseGetOwerList',
       Data: JSON.stringify({
         ProjectID,
-        Name
+        Name,
+        IDCardLast4
       })
     }
     return api.globalQuery(opt)
   },
-  houseOwerBind (HouseID, Name, IDCardLast4) {
+  getCode (Tel) {
+    let opt = {
+      Act: 'GetValidateCode',
+      Data: JSON.stringify({
+        Tel
+      })
+    }
+    return api.globalQuery(opt)
+  },
+  houseOwerBind (HouseID, Name, Tel, Code) {
     let opt = {
       Act: 'HouseOwerBind',
       Data: JSON.stringify({
         HouseID,
         Name,
-        IDCardLast4
+        Tel,
+        Code
       })
     }
     return api.globalQuery(opt)

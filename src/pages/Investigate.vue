@@ -66,6 +66,7 @@ import {
   XTextarea
 } from 'components'
 import api from 'common/api'
+import wx from 'weixin-js-sdk'
 let $ = str => {
   return document.querySelector(str)
 }
@@ -119,7 +120,22 @@ export default {
         if (res.data.IsSuccess) {
           let questions = res.data.Data
           this.readonly = questions.Joined
+          let end = questions.Info.End
+          if (end && !this.readonly) {
+            window.$alert({
+              content: '问卷已过期',
+              yes: () => {
+                try {
+                  wx.closeWindow()
+                } catch (err) {
+                  console.log(err)
+                  window.close()
+                }
+              }
+            })
+          }
           questions.List.forEach(item => {
+            this.myAnswer[item.ID] = undefined
             item.Answer = item.Answer.split('|')
             item.MyAnswer = item.MyAnswer.split('|')
           })
@@ -166,7 +182,7 @@ export default {
       let entries = Object.entries(this.myAnswer)
       let submitArr = []
       for (let i = 0; i < this.questions.List.length; i++) {
-        if (!entries[i]) {
+        if (entries[i][1] === undefined) {
           window.$alert('请填写第' + (i + 1) + '道题')
           return
         }
@@ -270,7 +286,8 @@ export default {
           .option-wrapper{
             margin-top: p2r(30);
             .radio-wrapper{
-              display: inline-block;
+              display: block;
+              padding-left: 1.1rem;
               .radio{
                 display: block;
                 width:100%;

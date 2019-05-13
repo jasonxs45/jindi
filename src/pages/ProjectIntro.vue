@@ -12,9 +12,7 @@ import {tochinese} from 'common/utils/unicode'
 const items = {
   '武汉': [
     'static/images/wuhan1.jpg',
-    'static/images/wuhan2.jpg',
-    'static/images/wuhan3.jpg',
-    'static/images/wuhan4.jpg'
+    'static/images/wuhan2.jpg'
   ],
   '郑州': [
     'static/images/zhengzhou1.jpg'

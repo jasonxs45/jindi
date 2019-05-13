@@ -20,6 +20,11 @@
             placeholder="请输入您的真实姓名"
             class="roundbar"
           />
+          <XInput
+            v-model="idnum"
+            placeholder="请输入您的身份证号码后四位"
+            class="roundbar"
+          />
         </div>
         <div class="step2" v-if="step===2">
           <h3 class="title">筛选用户结果</h3>
@@ -37,20 +42,25 @@
                 name="house"
                 :disabled="item.Binded"
                 :value="item.ID"
+                :data-index="index"
                 @change="radioHandler"
               />
-              <flexbox>
-                <flexbox-item class="house-name">
+              <div class="flexbox">
+                <div class="house-name">
                   <p class="text">{{item.StageName}} {{item.Building}} - {{item.Unit}}单元{{item.HouseNo}}{{item.Binded?'【已绑定】':''}}</p>
-                </flexbox-item>
-                <flexbox-item class="owner-name">
-                  {{item.Owner}}
-                </flexbox-item>
-              </flexbox>
+                </div>
+                <div class="owner-name">
+                  {{item.Owner}}——{{item.ValidateTel|coverTel}}
+                </div>
+              </div>
             </label>
           </div>
-          <p class="title">输入身份证后四位进行验证</p>
-          <div class="idnum-controller">
+          <p class="title">选择房源，获取验证码</p>
+          <div class="code">
+            <input placeholder="请输入验证码" v-model="code" class="code-num" type="number" />
+            <Btn class='get-code' type="primary" :disabled="disabled" :text="codeInfo" @click="getCode"/>
+          </div>
+          <!-- <div class="idnum-controller">
             <div class="cells">
               <span
                 v-for="n in 4"
@@ -64,7 +74,7 @@
               class="input"
               v-model="checkStr"
             />
-          </div>
+          </div> -->
         </div>
       </div>
       <p class="caution">业主信息须与购房合同上的业主名称、<br/>身份证号信息一致，方可绑定</p>
@@ -131,19 +141,30 @@ export default {
   data () {
     return {
       step: 1,
-      checkNums: ['', '', '', ''],
-      checkStr: '',
+      idnum: '',
       items: null,
       selectedItem:'',
       ownerName:'',
       houses: null,
+      disabled: false,
+      count: 60,
       houseid: null,
+      tel: '',
+      code: '',
       showRights: false
     }
   },
   computed: {
     houseInfo () {
-      return this.houses
+      return this.houses || []
+    },
+    codeInfo () {
+      return this.disabled ? `${this.count}s后重新获取` : '获取验证码'
+    }
+  },
+  filters: {
+    coverTel (tel) {
+      return tel.replace(tel.slice(3, 7), '****')
     }
   },
   created () {
@@ -169,7 +190,7 @@ export default {
       })
     },
     getHouses () {
-      api.bind.getOwnerHouseList(this.selectedItem.value, this.ownerName)
+      api.bind.getOwnerHouseList(this.selectedItem.value, this.ownerName, this.idnum)
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
           let [...houses] = res.data.Data
@@ -179,13 +200,16 @@ export default {
           } else {
             this.step = 2
           }
+        } else {
+          window.$alert(res.data.Message)
         }
       }).catch(err => {
         console.log(err)
       })
     },
     radioHandler (e) {
-      console.log(e.target.value)
+      let index = e.target.dataset.index
+      this.tel = this.houseInfo[index].ValidateTel
     },
     goStep2 () {
       if (!this.selectedItem.value) {
@@ -198,6 +222,10 @@ export default {
       }
       if (!this.ownerName.match(NAME_REG)) {
         window.$alert('请填写正确格式的姓名')
+        return
+      }
+      if (!this.idnum.match(LAST_FOUR_REG)) {
+        window.$alert('请正确填写身份证后四位')
         return
       }
       this.getHouses()
@@ -220,16 +248,47 @@ export default {
         }
       })
     },
+    getCode () {
+      if (!this.tel) {
+        window.$alert('请先选择一个房源！')
+        return
+      }
+      api.bind.getCode(this.tel)
+      .then(({res, index}) => {
+        window.$close(index)
+        if (res.data.IsSuccess) {
+          let index1 = window.$alert({
+            content: '验证码已发送，请查收',
+            yes: () => {
+              window.$close(index1)
+              this.disabled = true
+              let timer = setInterval(() => {
+                if (this.count === 1) {
+                  clearInterval(timer)
+                  this.count = 60
+                  this.disabled = false
+                }
+                this.count -= 1
+              }, 1000)
+            }
+          })
+        } else {
+          window.$alert(res.data.Message)
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
     submitHandler () {
       if (!this.houseid) {
         window.$alert('请选择房源')
         return
       }
-      if (!this.checkStr.match(LAST_FOUR_REG)) {
-        window.$alert('请正确填写身份证后四位')
+      if (!this.code.trim()) {
+        window.$alert('请填写验证码')
         return
       }
-      api.bind.houseOwerBind(this.houseid, this.ownerName, this.checkStr)
+      api.bind.houseOwerBind(this.houseid, this.ownerName, this.tel, this.code)
       .then(({res, index}) => {
         window.$close(index)
         if (res.data.IsSuccess) {
@@ -285,16 +344,17 @@ export default {
 @import "~common/scss/mixins.scss";
 .bind-owner {
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   background: url("../../../static/images/bg.png") center/cover no-repeat;
   padding: p2r(30);
   .bind-owner-wrapper {
     width: 100%;
-    height: 88%;
+    // height: 88vh;
+    // min-height: p2r(900);
     border-radius: 4px;
     box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
-    padding-top: p2r(40);
-    padding-bottom: p2r(40);
+    padding-top: p2r(5);
+    padding-bottom: p2r(30);
     background: #fff;
     .caution{
       font-size: p2r(24);
@@ -304,7 +364,7 @@ export default {
       padding:0 p2r($base-padding);
     }
     .part1 {
-      height: p2r(630);
+      // min-height: p2r(600);
       .title {
         font-size: p2r(28);
         color: $primary-color;
@@ -312,10 +372,10 @@ export default {
       }
       .houses {
         width: p2r(594);
-        height: p2r(350);
+        min-height: p2r(350);
         margin: p2r(30) auto;
-        overflow: auto;
-        -webkit-overflow-scrolling: touch;
+        // overflow: auto;
+        // -webkit-overflow-scrolling: touch;
         .house-bar {
           display: block;
           margin-top: p2r(20);
@@ -332,22 +392,20 @@ export default {
             }
           }
           .flexbox {
-            height: p2r(80);
             border-radius: 4px;
-            padding: 0 p2r(20);
+            padding: p2r(10) p2r(20);
             color: #eda697;
             background: lighten($primary-color, 38%);
             transition: color, background 0.2s;
-            align-items:center;
+            text-align: center;
             .house-name{
               .text{
                 line-height: 1.5;
               }
             }
             .owner-name {
-              flex: 0 0 p2r(150);
               font-size: p2r(24);
-              text-align: right;
+              margin-top: p2r(10);
             }
           }
         }
@@ -397,6 +455,7 @@ export default {
       }
       .step1{
         padding-top: p2r(30);
+        min-height: p2r(500);
         .roundbar{
           display: block;
           width:p2r(600);
@@ -410,6 +469,7 @@ export default {
       }
       .step2{
         padding-top: p2r(30);
+        padding-bottom: p2r(30);
       }
     }
     .part2 {
@@ -466,6 +526,26 @@ export default {
     .btn{
       margin-top: p2r(50);
     }
+  }
+}
+.code{
+  display: flex;
+  width: p2r(594);
+  margin: p2r(15) auto;
+  background: lighten($primary-color, 38%);
+  border-radius: 25px;
+  justify-content: space-between;
+  .code-num{
+    background: none;
+    display: block;
+    flex: 1;
+    padding: 0 p2r(30);
+    outline: none;
+    font-size: p2r(24);
+  }
+  .get-code{
+    width: p2r(200);
+    font-size: p2r(24) !important;
   }
 }
 </style>

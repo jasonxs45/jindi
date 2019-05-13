@@ -19,6 +19,7 @@
       class="input"
       @change="changeHandler"
       @input="inputHandler"
+      @blur="blurHandler"
     />
   </label>
 </template>
@@ -64,10 +65,6 @@ const input = {
     focusHandler (e) {
       this.isFocus = true
       this.$emit('on-focus', e)
-    },
-    blurHandler (e) {
-      this.isFocus = false
-      this.$emit('on-blur', e)
     }
   }
 }
@@ -93,6 +90,13 @@ export default {
     },
     clickHandler (e) {
       this.$emit('click', e)
+    },
+    blurHandler (e) {
+      this.isFocus = false
+      this.$emit('on-blur', e)
+      if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+        document.activeElement.scrollIntoViewIfNeeded(true)
+      }
     }
   }
 }

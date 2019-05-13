@@ -182,7 +182,6 @@ export default {
         width:100%;
         height:100%;
         padding: p2r($base-padding)  p2r($base-padding) 0;
-        backdrop-filter: blur(10px);
         .top{
           .project{
             padding-top: p2r(40);
