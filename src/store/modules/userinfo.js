@@ -43,6 +43,9 @@ const mutations = {
     state.state = res.Identity
     state.house = res.Identity === 0 ? '尚未绑定房源信息' : `房源数量：${res.HouseCount}`
     state.memberid = res.MemberID
+    state.isRepairEngineer = res.IsRepairEngineer
+    state.isRepairEngineerManager = res.IsRepairEngineerManager
+    state.isRepairManager = res.IsRepairManager
   }
 }
 

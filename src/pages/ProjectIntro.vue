@@ -18,7 +18,7 @@ const items = {
     'static/images/zhengzhou1.jpg'
   ],
   '长沙': [
-    'static/images/changsha1.jpg'
+    'static/images/changsha1.png'
   ]
 }
 export default {
