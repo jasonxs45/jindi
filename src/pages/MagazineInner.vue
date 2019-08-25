@@ -36,6 +36,7 @@ import {
   Nodata
 } from 'components'
 import api from 'common/api'
+import wx from 'weixin-js-sdk'
 export default {
   name: 'MagazineInner',
   components: {
@@ -72,10 +73,6 @@ export default {
       this.getMagazineInner()
     }
   },
-  created () {
-    this.id = this.$route.params.id
-    this.getMagazineInner()
-  },
   methods: {
     getMagazineInner () {
       api.magazine.inner(this.id)
@@ -83,6 +80,13 @@ export default {
         if (res.data.IsSuccess) {
           let fetchedData = res.data.Data
           this.fetchedData = fetchedData
+          const { ShareDesc, ShareImg, ShareTitle, CoverImg, Description, Title } = this.fetchedData.Periodical
+          let shareData = {
+            title: ShareTitle || Title || '金地',
+            desc: ShareDesc || Description,
+            imgUrl: ShareImg || `http://jindi.1juke.cn${CoverImg}`
+          }
+          wx.onMenuShareAppMessage(shareData)
         } else {
           window.$alert(res.data.Message)
         }
@@ -100,6 +104,10 @@ export default {
         }
       })
     }
+  },
+  created () {
+    this.id = this.$route.params.id
+    this.getMagazineInner()
   }
 }
 </script>

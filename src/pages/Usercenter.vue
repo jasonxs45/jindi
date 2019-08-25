@@ -22,35 +22,35 @@
           </flexbox-item>
         </flexbox>
       </router-link>
-      <router-link v-if='isRepairEngineer' tag="div" to="/repairengineer/untreated" >
+      <router-link v-if='userInfo.isRepairEngineer' tag="div" to="/repairengineer/untreated" >
+        <flexbox class="list-item" align="center">
+          <flexbox-item class="start-icon">
+            <Icon name="repair"/>
+          </flexbox-item>
+          <flexbox-item class="item-body">
+            <span class="name">业主报修（技术员）</span>
+            <Icon class="end-icon" name="arrow-right"/>
+          </flexbox-item>
+        </flexbox>
+      </router-link>
+      <router-link v-if='userInfo.isRepairEngineerManager' tag="div" to="/repairengineermanager/untreated" >
+        <flexbox class="list-item" align="center">
+          <flexbox-item class="start-icon">
+            <Icon name="repair"/>
+          </flexbox-item>
+          <flexbox-item class="item-body">
+            <span class="name">业主报修（技术员主管）</span>
+            <Icon class="end-icon" name="arrow-right"/>
+          </flexbox-item>
+        </flexbox>
+      </router-link>
+      <router-link v-if='userInfo.isRepairManager' tag="div" to="/repairmanager/untreated" >
         <flexbox class="list-item" align="center">
           <flexbox-item class="start-icon">
             <Icon name="repair"/>
           </flexbox-item>
           <flexbox-item class="item-body">
             <span class="name">业主报修（工程师）</span>
-            <Icon class="end-icon" name="arrow-right"/>
-          </flexbox-item>
-        </flexbox>
-      </router-link>
-      <router-link v-if='isRepairEngineerManager' tag="div" to="/repairengineermanager/untreated" >
-        <flexbox class="list-item" align="center">
-          <flexbox-item class="start-icon">
-            <Icon name="repair"/>
-          </flexbox-item>
-          <flexbox-item class="item-body">
-            <span class="name">业主报修（工程师主管）</span>
-            <Icon class="end-icon" name="arrow-right"/>
-          </flexbox-item>
-        </flexbox>
-      </router-link>
-      <router-link v-if='isRepairManager' tag="div" to="/repairmanager/untreated" >
-        <flexbox class="list-item" align="center">
-          <flexbox-item class="start-icon">
-            <Icon name="repair"/>
-          </flexbox-item>
-          <flexbox-item class="item-body">
-            <span class="name">业主报修（管理员）</span>
             <Icon class="end-icon" name="arrow-right"/>
           </flexbox-item>
         </flexbox>
@@ -84,17 +84,11 @@ export default {
     return {}
   },
   computed: {
+    userInfo () {
+      return this.$store.state.userInfo
+    },
     memberid () {
-      return this.$store.state.userInfo.memberid
-    },
-    isRepairEngineer () {
-      return this.$store.state.userInfo.isRepairEngineer
-    },
-    isRepairEngineerManager () {
-      return this.$store.state.userInfo.isRepairEngineerManager
-    },
-    isRepairManager () {
-      return this.$store.state.userInfo.isRepairManager
+      return this.userInfo.memberid
     },
     entries () {
       return entries.filter(item => {

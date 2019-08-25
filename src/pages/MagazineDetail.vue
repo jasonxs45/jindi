@@ -7,6 +7,7 @@
 </template>
 <script>
 import api from 'common/api'
+import wx from 'weixin-js-sdk'
 import {
   webRoot
 } from 'common/data'
@@ -34,7 +35,16 @@ export default {
       .then(({res, index}) => {
         if (res.data.IsSuccess) {
           this.detail = res.data.Data
-          this.detail.Content = this.detail.Content.replace(/src="\/UploadFiles\//g, `src="${webRoot}/UploadFiles/`)
+          if (this.detail.Content) {
+            this.detail.Content = this.detail.Content.replace(/src="\/UploadFiles\//g, `src="${webRoot}/UploadFiles/`)
+          }
+          const { ShareDesc, ShareImg, ShareTitle, Title } = this.detail
+          let shareData = {
+            title: ShareTitle || Title || '金地',
+            desc: ShareDesc,
+            imgUrl: ShareImg
+          }
+          wx.onMenuShareAppMessage(shareData)
         } else {
           window.$alert(res.data.Message)
         }

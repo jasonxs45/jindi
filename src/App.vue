@@ -77,6 +77,12 @@ export default {
 .fade-enter, .fade-leave-to {
   opacity: 0;
 }
+.scale-enter-active, .scale-leave-active {
+  transition: transform .2s;
+}
+.scale-enter, .scale-leave-to {
+  transform: scale(.9);
+}
 .slide-up-enter-active, .slide-up-leave-active {
   transition: transform .2s;
 }

@@ -499,6 +499,24 @@ export default [
       title: '项目介绍'
     }
   },
+  // 服务入口
+  {
+    path: '/service-enter',
+    name: 'service-enter',
+    component: () => import('pages/service/ServiceEnter'),
+    meta: {
+      title: '服务指南'
+    }
+  },
+  // 服务指南引导页
+  {
+    path: '/guide-info',
+    name: 'guide-info',
+    component: () => import('pages/service/GuideInfo'),
+    meta: {
+      title: '全流程服务指南'
+    }
+  },
   // 服务指南列表
   {
     path: '/guide',

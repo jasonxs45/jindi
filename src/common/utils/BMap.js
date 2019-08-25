@@ -2,7 +2,7 @@ let BMap = {
   init () {
     return new Promise((resolve, reject) => {
       const oScript = document.createElement('script')
-      oScript.src = 'http://api.map.baidu.com/getscript?v=2.0&ak=PNhhMFEMvIgiZ8LO09zFNeBd3pHtnM7r&services=&t=20170511202040'
+      oScript.src = 'https://api.map.baidu.com/getscript?v=2.0&ak=PNhhMFEMvIgiZ8LO09zFNeBd3pHtnM7r&services=&t=20170511202040'
       oScript.type = 'text/javascript'
       document.head.appendChild(oScript)
       oScript.onload = () => {

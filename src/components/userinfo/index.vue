@@ -50,11 +50,14 @@ export default {
       return ['user-info', this.typeClass]
     },
     userInfo () {
+      console.log(this.$store.state.userInfo)
       return this.$store.state.userInfo
     }
   },
   created () {
-    this.getInfoAsync()
+    // if (!this.$store.state.userInfo) {
+    //   this.getInfoAsync()
+    // }
   },
   methods: {
     ...mapActions([

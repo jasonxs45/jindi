@@ -170,11 +170,11 @@ export default {
         font-size: p2r(28);
       }
       .tel{
-        flex: 0 0 p2r(220);
-        width: p2r(220);
+        flex: 0 0 p2r(240);
+        width: p2r(240);
         text-align: right;
         a {
-          font-size: p2r(26)
+          font-size: p2r(24)
         }
       }
     }
