@@ -54,7 +54,8 @@ export default {
   },
   computed: {
     readonly () {
-      return !!this.user
+      // return !!this.user
+      return false
     },
     wxReady () {
       return this.$store.state.global.wxReady
@@ -72,10 +73,15 @@ export default {
         if (res.data.IsSuccess) {
           this.user = res.data.Data
           if (this.user) {
+            // this.form = {
+            //   name: this.user.Name,
+            //   tel: this.user.Tel,
+            //   id: this.user.CertNumber
+            // }
             this.form = {
-              name: this.user.Name,
-              tel: this.user.Tel,
-              id: this.user.CertNumber
+              name: '',
+              tel: '',
+              id: ''
             }
           } else {
             this.form = {

@@ -4,7 +4,7 @@ import api from '../api'
 import qs from 'qs'
 import store from '@/store'
 // const comOpenId = 'gh_ba3ae28cdc9b'
-const webRoot = 'http://jindi.1juke.cn'
+const webRoot = 'https://jindi.1juke.cn'
 let wxConf = {
   name: 'weixin-config',
   shareData: {

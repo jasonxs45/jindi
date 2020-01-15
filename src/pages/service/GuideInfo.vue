@@ -93,114 +93,221 @@
       <Split height='20' />
       <div class='section'>
         <h5 class='title'>购房流程</h5>
-        <div class='row flex'>
-          <div class='block'>
-            <div class='inner'>选房、确认</div>
+        <!-- 流程图 -->
+        <div v-if='current==="长沙"'>
+          <div class='row flex'>
+            <div class='block'>
+              <div class='inner'>按揭付款客户</div>
+            </div>
+            <div class='block'>
+              <div class='inner'>一次性付款客户</div>
+            </div>
           </div>
-        </div>
-        <div class='block'><img class='arrow' src="./a1.png" /></div>
-        <div class='row flex'>
-          <div class='block'>
-            <div class='inner'>认购注意事项</div>
+          <div class='block'><img class='arrow' src="./a3.png" /></div>
+          <div class='row flex'>
+            <div class='block'>
+              <div class='inner'>提交购房资格资料，按照政府规定流程，现场选房确认</div>
+            </div>
           </div>
-        </div>
-        <div class='block'><img class='arrow' src="./a1.png" /></div>
-        <div class='row flex'>
-          <div class='block'>
-            <div class='inner'>客户缴纳定金，签署《楼宇认购书》</div>
-          </div>
-        </div>
-        <div class='block'><img class='arrow' src="./a2.png" /></div>
-        <div class='row flex'>
-          <div class='block'>
-            <div class='inner'>贷款</div>
-          </div>
-          <div class='block'>
-            <div class='inner'>一次性</div>
-          </div>
-        </div>
-        <div class='row flex'>
           <div class='block'><img class='arrow' src="./a1.png" /></div>
+          <div class='row flex'>
+            <div class='block'>
+              <div class='inner'>签署认购书及风险提示、承诺函</div>
+            </div>
+          </div>
           <div class='block'><img class='arrow' src="./a1.png" /></div>
-        </div>
-        <div class='row flex'>
-          <div class='block'>
-            <div class='inner link' @click='showBox("banlianjie")'>办理按揭手续，交齐有效的贷款资料，银行确认贷款资格</div>
+          <div class='row flex'>
+            <div class='block'>
+              <div class='inner'>录入购房资格至住建委审核</div>
+            </div>
           </div>
-          <div class='block'>
-            <div class='inner'>缴纳剩余购房定金、交齐核查资料并签署限购承诺书、进行资格核查</div>
+          <div class='block'><img class='arrow' src="./a2.png" /></div>
+          <div class='row flex'>
+            <div class='block'>
+              <div class='inner'>交齐按揭资料完成按揭合同，付清首期款及代收费用，签署商品房买卖合同及补充协议</div>
+            </div>
+            <div class='block'>
+              <div class='inner'>付清全额房款及代收费用签署商品房买卖合同及补充协议</div>
+            </div>
           </div>
-        </div>
-        <div class='block'><img class='arrow' src="./a3.png" /></div>
-        <div class='row flex'>
-          <div class='block'>
-            <div class='inner'>缴纳剩余购房定金、交齐核查资料并签署限购承诺书、进行资格核查</div>
+          <div class='block'><img class='arrow' src="./a3.png" /></div>
+          <div class='row flex'>
+            <div class='block'>
+              <div class='inner'>自缴契税和物业维修资金</div>
+            </div>
           </div>
-        </div>
-        <div class='block'>
-          <img class='arrow' src="./a1.png" />
-          <p class='tip'>5个工作日</p>
-        </div>
-        <div class='row flex'>
-          <div class='block'>
-            <div class='inner'>核查通过，通知客户缴纳应缴房款</div>
+          <div class='block'><img class='arrow' src="./a2.png" /></div>
+          <div class='row flex'>
+            <div class='block'>
+              <div class='inner'>银行审批及办理合同备案</div>
+            </div>
+            <div class='block'>
+              <div class='inner'>办理合同备案</div>
+            </div>
           </div>
-        </div>
-        <div class='block'>
-          <img class='arrow' src="./a1.png" />
-          <p class='tip'>24个小时</p>
-        </div>
-        <div class='row flex'>
-          <div class='block'>
-            <div class='inner'>项目打缴款通知书，客户接到通知后至售楼部在资金监管POS机刷卡</div>
+          <div class='block'><img class='arrow' src="./a3.png" /></div>
+          <div class='row flex'>
+            <div class='block'>
+              <div class='inner'>领取购房合同</div>
+            </div>
           </div>
-        </div>
-        <div class='block'>
-          <img class='arrow' src="./a1.png" />
-          <p class='tip'>2-3个工作日</p>
-        </div>
-        <div class='row flex'>
-          <div class='block'>
-            <div class='inner'>查询到账通知客户签约</div>
+          <div class='block'><img class='arrow' src="./a1.png" /></div>
+          <div class='row flex'>
+            <div class='block'>
+              <div class='inner'>办理预告登记</div>
+            </div>
           </div>
-        </div>
-        <div class='block'>
-          <img class='arrow' src="./a1.png" />
-          <p class='tip'>48个小时</p>
-        </div>
-        <div class='row flex'>
-          <div class='block'>
-            <div class='inner'>客户办理签约手续</div>
+          <div class='block'><img class='arrow' src="./a1.png" /></div>
+          <div class='row flex'>
+            <div class='block'>
+              <div class='inner'>领取银行或公积金贷款合同</div>
+            </div>
           </div>
-        </div>
-        <div class='block'><img class='arrow' src="./a1.png" /></div>
-        <div class='row flex'>
-          <div class='block'>
-            <div class='inner'>后台盖章、上传影像资料进行合同备案</div>
+          <div class='block'><img class='arrow' src="./a1.png" /></div>
+          <div class='row flex'>
+            <div class='block'>
+              <div class='inner'>办理交付手续</div>
+            </div>
           </div>
-        </div>
-        <div class='block'><img class='arrow' src="./a1.png" /></div>
-        <div class='row flex'>
-          <div class='block'>
-            <div class='inner'>合同备案通过并全额到款，通知客户领取购房合同</div>
+          <div class='block'><img class='arrow' src="./a1.png" /></div>
+          <div class='row flex'>
+            <div class='block'>
+              <div class='inner'>办理不动产权证书</div>
+            </div>
           </div>
-        </div>
-        <div class='block'><img class='arrow' src="./a1.png" /></div>
-        <div class='row flex'>
-          <div class='block'>
-            <div class='inner'>等待期服务</div>
+          <div class='block'><img class='arrow' src="./a1.png" /></div>
+          <div class='row flex'>
+            <div class='block'>
+              <div class='inner'>领取不动产权证书（一次性付款客户）</div>
+            </div>
           </div>
         </div>
-        <div class='block'><img class='arrow' src="./a1.png" /></div>
-        <div class='row flex'>
-          <div class='block'>
-            <div class='inner'>收房（接收房通知）</div>
+        <div v-else>
+          <div class='row flex'>
+            <div class='block'>
+              <div class='inner'>选房、确认</div>
+            </div>
           </div>
-        </div>
-        <div class='block'><img class='arrow' src="./a1.png" /></div>
-        <div class='row flex'>
+          <div class='block'><img class='arrow' src="./a1.png" /></div>
+          <div class='row flex'>
+            <div class='block'>
+              <div class='inner'>认购注意事项</div>
+            </div>
+          </div>
+          <div class='block'><img class='arrow' src="./a1.png" /></div>
+          <div class='row flex'>
+            <div class='block'>
+              <div class='inner'>客户缴纳定金，签署《楼宇认购书》</div>
+            </div>
+          </div>
+          <div class='block'><img class='arrow' src="./a2.png" /></div>
+          <div class='row flex'>
+            <div class='block'>
+              <div class='inner'>贷款</div>
+            </div>
+            <div class='block'>
+              <div class='inner'>一次性</div>
+            </div>
+          </div>
+          <div class='row flex'>
+            <div class='block'>
+              <img class='arrow' src="./a1.png" />
+              <p class='tip'>{{current==='郑州'?7:3}}天</p>
+            </div>
+            <div class='block'>
+              <img class='arrow' src="./line.png" />
+              <!-- <p class='tip'>3天</p> -->
+            </div>
+          </div>
+          <div class='row flex'>
+            <div class='block'>
+              <div class='inner link' @click='showBox("banlianjie")'>办理按揭手续，交齐有效的贷款资料，银行确认贷款资格</div>
+            </div>
+            <div class='block'>
+              <img class='arrow line' src="./line.png" />
+              <p class='tip'>{{current==='郑州'?7:3}}天</p>
+              <!-- <div class='inner'>缴纳剩余购房定金、交齐核查资料并签署限购承诺书、进行资格核查</div> -->
+            </div>
+          </div>
+          <div class='row flex'>
+            <div class='block'><img class='arrow' src="./a1.png" /></div>
+            <div class='block'><img class='arrow' src="./a1.png" /></div>
+          </div>
+          <div class='row flex'>
+            <div class='block'>
+              <div v-if='current==="武汉"' class='inner'>缴纳剩余购房定金、交齐核查资料并签署限购承诺书、进行资格核查</div>
+              <div v-if='current==="郑州"' class='inner'>缴纳剩余房款、交齐购房资料并签署限购承诺书、客户办理签约手续</div>
+
+            </div>
+          </div>
           <div class='block'>
-            <div class='inner'>领取办证资料（按合同约定，通知领取）</div>
+            <img class='arrow' src="./a1.png" />
+            <p v-if='current==="武汉"' class='tip'>5个工作日</p>
+          </div>
+          <template v-if='current==="武汉"' >
+          <div class='row flex'>
+            <div class='block'>
+              <div class='inner'>核查通过，通知客户缴纳应缴房款</div>
+            </div>
+          </div>
+          <div class='block'>
+            <img class='arrow' src="./a1.png" />
+            <p class='tip'>24个小时</p>
+          </div>
+          <div class='row flex'>
+            <div class='block'>
+              <div class='inner'>项目打缴款通知书，客户接到通知后至售楼部在资金监管POS机刷卡</div>
+            </div>
+          </div>
+          <div class='block'>
+            <img class='arrow' src="./a1.png" />
+            <p class='tip'>2-3个工作日</p>
+          </div>
+          <div class='row flex'>
+            <div class='block'>
+              <div class='inner'>查询到账通知客户签约</div>
+            </div>
+          </div>
+          <div class='block'>
+            <img class='arrow' src="./a1.png" />
+            <p class='tip'>48个小时</p>
+          </div>
+          <div class='row flex'>
+            <div class='block'>
+              <div class='inner'>客户办理签约手续</div>
+            </div>
+          </div>
+          <div class='block'><img class='arrow' src="./a1.png" /></div>
+          </template>
+          <div class='row flex'>
+            <div class='block'>
+              <div v-if='current==="武汉"' class='inner'>后台盖章、上传影像资料进行合同备案</div>
+              <div v-if='current==="郑州"' class='inner'>后台盖章、进行合同备案</div>
+            </div>
+          </div>
+          <div class='block'><img class='arrow' src="./a1.png" /></div>
+          <div class='row flex'>
+            <div class='block'>
+              <div class='inner'>合同备案通过并全额到款，通知客户领取购房合同</div>
+            </div>
+          </div>
+          <div class='block'><img class='arrow' src="./a1.png" /></div>
+          <div class='row flex'>
+            <div class='block'>
+              <div class='inner'>等待期服务</div>
+            </div>
+          </div>
+          <div class='block'><img class='arrow' src="./a1.png" /></div>
+          <div class='row flex'>
+            <div class='block'>
+              <div class='inner'>收房（接收房通知）</div>
+            </div>
+          </div>
+          <div class='block'><img class='arrow' src="./a1.png" /></div>
+          <div class='row flex'>
+            <div class='block'>
+              <div class='inner'>领取办证资料（按合同约定，通知领取）</div>
+            </div>
           </div>
         </div>
       </div>
@@ -343,18 +450,18 @@
             <dl class='dl'>
               <dd class='dd'>1.<span class='link' @click='showBox("jiaofutongzhi")'>交付通知</span>：金地地产客服中心将提前告知业主交付相关事宜。</dd>
               <dd class='dd'>2.交付预约：使用金地客户服务交付预约小程序，提前在线预约收楼时段，免于现场等待的不便，回家旅程更轻松！</dd>
-              <template v-if='current != "长沙"'>
-                <dd class='dd'>3.维修资金现场服务：集中交付期间，特邀维修资金托收银行现场办理资金缴纳手续</dd>
-                <dd class='dd'>4.一站服务：集中交付期间提供“一站式集中收楼服务”，为您一站办理相关手续</dd>
-                <dd class='dd'>5.验房指导：专业验房师一对一陪同客户顺利验房，积极处理客户提出的问题</dd>
-                <dd class='dd'>6.即时保修：现场解决客户验楼中提出的小问题</dd>
-                <dd class='dd'>7.定期回访：交付后定期进行满意度回访</dd>
-              </template>
-              <template v-else>
+              <template v-if='current != "武汉"'>
                 <dd class='dd'>3.一站服务：集中交付期间提供“一站式集中收楼服务”，为您一站办理相关手续</dd>
                 <dd class='dd'>4.验房指导：专业验房师一对一陪同客户顺利验房，积极处理客户提出的问题</dd>
                 <dd class='dd'>5.即时保修：现场解决客户验楼中提出的小问题</dd>
                 <dd class='dd'>6.定期回访：交付后定期进行满意度回访</dd>
+              </template>
+              <template v-else>
+                <dd class='dd'>3.维修资金现场服务：集中交付期间，特邀维修资金托收银行现场办理资金缴纳手续，业主无需提前奔波缴费</dd>
+                <dd class='dd'>4.一站服务：集中交付期间提供“一站式集中收楼服务”，为您一站办理相关手续</dd>
+                <dd class='dd'>5.验房指导：专业验房师一对一陪同客户顺利验房，积极处理客户提出的问题</dd>
+                <dd class='dd'>6.即时保修：现场解决客户验楼中提出的小问题</dd>
+                <dd class='dd'>7.定期回访：交付后定期进行满意度回访</dd>
               </template>
             </dl>
           </div>
@@ -455,7 +562,7 @@
                 <dd class='dd'>（2）如果委托直系亲属（仅只父母、配偶、成年子女）代办收楼手续，受托人还需携带业主的身份证原件、亲属关系证明（户口本原件、社区居委会或村委会盖章的亲属证明）及业主亲笔签名的授权委托书原件1份，以及受托人身份证原件及复印件1份；</dd>
                 <dd class='dd'>（3）如果委托非直系亲属代办收楼手续，受托人还需携带业主的身份证原件、经公证机关公证的授权委托关系公证书1份，以及受托人身份证原件及复印件1份。 </dd>
                 <dd class='dd'>2、相关费用准备(具体金额以交付使用通知书为准)；包括公共维修基金、物业费、面积差（多退少补）</dd>
-                <dd class='dd'>3、公共维修基金：根据武汉市住房保障和房屋管理局颁发的《武房发[2011]130号》文件要求，所购商品房为住宅的买受人在办理房屋交付使用手续前，必需办理首期住宅专项维修资金的缴存手续，该项费用由武汉市房管局收取。业主可在交付前自行缴纳，为给业主提供方便，集中交付期间金地将特邀房地局维修资金收缴单位现场驻点办公收缴维修资金，以免业主额外奔波缴纳。</dd>
+                <dd v-if='current==="武汉"' class='dd'>3、公共维修基金：根据武汉市住房保障和房屋管理局颁发的《武房发[2011]130号》文件要求，所购商品房为住宅的买受人在办理房屋交付使用手续前，必需办理首期住宅专项维修资金的缴存手续，该项费用由武汉市房管局收取。业主可在交付前自行缴纳，为给业主提供方便，集中交付期间金地将特邀房地局维修资金收缴单位现场驻点办公收缴维修资金，以免业主额外奔波缴纳。</dd>
               </dl>
             </div>
           </div>
@@ -481,7 +588,7 @@ export default {
   },
   data () {
     return {
-      current: '长沙',
+      current: '武汉',
       tabIndex: 0,
       tabs: ['购房签约', '售后入住'],
       list: [
@@ -645,8 +752,10 @@ export default {
   font-size: 0;
   text-align: center;
   position: relative;
+  overflow-y: hidden;
 }
 .block .inner{
+  height: 100%;
   padding: p2r(15);
   background:rgba(249,249,249,1);
   border-radius:p2r(4);
@@ -660,11 +769,14 @@ export default {
   padding: p2r(20);
 }
 .link{
-  color:#EA5532
+  color:#EA5532 !important;
 }
 .arrow{
   max-height: p2r(70);
   max-width: p2r(420);
+  &.line{
+    transform: scaleY(5);
+  }
 }
 .tip{
   position: absolute;
@@ -730,7 +842,6 @@ export default {
     z-index: -1;
   }
 }
-
 .table{
   width: 100%;
   margin: p2r(30) 0;

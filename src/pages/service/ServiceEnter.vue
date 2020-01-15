@@ -4,6 +4,10 @@
       <h5 class='title'>{{item.title}}</h5>
       <p class='desc'>{{item.desc}}</p>
     </router-link>
+    <div class='caution'>
+      <h5 class='title'>服务监督</h5>
+      <p class='p'>金地集团投诉热线：<a href='tel:4000383535'>4000383535</a></p>
+    </div>
   </div>
 </template>
 <script>
@@ -54,6 +58,21 @@ export default {
     color:#fff;
     line-height:p2r(30);
     letter-spacing:p2r(2);
+  }
+}
+.caution{
+  margin-top: p2r(60);
+  .title{
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+    color: #EA5532;
+  }
+  .p{
+    font-size: 14px;
+    margin-top: 15px;
+    text-align: center;
+    color: #666;
   }
 }
 </style>

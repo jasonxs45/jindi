@@ -35,6 +35,29 @@
             </p>
           </flexbox-item>
         </flexbox>
+        <div v-if='usedActivity.Apply' class='apply-info'>
+          <flexbox align="center" class="content-title">
+            <flexbox-item class="line"></flexbox-item>
+            <div class="text">报名信息</div>
+            <flexbox-item class="line"></flexbox-item>
+          </flexbox>
+          <flexbox class='p'>
+            <flexbox-item class='fh'>时&emsp;间：</flexbox-item>
+            <flexbox-item>{{applyInfo.AddTime}}</flexbox-item>
+          </flexbox>
+          <flexbox v-if='applyInfo.Options' class='p'>
+            <flexbox-item class='fh'>选&emsp;项：</flexbox-item>
+            <flexbox-item>{{applyInfo.Options}}</flexbox-item>
+          </flexbox>
+          <flexbox v-if='applyInfo.Info && applyInfo.Info.length' class='p'>
+            <flexbox-item class='fh'>参与者：</flexbox-item>
+            <flexbox-item>
+              <p v-for='(item,index) in applyInfo.Info' :key='"pers"-index' class='person'>
+                {{item.name}}-{{item.tel}}-{{item.id}}
+              </p>
+            </flexbox-item>
+          </flexbox>
+      </div>
         <flexbox  align="center" class="content-title">
           <flexbox-item class="line"></flexbox-item>
           <div class="text">活动明细</div>
@@ -282,6 +305,15 @@ export default {
     },
     usedActivity () {
       return this.activity
+    },
+    applyInfo () {
+      let obj = {}
+      if (this.activity) {
+        obj = this.activity.Apply
+        obj.Info = obj.Info ? JSON.parse(obj.Info) : ''
+        obj.Address = obj.Address ? JSON.parse(obj.Address) : ''
+      }
+      return obj
     }
   },
   watch: {
@@ -489,6 +521,24 @@ export default {
     }
     .details{
       padding:p2r($base-padding) p2r($base-padding) p2r(40);
+      .apply-info{
+        .p{
+          line-height: 1.5;
+          color:#333;
+          margin: p2r(10) 0;
+        }
+        .fh{
+          flex: 0 0 p2r(100);
+          width: p2r(100);
+          color: #666;
+          font-weight: 200;
+          line-height: 1.5;
+        }
+        .tit{
+          color: #666;
+          font-weight: 200;
+        }
+      }
       .oneline{
         margin: p2r(15) 0;
       }
